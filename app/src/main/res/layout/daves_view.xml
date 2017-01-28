@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/DaveLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScoreKeeperActivity"
+    android:weightSum="1"
+    android:clickable="false"
+>
+    <!--<menu xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="10dp">-->
+        <!--<item android:id="@+id/Main"-->
+            <!--android:title="@string/main"-->
+            <!--android:showAsAction="never"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+    <!--</menu>-->
+
+    <TextView
+        android:id="@+id/textAcc1"
+        android:hint="0"
+        android:layout_margin="0dp"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:ems="100"
+        android:clickable="false"
+        android:layout_weight="0.5"
+        android:textColor="#FFFFFF"
+        android:background="#0000FF"
+        android:gravity="center"
+        android:textSize="200sp">
+        <requestFocus />
+    </TextView>
+
+    <TextView
+        android:id="@+id/textAcc2"
+        android:hint="0"
+        android:layout_margin="0dp"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:ems="100"
+        android:clickable="false"
+        android:layout_weight="0.5"
+        android:textColor="#FFFFFF"
+        android:background="#FF0000"
+        android:gravity="center"
+        android:textSize="200sp">
+        <requestFocus />
+    </TextView>
+
+</LinearLayout>

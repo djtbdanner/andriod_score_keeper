@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Score Keeper</string>
+    <string name="title_activity">Score Keeper</string>
+    <string name="main">menu</string>
+</resources>
