@@ -1,10 +1,77 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/menu_reset"
-        android:showAsAction="ifRoom|withText"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
         android:title="Reset"
-        android:visible="true"
-        android:enabled="true" />
+        android:visible="true" />
+
+    <item
+        android:id="@+id/menu_leftColor"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
+        android:title="Left Color"
+        android:visible="true">
+        <menu>
+            <group android:checkableBehavior="single"
+                android:id="@+id/left">
+                <item
+                    android:id="@+id/menu_leftRed"
+                    android:title="red" />
+                <item
+                    android:id="@+id/menu_leftBlue"
+                    android:title="blue" />
+                <item
+                    android:id="@+id/menu_leftYellow"
+                    android:title="yellow" />
+                <item
+                    android:id="@+id/menu_leftGreen"
+                    android:title="green" />
+                <item
+                    android:id="@+id/menu_leftPurple"
+                    android:title="purple" />
+                <item
+                    android:id="@+id/menu_leftOrange"
+                    android:title="orange" />
+                <item
+                    android:id="@+id/menu_leftBlack"
+                    android:title="black" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_rightColor"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
+        android:title="Right Color"
+        android:visible="true">
+        <menu>
+            <group android:checkableBehavior="single"   android:id="@+id/right">
+                <item
+                    android:id="@+id/menu_rightRed"
+                    android:title="red" />
+                <item
+                    android:id="@+id/menu_rightBlue"
+                    android:title="blue" />
+                <item
+                    android:id="@+id/menu_rightYellow"
+                    android:title="yellow" />
+                <item
+                    android:id="@+id/menu_rightGreen"
+                    android:title="green" />
+                <item
+                    android:id="@+id/menu_rightPurple"
+                    android:title="purple" />
+                <item
+                    android:id="@+id/menu_rightOrange"
+                    android:title="orange" />
+                <item
+                    android:id="@+id/menu_rightBlack"
+                    android:title="black" />
+            </group>
+        </menu>
+    </item>
 
 </menu>
