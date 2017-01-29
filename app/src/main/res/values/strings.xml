@@ -3,7 +3,8 @@
 
     <string name="app_name">Score Keeper</string>
     <string name="title_activity">Score Keeper</string>
-    <string name="reset">reset</string>
+    <string name="switch_sides">Switch Sides</string>
+    <string name="reset">Reset Score</string>
     <string name="red">red</string>
     <string name="blue">blue</string>
     <string name="yellow">yellow</string>

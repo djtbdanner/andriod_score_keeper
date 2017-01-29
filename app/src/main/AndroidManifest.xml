@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Chapter 1, Exercise 1: Change version data to 2 and 2.0 -->
+<?xml version="1.0" encoding="utf-8"?><!-- Chapter 1, Exercise 1: Change version data to 2 and 2.0 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="codepath.apps.demointroandroid"
+    android:keepScreenOn="true"
+    android:persistent="true"
     android:versionCode="2"
     android:versionName="2.0"
-    android:persistent="true"
-    android:keepScreenOn="true">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    >
+
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-sdk
@@ -20,12 +21,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
 
->
+        >
         <activity
             android:name="codepath.apps.demointroandroid.ScoreKeeperActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -3,10 +3,13 @@ package codepath.apps.demointroandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.Vibrator;
@@ -22,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.prefs.Preferences;
 
 public class ScoreKeeperActivity extends Activity implements SensorEventListener {
@@ -75,8 +79,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         if ("Right Text Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             leftOrRight = RIGHT_TEXT;
         }
-
-        if ("reset".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+        if ("Switch Sides".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            switchSides();
+        }
+        if ("Reset Score".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             resetScore();
         } else if ("red".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xffff0000);
@@ -106,6 +112,24 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         return true;
     }
 
+    private void switchSides() {
+        int tempLeftScore = leftScore;
+        int tempRightScore = rightScore;
+        int tempLeftColor = getBackgroundColor(textLeft);
+        int tempRightColor = getBackgroundColor(textRight);
+        int tempLeftTextColor = textLeft.getCurrentTextColor();
+        int tempRightTextColor = textRight.getCurrentTextColor();
+
+        textRight.setTextColor(tempLeftTextColor);
+        textRight.setBackgroundColor(tempLeftColor);
+        textLeft.setTextColor(tempRightTextColor);
+        textLeft.setBackgroundColor(tempRightColor);
+
+        rightScore = tempLeftScore;
+        leftScore = tempRightScore;
+        displayScore(false);
+    }
+
     private void resetScore() {
         leftScore = 0;
         rightScore = 0;
@@ -125,6 +149,27 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         }
         leftOrRight = null;
 
+    }
+
+    public static int getBackgroundColor(TextView textView) {
+        Drawable drawable = textView.getBackground();
+        if (drawable instanceof ColorDrawable) {
+            ColorDrawable colorDrawable = (ColorDrawable) drawable;
+            if (Build.VERSION.SDK_INT >= 11) {
+                return colorDrawable.getColor();
+            }
+            try {
+                Field field = colorDrawable.getClass().getDeclaredField("mState");
+                field.setAccessible(true);
+                Object object = field.get(colorDrawable);
+                field = object.getClass().getDeclaredField("mUseColor");
+                field.setAccessible(true);
+                return field.getInt(object);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -275,7 +320,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             hasTiltedLeftOrRight = true;
 
         } else { // up or down tilt (points)
-            if (y < 0 && hasTiltedLeftOrRight && !isTiltedUp) {
+            if (y < 5 && hasTiltedLeftOrRight && !isTiltedUp) {
                 System.out.println("You tilt the device up");
                 rightScore = rightScore + pointsForGoal;
                 displayScore(true);
@@ -284,7 +329,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                 isTiltedUp = true;
                 isTiltedRight = false;
             }
-            if (y > 0 && hasTiltedLeftOrRight && !isTiltedDown) {
+            if (y > 5 && hasTiltedLeftOrRight && !isTiltedDown) {
                 System.out.println("You tilt the device down");
                 leftScore = leftScore + pointsForGoal;
                 displayScore(true);
