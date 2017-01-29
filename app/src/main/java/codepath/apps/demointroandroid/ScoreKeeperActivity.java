@@ -40,9 +40,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     Vibrator v;
     boolean isTiltedLeft = false;
     boolean isTiltedRight = false;
-    boolean isTiltedUp = false;
-    boolean isTiltedDown = false;
-    boolean hasTiltedLeftOrRight = false;
+//    boolean isTiltedUp = false;
+//    boolean isTiltedDown = false;
+    boolean isReturnedCenter = false;
     int leftScore = 0;
     int rightScore = 0;
     int height;
@@ -134,7 +134,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         leftScore = 0;
         rightScore = 0;
         displayScore(false);
-        hasTiltedLeftOrRight = false;
+     //   hasTiltedLeftOrRight = false;
     }
 
     private void setBgColor(String leftOrRightChoice, int color) {
@@ -298,48 +298,94 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     }
 
+    float xx, yy, zz;
     private void checkAndProcessTilt(SensorEvent event) {
-        float x = Math.round(event.values[0] * 10) / 10;
-        float y = Math.round(event.values[1] * 10) / 10;
-        if (Math.abs(x) > Math.abs(y)) { // left or right tilt
 
-            if (x < 0 && !isTiltedRight) {
-                System.out.println("You tilt the device right");
-                isTiltedRight = true;
-                isTiltedDown = false;
-                isTiltedLeft = false;
-                isTiltedUp = false;
-            }
-            if (x > 0 && !isTiltedLeft) {
-                System.out.println("You tilt the device left");
-                isTiltedLeft = true;
-                isTiltedDown = false;
-                isTiltedUp = false;
-                isTiltedRight = false;
-            }
-            hasTiltedLeftOrRight = true;
+        float yAxis = Math.round(event.values[1] * 10) / 10;
 
-        } else { // up or down tilt (points)
-            if (y < 5 && hasTiltedLeftOrRight && !isTiltedUp) {
-                System.out.println("You tilt the device up");
-                rightScore = rightScore + pointsForGoal;
-                displayScore(true);
-                isTiltedDown = false;
-                isTiltedLeft = false;
-                isTiltedUp = true;
-                isTiltedRight = false;
-            }
-            if (y > 5 && hasTiltedLeftOrRight && !isTiltedDown) {
-                System.out.println("You tilt the device down");
-                leftScore = leftScore + pointsForGoal;
-                displayScore(true);
-                isTiltedDown = true;
-                isTiltedLeft = false;
-                isTiltedUp = false;
-                isTiltedRight = false;
-            }
-            hasTiltedLeftOrRight = false;
+        boolean tiltedLeft = yAxis > 6;
+        boolean tiltedRight = yAxis < -6;
+        boolean returnedToCenter = -2 < yAxis && yAxis < 2;
+
+
+        if (tiltedLeft & !isTiltedLeft){
+            System.out.println("You tilted the device left");
+            isTiltedLeft = true;
+            isReturnedCenter = false;
+            isTiltedRight = false;
+            leftScore = leftScore + pointsForGoal;
+            displayScore(true);
+
         }
+
+        if (tiltedRight & !isTiltedRight){
+            System.out.println("You tilted the device right");
+            isTiltedLeft = false;
+            isReturnedCenter = false;
+            isTiltedRight = true;
+            rightScore = rightScore + pointsForGoal;
+            displayScore(true);
+
+        }
+
+        if (returnedToCenter & !isReturnedCenter){
+            System.out.println("You returned to center");
+            isTiltedLeft = false;
+            isReturnedCenter = true;
+            isTiltedRight = false;
+        }
+
+
+//        float x = Math.round(event.values[0] * 10) / 10;
+//        float y = Math.round(event.values[1] * 10) / 10;
+//        float z = Math.round(event.values[2] * 10) / 10;
+//
+//        if (x != xx || y != yy || z != zz){
+//            System.out.println("~~~~~ X: " + x + " Y:" + y + " Z:" + z);
+//            xx = x;
+//            yy = y;
+//            zz = z;
+//        }
+//
+//        if (Math.abs(x) > Math.abs(y)) { // left or right tilt
+//
+//            if (x < 0 && !isTiltedRight) {
+//                System.out.println("You tilt the device right");
+//                isTiltedRight = true;
+//                isTiltedDown = false;
+//                isTiltedLeft = false;
+//                isTiltedUp = false;
+//            }
+//            if (x > 0 && !isTiltedLeft) {
+//                System.out.println("You tilt the device left");
+//                isTiltedLeft = true;
+//                isTiltedDown = false;
+//                isTiltedUp = false;
+//                isTiltedRight = false;
+//            }
+//            hasTiltedLeftOrRight = true;
+//
+//        } else { // up or down tilt (points)
+//            if (y < 5 && Math.abs(x) > 2 && hasTiltedLeftOrRight && !isTiltedUp) {
+//                System.out.println("You tilt the device up");
+//                rightScore = rightScore + pointsForGoal;
+//                displayScore(true);
+//                isTiltedDown = false;
+//                isTiltedLeft = false;
+//                isTiltedUp = true;
+//                isTiltedRight = false;
+//            }
+//            if (y > 5  && Math.abs(x) > 2 && hasTiltedLeftOrRight && !isTiltedDown) {
+//                System.out.println("You tilt the device down");
+//                leftScore = leftScore + pointsForGoal;
+//                displayScore(true);
+//                isTiltedDown = true;
+//                isTiltedLeft = false;
+//                isTiltedUp = false;
+//                isTiltedRight = false;
+//            }
+//            hasTiltedLeftOrRight = false;
+//        }
     }
 
     @Override
