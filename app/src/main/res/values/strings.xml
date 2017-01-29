@@ -3,5 +3,13 @@
 
     <string name="app_name">Score Keeper</string>
     <string name="title_activity">Score Keeper</string>
-    <string name="main">menu</string>
+    <string name="reset">reset</string>
+    <string name="red">red</string>
+    <string name="blue">blue</string>
+    <string name="yellow">yellow</string>
+    <string name="green">green</string>
+    <string name="orange">orange</string>
+    <string name="purple">purple</string>
+    <string name="black">black</string>
+    <string name="white">white</string>
 </resources>

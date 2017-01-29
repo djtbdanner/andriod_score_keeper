@@ -33,22 +33,26 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     private TextView textLeft;
     private TextView textRight;
     private Display mDisplay;
-    private float mSensorX;
-    private float mSensorY;
     Vibrator v;
     boolean isTiltedLeft = false;
     boolean isTiltedRight = false;
-    boolean hasTiltedUpOrDown = false;
+    boolean isTiltedUp = false;
+    boolean isTiltedDown = false;
     boolean hasTiltedLeftOrRight = false;
     int leftScore = 0;
     int rightScore = 0;
-    private float x1, x2;
-    static final int MIN_DISTANCE = 150;
     int height;
     int width;
     float initialY;
     PowerManager.WakeLock wl;
     String leftOrRight; //TODO refactor this
+    static String RIGHT_TEXT = "R_T";
+    static String LEFT_TEXT = "L_T";
+    static String RIGHT_BACKGROUND = "R_B";
+    static String LEFT_BACKGROUND = "L_B";
+    int pointsForGoal = 1;
+    private long lastShakeTime;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,50 +62,69 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
 
-        if ("Right Color".equalsIgnoreCase(String.valueOf(item.getTitle()))){
-            leftOrRight = "Right";
+        if ("Right Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            leftOrRight = RIGHT_BACKGROUND;
         }
-        if ("Left Color".equalsIgnoreCase(String.valueOf(item.getTitle()))){
-            leftOrRight = "Left";
+        if ("Left Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            leftOrRight = LEFT_BACKGROUND;
         }
+        if ("Left Text Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            leftOrRight = LEFT_TEXT;
+        }
+        if ("Right Text Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            leftOrRight = RIGHT_TEXT;
+        }
+
         if ("reset".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            leftScore = 0;
-            rightScore = 0;
-            displayScore();
+            resetScore();
         } else if ("red".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xffff0000);
-            leftOrRight = null;
         } else if ("blue".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xff0000ff);
-            leftOrRight = null;
         } else if ("yellow".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xffffff00);
-            leftOrRight = null;
         } else if ("green".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xff00ff00);
-            leftOrRight = null;
         } else if ("purple".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xFF551A8B);
-            leftOrRight = null;
         } else if ("orange".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xFFFFA500);
-            leftOrRight = null;
         } else if ("black".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             setBgColor(leftOrRight, 0xff000000);
-            leftOrRight = null;
+        } else if ("white".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            setBgColor(leftOrRight, 0xffffffff);
+        } else if ("1".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            pointsForGoal = 1;
+        } else if ("1".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            pointsForGoal = 1;
+        } else if ("2".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            pointsForGoal = 2;
+        } else if ("6".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
+            pointsForGoal = 6;
         }
-
         return true;
     }
 
-    private void setBgColor(String leftOrRightChoice, int color ) {
-        if ("Right".equalsIgnoreCase(leftOrRightChoice)){
+    private void resetScore() {
+        leftScore = 0;
+        rightScore = 0;
+        displayScore(false);
+        hasTiltedLeftOrRight = false;
+    }
+
+    private void setBgColor(String leftOrRightChoice, int color) {
+        if (RIGHT_BACKGROUND.equalsIgnoreCase(leftOrRightChoice)) {
             textRight.setBackgroundColor(color);
-        } else {
+        } else if (LEFT_BACKGROUND.equalsIgnoreCase(leftOrRightChoice)) {
             textLeft.setBackgroundColor(color);
+        } else if (RIGHT_TEXT.equalsIgnoreCase(leftOrRightChoice)) {
+            textRight.setTextColor(color);
+        } else if (LEFT_TEXT.equalsIgnoreCase(leftOrRightChoice)) {
+            textLeft.setTextColor(color);
         }
+        leftOrRight = null;
+
     }
 
     @Override
@@ -111,7 +134,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             case (MotionEvent.ACTION_DOWN):
                 initialY = event.getY();
             case (MotionEvent.ACTION_MOVE):
-                System.out.println("Action was MOVE");
+                //System.out.println("Action was MOVE");
                 return true;
             case (MotionEvent.ACTION_UP):
                 int addThis = 1;
@@ -123,7 +146,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                 } else {
                     rightScore = rightScore + addThis;
                 }
-                displayScore();
+                displayScore(false);
                 return true;
 
         }
@@ -149,8 +172,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         initListeners();
 
         timestampForEvent = System.currentTimeMillis();
-        displayScore();
-
+        displayScore(false);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -163,7 +185,24 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         wl.acquire();
     }
 
-    private void displayScore() {
+    private void displayScore(boolean doVibrate) {
+
+        if (doVibrate) {
+            long[] pattern = {0, 100};
+
+            if (pointsForGoal == 2) {
+                long[] pattern2 = {0, 100, 150, 100};
+                pattern = pattern2;
+            }
+
+            if (pointsForGoal == 6) {
+                long[] pattern6 = {0, 100, 150, 100, 150, 100, 150, 100, 150, 100, 150, 100};
+                pattern = pattern6;
+            }
+
+            v.vibrate(pattern, -1);
+        }
+
         textLeft.setText(String.valueOf(leftScore));
         textRight.setText(String.valueOf(rightScore));
     }
@@ -174,47 +213,87 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-        if (System.currentTimeMillis() - 600 < timestampForEvent) {
-            return;
-        }
-        timestampForEvent = System.currentTimeMillis();
-
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
+            checkForShakeAndReset(event);
 
-            float x = Math.round(event.values[0] * 10) / 10;
-            float y = Math.round(event.values[1] * 10) / 10;
-            if (Math.abs(x) > Math.abs(y)) {
-                hasTiltedUpOrDown = false;
-                if (x < 0 && !isTiltedRight) {
-                    System.out.println("You tilt the device right");
-                    isTiltedRight = true;
-                    hasTiltedLeftOrRight = true;
-                }
-                if (x > 0 && !isTiltedLeft) {
-                    System.out.println("You tilt the device left");
-                    isTiltedLeft = true;
-                    hasTiltedLeftOrRight = true;
-                }
-            } else {
-                if (y < 0 && !hasTiltedUpOrDown && hasTiltedLeftOrRight) {
-                    System.out.println("You tilt the device up");
-                    v.vibrate(100);
-                    hasTiltedUpOrDown = true;
-                    rightScore = rightScore + 1;
-                }
-                if (y > 0 && !hasTiltedUpOrDown && hasTiltedLeftOrRight) {
-                    System.out.println("You tilt the device down");
-                    v.vibrate(100);
-                    hasTiltedUpOrDown = true;
-                    leftScore = leftScore + 1;
-                }
-                displayScore();
+            if (System.currentTimeMillis() - 500 < timestampForEvent) {
+                return;
             }
-            if (x > (-2) && x < (2) && y > (-2) && y < (2)) {
-                hasTiltedUpOrDown = false;
+            if (System.currentTimeMillis() - 3000 < lastShakeTime){
+                return;
             }
+
+            timestampForEvent = System.currentTimeMillis();
+
+            checkAndProcessTilt(event);
+        }
+    }
+
+    private void checkForShakeAndReset(SensorEvent event) {
+        int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;
+        float SHAKE_THRESHOLD = 21.25f;
+
+            long curTime = System.currentTimeMillis();
+            if ((curTime - lastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
+
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+                double acceleration = Math.sqrt(Math.pow(x, 2) +
+                        Math.pow(y, 2) +
+                        Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
+
+                if (acceleration > SHAKE_THRESHOLD) {
+                    lastShakeTime = curTime;
+                    resetScore();
+                }
+            }
+
+    }
+
+    private void checkAndProcessTilt(SensorEvent event) {
+        float x = Math.round(event.values[0] * 10) / 10;
+        float y = Math.round(event.values[1] * 10) / 10;
+        if (Math.abs(x) > Math.abs(y)) { // left or right tilt
+
+            if (x < 0 && !isTiltedRight) {
+                System.out.println("You tilt the device right");
+                isTiltedRight = true;
+                isTiltedDown = false;
+                isTiltedLeft = false;
+                isTiltedUp = false;
+            }
+            if (x > 0 && !isTiltedLeft) {
+                System.out.println("You tilt the device left");
+                isTiltedLeft = true;
+                isTiltedDown = false;
+                isTiltedUp = false;
+                isTiltedRight = false;
+            }
+            hasTiltedLeftOrRight = true;
+
+        } else { // up or down tilt (points)
+            if (y < 0 && hasTiltedLeftOrRight && !isTiltedUp) {
+                System.out.println("You tilt the device up");
+                rightScore = rightScore + pointsForGoal;
+                displayScore(true);
+                isTiltedDown = false;
+                isTiltedLeft = false;
+                isTiltedUp = true;
+                isTiltedRight = false;
+            }
+            if (y > 0 && hasTiltedLeftOrRight && !isTiltedDown) {
+                System.out.println("You tilt the device down");
+                leftScore = leftScore + pointsForGoal;
+                displayScore(true);
+                isTiltedDown = true;
+                isTiltedLeft = false;
+                isTiltedUp = false;
+                isTiltedRight = false;
+            }
+            hasTiltedLeftOrRight = false;
         }
     }
 
