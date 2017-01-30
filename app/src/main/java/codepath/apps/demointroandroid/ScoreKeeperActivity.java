@@ -40,7 +40,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     Vibrator v;
     boolean isTiltedLeft = false;
     boolean isTiltedRight = false;
-//    boolean isTiltedUp = false;
+    //    boolean isTiltedUp = false;
 //    boolean isTiltedDown = false;
     boolean isReturnedCenter = false;
     int leftScore = 0;
@@ -134,7 +134,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         leftScore = 0;
         rightScore = 0;
         displayScore(false);
-     //   hasTiltedLeftOrRight = false;
+        //   hasTiltedLeftOrRight = false;
     }
 
     private void setBgColor(String leftOrRightChoice, int color) {
@@ -262,10 +262,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
             checkForShakeAndReset(event);
 
-            if (System.currentTimeMillis() - 500 < timestampForEvent) {
+            if (System.currentTimeMillis() - 100 < timestampForEvent) {
                 return;
             }
-            if (System.currentTimeMillis() - 3000 < lastShakeTime){
+            if (System.currentTimeMillis() - 3000 < lastShakeTime) {
                 return;
             }
 
@@ -279,60 +279,62 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;
         float SHAKE_THRESHOLD = 21.25f;
 
-            long curTime = System.currentTimeMillis();
-            if ((curTime - lastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
+        long curTime = System.currentTimeMillis();
+        if ((curTime - lastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
 
-                float x = event.values[0];
-                float y = event.values[1];
-                float z = event.values[2];
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
 
-                double acceleration = Math.sqrt(Math.pow(x, 2) +
-                        Math.pow(y, 2) +
-                        Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
+            double acceleration = Math.sqrt(Math.pow(x, 2) +
+                    Math.pow(y, 2) +
+                    Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
 
-                if (acceleration > SHAKE_THRESHOLD) {
-                    lastShakeTime = curTime;
-                    resetScore();
-                }
+            if (acceleration > SHAKE_THRESHOLD) {
+                lastShakeTime = curTime;
+                resetScore();
             }
+        }
 
     }
 
     float xx, yy, zz;
+
     private void checkAndProcessTilt(SensorEvent event) {
 
         float yAxis = Math.round(event.values[1] * 10) / 10;
 
-        boolean tiltedLeft = yAxis > 6;
-        boolean tiltedRight = yAxis < -6;
-        boolean returnedToCenter = -2 < yAxis && yAxis < 2;
+        boolean tiltedLeft = yAxis > 7;
+        boolean tiltedRight = yAxis < -7;
+        boolean returnedToCenter = -1 < yAxis && yAxis < 1;
 
 
-        if (tiltedLeft & !isTiltedLeft){
-            System.out.println("You tilted the device left");
+        if (tiltedLeft & !isTiltedLeft && isReturnedCenter) {
             isTiltedLeft = true;
             isReturnedCenter = false;
             isTiltedRight = false;
+            System.out.println("You tilted the device left");
             leftScore = leftScore + pointsForGoal;
             displayScore(true);
 
         }
 
-        if (tiltedRight & !isTiltedRight){
-            System.out.println("You tilted the device right");
+        if (tiltedRight & !isTiltedRight && isReturnedCenter) {
             isTiltedLeft = false;
             isReturnedCenter = false;
             isTiltedRight = true;
+            System.out.println("You tilted the device right");
+
             rightScore = rightScore + pointsForGoal;
             displayScore(true);
 
         }
 
-        if (returnedToCenter & !isReturnedCenter){
-            System.out.println("You returned to center");
+        if (returnedToCenter & !isReturnedCenter) {
             isTiltedLeft = false;
             isReturnedCenter = true;
             isTiltedRight = false;
+            System.out.println("You returned to center");
         }
 
 
