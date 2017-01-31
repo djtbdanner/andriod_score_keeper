@@ -56,6 +56,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     static String LEFT_BACKGROUND = "L_B";
     int pointsForGoal = 1;
     private long lastShakeTime;
+    private boolean stillShaking = false;
 
 
     @Override
@@ -268,6 +269,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             if (System.currentTimeMillis() - 3000 < lastShakeTime) {
                 return;
             }
+            stillShaking = false;
 
             timestampForEvent = System.currentTimeMillis();
 
@@ -291,14 +293,17 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                     Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
 
             if (acceleration > SHAKE_THRESHOLD) {
+                if (stillShaking){
+                    resetScore();
+                    stillShaking = false;
+                    return;
+                }
                 lastShakeTime = curTime;
-                resetScore();
+                switchSides();
+                stillShaking = true;
             }
         }
-
     }
-
-    float xx, yy, zz;
 
     private void checkAndProcessTilt(SensorEvent event) {
 
@@ -316,7 +321,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             System.out.println("You tilted the device left");
             leftScore = leftScore + pointsForGoal;
             displayScore(true);
-
         }
 
         if (tiltedRight & !isTiltedRight && isReturnedCenter) {
@@ -327,7 +331,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
             rightScore = rightScore + pointsForGoal;
             displayScore(true);
-
         }
 
         if (returnedToCenter & !isReturnedCenter) {
