@@ -2,7 +2,7 @@ package codepath.apps.demointroandroid;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Point;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -16,17 +16,13 @@ import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.reflect.Field;
-import java.util.prefs.Preferences;
 
 public class ScoreKeeperActivity extends Activity implements SensorEventListener {
     private SensorManager mSensorManager;
@@ -54,9 +50,16 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     static String LEFT_TEXT = "L_T";
     static String RIGHT_BACKGROUND = "R_B";
     static String LEFT_BACKGROUND = "L_B";
+    static String LEFT_SCORE = "L_S";
+    static String RIGHT_SCORE = "R_S";
+    static String POINT_PER_GOAL = "P_P_G";
+
+    static int GREY_BG_COLOR = 0xffD3D3D3;
+    static int GREY_TXT_COLOR = 0xffA9A9A9;
+
     int pointsForGoal = 1;
     private long lastShakeTime;
-    private boolean stillShaking = false;
+    private boolean isShaking;
 
 
     @Override
@@ -175,6 +178,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if (GREY_BG_COLOR == getBackgroundColor(textRight) || GREY_BG_COLOR == getBackgroundColor(textLeft)) {
+            return false;
+        }
         int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case (MotionEvent.ACTION_DOWN):
@@ -194,7 +201,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                 }
                 displayScore(false);
                 return true;
-
         }
         return true;
     }
@@ -218,7 +224,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         initListeners();
 
         timestampForEvent = System.currentTimeMillis();
-        displayScore(false);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -229,6 +234,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
         wl.acquire();
+
+        initState();
+        displayScore(false);
     }
 
     private void displayScore(boolean doVibrate) {
@@ -249,8 +257,20 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             v.vibrate(pattern, -1);
         }
 
+
+        if (leftScore > 99) {
+            textLeft.setTextSize(190);
+        } else {
+            textLeft.setTextSize(200);
+        }
+        if (rightScore > 99) {
+            textRight.setTextSize(190);
+        } else {
+            textRight.setTextSize(200);
+        }
         textLeft.setText(String.valueOf(leftScore));
         textRight.setText(String.valueOf(rightScore));
+        storeState();
     }
 
     public void initListeners() {
@@ -261,15 +281,21 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-            checkForShakeAndReset(event);
+            if (checkForShake(event)) {
+                return;
+            }
+            ;
 
             if (System.currentTimeMillis() - 100 < timestampForEvent) {
                 return;
             }
-            if (System.currentTimeMillis() - 3000 < lastShakeTime) {
+            if (System.currentTimeMillis() - 2000 < lastShakeTime) {
                 return;
             }
-            stillShaking = false;
+
+            if (GREY_BG_COLOR == getBackgroundColor(textRight) || GREY_BG_COLOR == getBackgroundColor(textLeft)) {
+                initState();
+            }
 
             timestampForEvent = System.currentTimeMillis();
 
@@ -277,41 +303,73 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         }
     }
 
-    private void checkForShakeAndReset(SensorEvent event) {
-        int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;
-        float SHAKE_THRESHOLD = 21.25f;
+    private void storeState() {
 
-        long curTime = System.currentTimeMillis();
-        if ((curTime - lastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(LEFT_BACKGROUND, getBackgroundColor(textLeft));
+        editor.putInt(RIGHT_BACKGROUND, getBackgroundColor(textRight));
+        editor.putInt(LEFT_TEXT, textLeft.getCurrentTextColor());
+        editor.putInt(RIGHT_TEXT, textRight.getCurrentTextColor());
+        editor.putInt(LEFT_SCORE, leftScore);
+        editor.putInt(RIGHT_SCORE, rightScore);
+        editor.putInt(POINT_PER_GOAL, pointsForGoal);
+        editor.commit();
+    }
 
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
+    private void initState() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        textLeft.setBackgroundColor(sharedPref.getInt(LEFT_BACKGROUND, 0xffff0000));
+        textRight.setBackgroundColor(sharedPref.getInt(RIGHT_BACKGROUND, 0xffffffff));
+        textLeft.setTextColor(sharedPref.getInt(LEFT_TEXT, 0xff0000ff));
+        textRight.setTextColor(sharedPref.getInt(RIGHT_TEXT, 0xffffffff));
+        leftScore = sharedPref.getInt(LEFT_SCORE, 0);
+        rightScore = sharedPref.getInt(RIGHT_SCORE, 0);
+        pointsForGoal = sharedPref.getInt(POINT_PER_GOAL, 1);
+    }
 
-            double acceleration = Math.sqrt(Math.pow(x, 2) +
-                    Math.pow(y, 2) +
-                    Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
+    private boolean checkForShake(SensorEvent event) {
 
-            if (acceleration > SHAKE_THRESHOLD) {
-                if (stillShaking){
-                    resetScore();
-                    stillShaking = false;
-                    return;
-                }
-                lastShakeTime = curTime;
-                switchSides();
-                stillShaking = true;
-            }
+        float SHAKE_THRESHOLD = 10.25f;
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        double acceleration = Math.sqrt(Math.pow(x, 2) +
+                Math.pow(y, 2) +
+                Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
+
+//        if (Math.abs(acceleration) >10)
+//        System.out.println(acceleration);
+        if (acceleration > SHAKE_THRESHOLD) {
+            lastShakeTime = System.currentTimeMillis();
+            setBgColor(LEFT_BACKGROUND, GREY_BG_COLOR);
+            setBgColor(RIGHT_BACKGROUND, GREY_BG_COLOR);
+            textRight.setTextColor(GREY_TXT_COLOR);
+            textLeft.setTextColor(GREY_TXT_COLOR);
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    private double getAcceleration(SensorEvent event) {
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        return Math.sqrt(Math.pow(x, 2) +
+                Math.pow(y, 2) +
+                Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
     }
 
     private void checkAndProcessTilt(SensorEvent event) {
 
         float yAxis = Math.round(event.values[1] * 10) / 10;
 
-        boolean tiltedLeft = yAxis > 7;
-        boolean tiltedRight = yAxis < -7;
-        boolean returnedToCenter = -1 < yAxis && yAxis < 1;
+        boolean tiltedLeft = yAxis > 5;
+        boolean tiltedRight = yAxis < -5;
+        boolean returnedToCenter = -3 < yAxis && yAxis < 3;
 
 
         if (tiltedLeft & !isTiltedLeft && isReturnedCenter) {
