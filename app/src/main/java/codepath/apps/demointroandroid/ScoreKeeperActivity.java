@@ -1,7 +1,9 @@
 package codepath.apps.demointroandroid;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,11 +17,9 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -28,11 +28,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     private SensorManager mSensorManager;
     private Sensor accelerometer;
 
-    private WindowManager mWindowManager;
     long timestampForEvent;
     private TextView textLeft;
     private TextView textRight;
-    private Display mDisplay;
     Vibrator v;
     boolean isTiltedLeft = false;
     boolean isTiltedRight = false;
@@ -45,7 +43,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     int width;
     float initialY;
     PowerManager.WakeLock wl;
-    String leftOrRight; //TODO refactor this
+    String leftOrRightMenuSelected;
     static String RIGHT_TEXT = "R_T";
     static String LEFT_TEXT = "L_T";
     static String RIGHT_BACKGROUND = "R_B";
@@ -59,8 +57,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     int pointsForGoal = 1;
     private long lastShakeTime;
-    private boolean isShaking;
-
+    private boolean isPaused = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,38 +69,38 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if ("Right Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            leftOrRight = RIGHT_BACKGROUND;
+            leftOrRightMenuSelected = RIGHT_BACKGROUND;
         }
         if ("Left Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            leftOrRight = LEFT_BACKGROUND;
+            leftOrRightMenuSelected = LEFT_BACKGROUND;
         }
         if ("Left Text Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            leftOrRight = LEFT_TEXT;
+            leftOrRightMenuSelected = LEFT_TEXT;
         }
         if ("Right Text Color".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            leftOrRight = RIGHT_TEXT;
+            leftOrRightMenuSelected = RIGHT_TEXT;
         }
         if ("Switch Sides".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             switchSides();
         }
         if ("Reset Score".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            resetScore();
+            showResetScoreDialog();
         } else if ("red".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xffff0000);
+            setBgColor(leftOrRightMenuSelected, 0xffff0000);
         } else if ("blue".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xff0000ff);
+            setBgColor(leftOrRightMenuSelected, 0xff0000ff);
         } else if ("yellow".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xffffff00);
+            setBgColor(leftOrRightMenuSelected, 0xffffff00);
         } else if ("green".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xff00ff00);
+            setBgColor(leftOrRightMenuSelected, 0xff00ff00);
         } else if ("purple".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xFF551A8B);
+            setBgColor(leftOrRightMenuSelected, 0xFF551A8B);
         } else if ("orange".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xFFFFA500);
+            setBgColor(leftOrRightMenuSelected, 0xFFFFA500);
         } else if ("black".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xff000000);
+            setBgColor(leftOrRightMenuSelected, 0xff000000);
         } else if ("white".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
-            setBgColor(leftOrRight, 0xffffffff);
+            setBgColor(leftOrRightMenuSelected, 0xffffffff);
         } else if ("1".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
             pointsForGoal = 1;
         } else if ("1".equalsIgnoreCase(String.valueOf(item.getTitle()))) {
@@ -138,7 +135,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         leftScore = 0;
         rightScore = 0;
         displayScore(false);
-        //   hasTiltedLeftOrRight = false;
     }
 
     private void setBgColor(String leftOrRightChoice, int color) {
@@ -151,8 +147,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         } else if (LEFT_TEXT.equalsIgnoreCase(leftOrRightChoice)) {
             textLeft.setTextColor(color);
         }
-        leftOrRight = null;
-
+        leftOrRightMenuSelected = null;
     }
 
     public static int getBackgroundColor(TextView textView) {
@@ -182,6 +177,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         if (GREY_BG_COLOR == getBackgroundColor(textRight) || GREY_BG_COLOR == getBackgroundColor(textLeft)) {
             return false;
         }
+        if (isPaused) {
+            return false;
+        }
         int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case (MotionEvent.ACTION_DOWN):
@@ -208,15 +206,12 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.daves_view);
+        setContentView(R.layout.score_keeper_view);
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-
-        mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        mDisplay = mWindowManager.getDefaultDisplay();
         textLeft = (TextView) findViewById(R.id.textAcc1);
         textRight = (TextView) findViewById(R.id.textAcc2);
 
@@ -232,7 +227,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         width = metrics.widthPixels;
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
+        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
         wl.acquire();
 
         initState();
@@ -240,18 +235,15 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
     private void displayScore(boolean doVibrate) {
-
         if (doVibrate) {
             long[] pattern = {0, 100};
 
             if (pointsForGoal == 2) {
-                long[] pattern2 = {0, 100, 150, 100};
-                pattern = pattern2;
+                pattern = new long[]{0, 100, 150, 100};
             }
 
             if (pointsForGoal == 6) {
-                long[] pattern6 = {0, 100, 150, 100, 150, 100, 150, 100, 150, 100, 150, 100};
-                pattern = pattern6;
+                pattern = new long[]{0, 100, 150, 100, 150, 100, 150, 100, 150, 100, 150, 100};
             }
 
             v.vibrate(pattern, -1);
@@ -281,10 +273,13 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
+            if (isPaused) {
+                return;
+            }
+
             if (checkForShake(event)) {
                 return;
             }
-            ;
 
             if (System.currentTimeMillis() - 100 < timestampForEvent) {
                 return;
@@ -317,6 +312,18 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         editor.commit();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPaused = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isPaused = false;
+    }
+
     private void initState() {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         textLeft.setBackgroundColor(sharedPref.getInt(LEFT_BACKGROUND, 0xffff0000));
@@ -330,18 +337,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     private boolean checkForShake(SensorEvent event) {
 
-        float SHAKE_THRESHOLD = 10.25f;
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
-
-        double acceleration = Math.sqrt(Math.pow(x, 2) +
-                Math.pow(y, 2) +
-                Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-
-//        if (Math.abs(acceleration) >10)
-//        System.out.println(acceleration);
-        if (acceleration > SHAKE_THRESHOLD) {
+        if (getAcceleration(event) > 8.25f) {
             lastShakeTime = System.currentTimeMillis();
             setBgColor(LEFT_BACKGROUND, GREY_BG_COLOR);
             setBgColor(RIGHT_BACKGROUND, GREY_BG_COLOR);
@@ -398,68 +394,44 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             System.out.println("You returned to center");
         }
 
-
-//        float x = Math.round(event.values[0] * 10) / 10;
-//        float y = Math.round(event.values[1] * 10) / 10;
-//        float z = Math.round(event.values[2] * 10) / 10;
-//
-//        if (x != xx || y != yy || z != zz){
-//            System.out.println("~~~~~ X: " + x + " Y:" + y + " Z:" + z);
-//            xx = x;
-//            yy = y;
-//            zz = z;
-//        }
-//
-//        if (Math.abs(x) > Math.abs(y)) { // left or right tilt
-//
-//            if (x < 0 && !isTiltedRight) {
-//                System.out.println("You tilt the device right");
-//                isTiltedRight = true;
-//                isTiltedDown = false;
-//                isTiltedLeft = false;
-//                isTiltedUp = false;
-//            }
-//            if (x > 0 && !isTiltedLeft) {
-//                System.out.println("You tilt the device left");
-//                isTiltedLeft = true;
-//                isTiltedDown = false;
-//                isTiltedUp = false;
-//                isTiltedRight = false;
-//            }
-//            hasTiltedLeftOrRight = true;
-//
-//        } else { // up or down tilt (points)
-//            if (y < 5 && Math.abs(x) > 2 && hasTiltedLeftOrRight && !isTiltedUp) {
-//                System.out.println("You tilt the device up");
-//                rightScore = rightScore + pointsForGoal;
-//                displayScore(true);
-//                isTiltedDown = false;
-//                isTiltedLeft = false;
-//                isTiltedUp = true;
-//                isTiltedRight = false;
-//            }
-//            if (y > 5  && Math.abs(x) > 2 && hasTiltedLeftOrRight && !isTiltedDown) {
-//                System.out.println("You tilt the device down");
-//                leftScore = leftScore + pointsForGoal;
-//                displayScore(true);
-//                isTiltedDown = true;
-//                isTiltedLeft = false;
-//                isTiltedUp = false;
-//                isTiltedRight = false;
-//            }
-//            hasTiltedLeftOrRight = false;
-//        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        wl.release();
+        //  wl.release();
     }
 
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // TODO Auto-generated method stub
+        // no need to implement anything here
+    }
+
+    public void  showResetScoreDialog(){
+        isPaused = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final boolean result = true;
+        builder.setTitle("Reset Score");
+        builder.setMessage("Are you sure you want to reset the score?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                resetScore();
+                isPaused = false;
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                isPaused = false;
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
