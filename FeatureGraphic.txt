@@ -1,0 +1,17 @@
+Score Keeper is a simple to use, fun and free!
+It contains no adds and no in app purchaces - no charge for anything.
+
+It was designed for parents to keep score at their kiddo's sports activities.
+
+ * Just tip your phone to the side that scores to keep score.
+ * Score can also be tracked via screen.
+ * You can choose the points per goal for different activities.
+ * You can choose your team color.
+ * The app has a shake feature for those parents that get too excited at the game. 
+   This prevents scores from increasing (most of the time) when you wave or cheer.
+ 
+ This app was written, for the most part, so I could become familiar with
+ Android Developement - thus the free app.
+ 
+                     I hope you enjoy Score Keeper!
+                     I had fun writing it (and showing the kids).

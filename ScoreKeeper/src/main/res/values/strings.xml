@@ -13,4 +13,6 @@
     <string name="purple">Purple</string>
     <string name="black">Black</string>
     <string name="white">White</string>
+    <string name="resetTo">Reset Score To...</string>
+    <string name="resetPreferences">Reset Preferences</string>
 </resources>

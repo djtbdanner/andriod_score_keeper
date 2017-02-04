@@ -14,8 +14,6 @@
         android:title="@string/reset"
         android:visible="true" />
 
-    switch_sides
-
     <item
         android:id="@+id/menu_leftColor"
         android:enabled="true"
@@ -25,29 +23,21 @@
         <menu>
             <group android:id="@+id/left">
                 <item
-                    android:id="@+id/menu_leftRed"
-                    android:title="@string/red" />
-                <item
-                    android:id="@+id/menu_leftBlue"
-                    android:title="@string/blue" />
-                <item
-                    android:id="@+id/menu_leftYellow"
-                    android:title="@string/yellow" />
-                <item
-                    android:id="@+id/menu_leftGreen"
-                    android:title="@string/green" />
-                <item
-                    android:id="@+id/menu_leftPurple"
-                    android:title="@string/purple" />
-                <item
-                    android:id="@+id/menu_leftOrange"
-                    android:title="@string/orange" />
-                <item
-                    android:id="@+id/menu_leftBlack"
                     android:title="@string/black" />
                 <item
-                    android:id="@+id/menu_leftWhite"
+                    android:title="@string/blue" />
+                <item
+                    android:title="@string/green" />
+                <item
+                    android:title="@string/orange" />
+                <item
+                    android:title="@string/purple" />
+                <item
+                    android:title="@string/red" />
+                <item
                     android:title="@string/white" />
+                <item
+                    android:title="@string/yellow" />
             </group>
         </menu>
     </item>
@@ -62,29 +52,21 @@
         <menu>
             <group android:id="@+id/leftText">
                 <item
-                    android:id="@+id/menu_leftTextRed"
-                    android:title="red" />
-                <item
-                    android:id="@+id/menu_leftTextBlue"
-                    android:title="@string/blue" />
-                <item
-                    android:id="@+id/menu_leftTextYellow"
-                    android:title="@string/yellow" />
-                <item
-                    android:id="@+id/menu_leftTextGreen"
-                    android:title="@string/green" />
-                <item
-                    android:id="@+id/menu_leftTextPurple"
-                    android:title="purple" />
-                <item
-                    android:id="@+id/menu_leftTextOrange"
-                    android:title="@string/orange" />
-                <item
-                    android:id="@+id/menu_leftTextBlack"
                     android:title="@string/black" />
                 <item
-                    android:id="@+id/menu_leftTextWhite"
+                    android:title="@string/blue" />
+                <item
+                    android:title="@string/green" />
+                <item
+                    android:title="@string/orange" />
+                <item
+                    android:title="@string/purple" />
+                <item
+                    android:title="@string/red" />
+                <item
                     android:title="@string/white" />
+                <item
+                    android:title="@string/yellow" />
             </group>
         </menu>
     </item>
@@ -97,64 +79,48 @@
         <menu>
             <group android:id="@+id/right">
                 <item
-                    android:id="@+id/menu_rightRed"
-                    android:title="red" />
-                <item
-                    android:id="@+id/menu_rightBlue"
-                    android:title="@string/blue" />
-                <item
-                    android:id="@+id/menu_rightYellow"
-                    android:title="@string/yellow" />
-                <item
-                    android:id="@+id/menu_rightGreen"
-                    android:title="@string/green" />
-                <item
-                    android:id="@+id/menu_rightPurple"
-                    android:title="@string/purple" />
-                <item
-                    android:id="@+id/menu_rightOrange"
-                    android:title="@string/orange" />
-                <item
-                    android:id="@+id/menu_rightBlack"
                     android:title="@string/black" />
                 <item
-                    android:id="@+id/menu_rightWhite"
+                    android:title="@string/blue" />
+                <item
+                    android:title="@string/green" />
+                <item
+                    android:title="@string/orange" />
+                <item
+                    android:title="@string/purple" />
+                <item
+                    android:title="@string/red" />
+                <item
                     android:title="@string/white" />
+                <item
+                    android:title="@string/yellow" />
             </group>
         </menu>
     </item>
 
     <item
         android:id="@+id/menu_rightText"
+        android:checkable="false"
         android:showAsAction="collapseActionView"
-        android:title="Right Text Color"
-        android:checkable="false">
+        android:title="Right Text Color">
         <menu>
             <group android:id="@+id/rightText">
                 <item
-                    android:id="@+id/menu_rightTextRed"
-                    android:title="red" />
-                <item
-                    android:id="@+id/menu_rightTextBlue"
-                    android:title="@string/blue" />
-                <item
-                    android:id="@+id/menu_rightTextYellow"
-                    android:title="@string/yellow" />
-                <item
-                    android:id="@+id/menu_rightTextGreen"
-                    android:title="@string/green" />
-                <item
-                    android:id="@+id/menu_rightTextPurple"
-                    android:title="@string/purple" />
-                <item
-                    android:id="@+id/menu_rightTextOrange"
-                    android:title="@string/orange" />
-                <item
-                    android:id="@+id/menu_rightTextBlack"
                     android:title="@string/black" />
                 <item
-                    android:id="@+id/menu_rightTextWhite"
+                    android:title="@string/blue" />
+                <item
+                    android:title="@string/green" />
+                <item
+                    android:title="@string/orange" />
+                <item
+                    android:title="@string/purple" />
+                <item
+                    android:title="@string/red" />
+                <item
                     android:title="@string/white" />
+                <item
+                    android:title="@string/yellow" />
             </group>
         </menu>
     </item>
@@ -169,16 +135,38 @@
         <menu>
             <group android:id="@+id/pointsPerGoal">
                 <item
-                    android:id="@+id/one"
                     android:title="1" />
                 <item
-                    android:id="@+id/two"
                     android:title="2" />
                 <item
-                    android:id="@+id/six"
+                    android:title="3" />
+                <item
+                    android:title="4" />
+                <item
+                    android:title="5" />
+                <item
                     android:title="6" />
+                <item
+                    android:title="10" />
+                <item
+                    android:title="Other..." />
             </group>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/menu_reset_to"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
+        android:title="@string/resetTo"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/menu_reset_pref"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
+        android:title="@string/resetPreferences"
+        android:visible="true" />
+
 
 </menu>
