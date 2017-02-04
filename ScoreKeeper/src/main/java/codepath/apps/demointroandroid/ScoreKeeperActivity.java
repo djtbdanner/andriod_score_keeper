@@ -469,6 +469,14 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         builder.setTitle(title);
         builder.setMessage(message);
 
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
+                isPaused = false;
+            }
+        });
+
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -501,6 +509,15 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
 
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
+                isPaused = false;
+            }
+        });
+
+
         final EditText input = new EditText(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -530,5 +547,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                 });
 
         alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isPaused = false;
     }
 }
