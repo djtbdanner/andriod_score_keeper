@@ -46,6 +46,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     int height;
     int width;
     float initialY;
+    float initialX;
     String leftOrRightMenuSelected;
     static String RIGHT_TEXT = "R_T";
     static String LEFT_TEXT = "L_T";
@@ -98,20 +99,22 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         } else if ("yellow".equalsIgnoreCase(menuTitle)) {
             setColorOfItem(leftOrRightMenuSelected, 0xffffff00);
         } else if ("green".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xff00ff00);
+            setColorOfItem(leftOrRightMenuSelected, 0xff32cd32);
         } else if ("purple".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xFF551A8B);
+            setColorOfItem(leftOrRightMenuSelected, 0xFF9400d3);
         } else if ("orange".equalsIgnoreCase(menuTitle)) {
             setColorOfItem(leftOrRightMenuSelected, 0xFFFFA500);
         } else if ("black".equalsIgnoreCase(menuTitle)) {
             setColorOfItem(leftOrRightMenuSelected, 0xff000000);
         } else if ("white".equalsIgnoreCase(menuTitle)) {
             setColorOfItem(leftOrRightMenuSelected, 0xffffffff);
+        } else if ("pink".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, 0xffff1493);
         } else if ("Other...".equalsIgnoreCase(menuTitle)) {
             showEnterNumberdialog("Points Per Goal", "Enter the points per goal.", true);
         } else if ("Reset Score To...".equalsIgnoreCase(menuTitle)) {
             showEnterNumberdialog("Reset Score Value", "Enter the initial score you want to show when you 'Reset Score'.", false);
-        } else if ("Reset Preferences".equalsIgnoreCase(menuTitle)){
+        } else if ("Reset Preferences".equalsIgnoreCase(menuTitle)) {
             showAreYouSureDialog("Reset EVERYTHING", "Are you sure you want to reset your settings?", false);
         } else if (isNumeric(menuTitle)) {
             pointsForGoal = Integer.valueOf(menuTitle);
@@ -195,14 +198,36 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         switch (action) {
             case (MotionEvent.ACTION_DOWN):
                 initialY = event.getY();
+                initialX = event.getX();
             case (MotionEvent.ACTION_MOVE):
                 return true;
             case (MotionEvent.ACTION_UP):
-                int addThis = 1;
-                if (initialY < event.getY()) {
-                    addThis = -1;
+                float center = width / 2;
+                float currentX = event.getX();
+                if (initialX < center && currentX > center) {
+                    switchSides();
+                    return true;
                 }
-                if (event.getX() < width / 2) {
+                if (initialX > center && currentX < center) {
+                    switchSides();
+                    return true;
+                }
+
+                int addThis = 1;
+
+                float xMove = initialX - currentX;
+                if (Math.abs(xMove) > 200) {
+                    if (xMove > 0){
+                        addThis = -1;
+                    }
+                } else {
+                    if (initialY < event.getY() - 100) {
+                        addThis = -1;
+                    }
+                }
+
+
+                if (currentX < center) {
                     leftScore = leftScore + addThis;
                 } else {
                     rightScore = rightScore + addThis;
@@ -373,7 +398,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         isPaused = false;
     }
 
-    private void clearState (){
+    private void clearState() {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove(LEFT_BACKGROUND);
@@ -480,7 +505,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                if(scoreOnly) {
+                if (scoreOnly) {
                     resetScore();
                 } else {
                     clearState();
@@ -519,6 +544,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
 
         final EditText input = new EditText(this);
+        if (pointsPerGoal){
+            input.setText(String.valueOf(pointsForGoal));
+        } else {
+            input.setText(String.valueOf(resetScoreTo));
+        }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -531,7 +561,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                         isPaused = false;
                         String text = String.valueOf(input.getText());
                         if (pointsPerGoal) {
-                            pointsForGoal =  ("").equals(text) || null == text ? 1 : Integer.valueOf(text);
+                            pointsForGoal = ("").equals(text) || null == text ? 1 : Integer.valueOf(text);
                         } else {
                             resetScoreTo = ("").equals(text) || null == text ? 1 : Integer.valueOf(text);
                         }

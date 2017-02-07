@@ -31,6 +31,8 @@
                 <item
                     android:title="@string/orange" />
                 <item
+                    android:title="@string/pink" />
+                <item
                     android:title="@string/purple" />
                 <item
                     android:title="@string/red" />
@@ -60,6 +62,8 @@
                 <item
                     android:title="@string/orange" />
                 <item
+                    android:title="@string/pink" />
+                <item
                     android:title="@string/purple" />
                 <item
                     android:title="@string/red" />
@@ -87,6 +91,8 @@
                 <item
                     android:title="@string/orange" />
                 <item
+                    android:title="@string/pink" />
+                <item
                     android:title="@string/purple" />
                 <item
                     android:title="@string/red" />
@@ -113,6 +119,8 @@
                     android:title="@string/green" />
                 <item
                     android:title="@string/orange" />
+                <item
+                    android:title="@string/pink" />
                 <item
                     android:title="@string/purple" />
                 <item
