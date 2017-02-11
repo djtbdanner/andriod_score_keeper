@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ScoreKeeperActivity extends Activity implements SensorEventListener {
@@ -53,28 +54,105 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     static String RIGHT_BACKGROUND = "R_B";
     static String LEFT_BACKGROUND = "L_B";
     static String LEFT_SCORE = "L_S";
+
     static String RIGHT_SCORE = "R_S";
     static String POINT_PER_GOAL = "P_P_G";
     static String RESET_SCORE_TO = "R_S_T";
 
     static int GREY_BG_COLOR = 0xffD3D3D3;
     static int GREY_TXT_COLOR = 0xffA9A9A9;
-
+    static int RED = 0xffff0000;
+    static int BLUE = 0xff0000ff;
+    static int YELLOW = 0xffffff00;
+    static int GREEN = 0xff32cd32;
+    static int PURPLE = 0xFF9400d3;
+    static int ORANGE = 0xFFFFA500;
+    static int BLACK = 0xff000000;
+    static int WHITE = 0xffffffff;
+    static int PINK = 0xffff1493;
     int pointsForGoal = 1;
     int resetScoreTo = 0;
     private long lastShakeTime;
     private boolean isPaused = false;
+    Menu myMenu;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        myMenu = menu;
+        disableSelectedMenuItems();
         return true;
+    }
+
+    public void setSubMenusEnabled() {
+
+        int size = myMenu.size();
+        for (int itemIndex = 0; itemIndex < size; itemIndex++) {
+            if (myMenu.getItem(itemIndex).hasSubMenu()) {
+                Menu subMenu = myMenu.getItem(itemIndex).getSubMenu();
+                int subSize = subMenu.size();
+                for (int subIndex = 0; subIndex < subSize; subIndex++) {
+                    MenuItem subMenuItem = subMenu.getItem(subIndex);
+                    subMenuItem.setEnabled(true);
+                }
+            }
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String menuTitle = String.valueOf(item.getTitle());
 
+        setLeftOrRightMenuSelected(menuTitle);
+
+        if ("Switch Sides".equalsIgnoreCase(menuTitle)) {
+            switchSides();
+        }
+        if ("Reset Score".equalsIgnoreCase(menuTitle)) {
+            showAreYouSureDialog("Reset Score", "Are you sure you want to reset the score?", true);
+        } else if ("red".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, RED);
+        } else if ("blue".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, BLUE);
+        } else if ("yellow".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, YELLOW);
+        } else if ("green".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, GREEN);
+        } else if ("purple".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, PURPLE);
+        } else if ("orange".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, ORANGE);
+        } else if ("black".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, BLACK);
+        } else if ("white".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, WHITE);
+        } else if ("pink".equalsIgnoreCase(menuTitle)) {
+            setColorOfItem(leftOrRightMenuSelected, PINK);
+        } else if (item.getItemId() == R.id.PPG_Other) {
+            showEnterNumberdialog("Points Per Goal", "Enter the points per goal.", true);
+        } else if (item.getItemId() == R.id.RS_Other) {
+            showEnterNumberdialog("Reset Score Value", "Enter the initial score you want to show when you 'Reset Score'.", false);
+        } else if ("Reset Preferences".equalsIgnoreCase(menuTitle)) {
+            showAreYouSureDialog("Reset EVERYTHING", "Are you sure you want to reset your settings?", false);
+        } else if (isNumeric(menuTitle)) {
+
+            int[] ppgItems = {R.id.PPG_1, R.id.PPG_2, R.id.PPG_3, R.id.PPG_4, R.id.PPG_5, R.id.PPG_6, R.id.PPG_10};
+            if (arrayContains(ppgItems, item.getItemId())) {
+                pointsForGoal = Integer.valueOf(menuTitle);
+            } else {
+                resetScoreTo = Integer.valueOf(menuTitle);
+            }
+            disableSelectedMenuItems();
+        }
+        return true;
+    }
+
+    public boolean arrayContains(int[] array, int key) {
+        Arrays.sort(array);
+        return Arrays.binarySearch(array, key) >= 0;
+    }
+
+    private void setLeftOrRightMenuSelected(String menuTitle) {
         if ("Right Color".equalsIgnoreCase(menuTitle)) {
             leftOrRightMenuSelected = RIGHT_BACKGROUND;
         }
@@ -87,39 +165,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         if ("Right Text Color".equalsIgnoreCase(menuTitle)) {
             leftOrRightMenuSelected = RIGHT_TEXT;
         }
-        if ("Switch Sides".equalsIgnoreCase(menuTitle)) {
-            switchSides();
-        }
-        if ("Reset Score".equalsIgnoreCase(menuTitle)) {
-            showAreYouSureDialog("Reset Score", "Are you sure you want to reset the score?", true);
-        } else if ("red".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xffff0000);
-        } else if ("blue".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xff0000ff);
-        } else if ("yellow".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xffffff00);
-        } else if ("green".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xff32cd32);
-        } else if ("purple".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xFF9400d3);
-        } else if ("orange".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xFFFFA500);
-        } else if ("black".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xff000000);
-        } else if ("white".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xffffffff);
-        } else if ("pink".equalsIgnoreCase(menuTitle)) {
-            setColorOfItem(leftOrRightMenuSelected, 0xffff1493);
-        } else if ("Other...".equalsIgnoreCase(menuTitle)) {
-            showEnterNumberdialog("Points Per Goal", "Enter the points per goal.", true);
-        } else if ("Reset Score To...".equalsIgnoreCase(menuTitle)) {
-            showEnterNumberdialog("Reset Score Value", "Enter the initial score you want to show when you 'Reset Score'.", false);
-        } else if ("Reset Preferences".equalsIgnoreCase(menuTitle)) {
-            showAreYouSureDialog("Reset EVERYTHING", "Are you sure you want to reset your settings?", false);
-        } else if (isNumeric(menuTitle)) {
-            pointsForGoal = Integer.valueOf(menuTitle);
-        }
-        return true;
     }
 
     private boolean isNumeric(String chars) {
@@ -160,8 +205,168 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         } else if (LEFT_TEXT.equalsIgnoreCase(leftOrRightChoice)) {
             textLeft.setTextColor(color);
         }
+        disableSelectedMenuItems();
         leftOrRightMenuSelected = null;
         storeState();
+
+    }
+
+    private void disableSelectedMenuItems() {
+        if (myMenu == null) {
+            return;
+        }
+
+        setSubMenusEnabled();
+        int leftBGColor = getBackgroundColor(textLeft);
+        int rightBGColor = getBackgroundColor(textRight);
+        int leftTextColor = textLeft.getCurrentTextColor();
+        int rightTextColor = textRight.getCurrentTextColor();
+        // red
+        if (RED == leftBGColor) {
+            myMenu.findItem(R.id.L_B_red).setEnabled(false);
+        }
+        if (RED == rightBGColor) {
+            myMenu.findItem(R.id.R_B_red).setEnabled(false);
+        }
+        if (RED == leftTextColor) {
+            myMenu.findItem(R.id.L_T_red).setEnabled(false);
+        }
+        if (RED == rightTextColor) {
+            myMenu.findItem(R.id.R_T_red).setEnabled(false);
+        }
+        //blue
+        if (BLUE == leftBGColor) {
+            myMenu.findItem(R.id.L_B_blue).setEnabled(false);
+        }
+        if (BLUE == rightBGColor) {
+            myMenu.findItem(R.id.R_B_blue).setEnabled(false);
+        }
+        if (BLUE == leftTextColor) {
+            myMenu.findItem(R.id.L_T_blue).setEnabled(false);
+        }
+        if (BLUE == rightTextColor) {
+            myMenu.findItem(R.id.R_T_blue).setEnabled(false);
+        }
+        //yellow
+        if (YELLOW == leftBGColor) {
+            myMenu.findItem(R.id.L_B_yellow).setEnabled(false);
+        }
+        if (YELLOW == rightBGColor) {
+            myMenu.findItem(R.id.R_B_yellow).setEnabled(false);
+        }
+        if (YELLOW == leftTextColor) {
+            myMenu.findItem(R.id.L_T_yellow).setEnabled(false);
+        }
+        if (YELLOW == rightTextColor) {
+            myMenu.findItem(R.id.R_T_yellow).setEnabled(false);
+        }
+        //purple
+        if (PURPLE == leftBGColor) {
+            myMenu.findItem(R.id.L_B_purple).setEnabled(false);
+        }
+        if (PURPLE == rightBGColor) {
+            myMenu.findItem(R.id.R_B_purple).setEnabled(false);
+        }
+        if (PURPLE == leftTextColor) {
+            myMenu.findItem(R.id.L_T_purple).setEnabled(false);
+        }
+        if (PURPLE == rightTextColor) {
+            myMenu.findItem(R.id.R_T_purple).setEnabled(false);
+        }
+        //orange
+        if (ORANGE == leftBGColor) {
+            myMenu.findItem(R.id.L_B_orange).setEnabled(false);
+        }
+        if (ORANGE == rightBGColor) {
+            myMenu.findItem(R.id.R_B_orange).setEnabled(false);
+        }
+        if (ORANGE == leftTextColor) {
+            myMenu.findItem(R.id.L_T_orange).setEnabled(false);
+        }
+        if (ORANGE == rightTextColor) {
+            myMenu.findItem(R.id.R_T_orange).setEnabled(false);
+        }
+        // black
+        if (BLACK == leftBGColor) {
+            myMenu.findItem(R.id.L_B_black).setEnabled(false);
+        }
+        if (BLACK == rightBGColor) {
+            myMenu.findItem(R.id.R_B_black).setEnabled(false);
+        }
+        if (BLACK == leftTextColor) {
+            myMenu.findItem(R.id.L_T_black).setEnabled(false);
+        }
+        if (BLACK == rightTextColor) {
+            myMenu.findItem(R.id.R_T_black).setEnabled(false);
+        }
+        //white
+        if (WHITE == leftBGColor) {
+            myMenu.findItem(R.id.L_B_white).setEnabled(false);
+        }
+        if (WHITE == rightBGColor) {
+            myMenu.findItem(R.id.R_B_white).setEnabled(false);
+        }
+        if (WHITE == leftTextColor) {
+            myMenu.findItem(R.id.L_T_white).setEnabled(false);
+        }
+        if (WHITE == rightTextColor) {
+            myMenu.findItem(R.id.R_T_white).setEnabled(false);
+        }
+        // pink
+        if (PINK == leftBGColor) {
+            myMenu.findItem(R.id.L_B_pink).setEnabled(false);
+        }
+        if (PINK == rightBGColor) {
+            myMenu.findItem(R.id.R_B_pink).setEnabled(false);
+        }
+        if (PINK == leftTextColor) {
+            myMenu.findItem(R.id.L_T_pink).setEnabled(false);
+        }
+        if (PINK == rightTextColor) {
+            myMenu.findItem(R.id.R_T_pink).setEnabled(false);
+        }
+        // green
+        if (GREEN == leftBGColor) {
+            myMenu.findItem(R.id.L_B_green).setEnabled(false);
+        }
+        if (GREEN == rightBGColor) {
+            myMenu.findItem(R.id.R_B_green).setEnabled(false);
+        }
+        if (GREEN == leftTextColor) {
+            myMenu.findItem(R.id.L_T_green).setEnabled(false);
+        }
+        if (GREEN == rightTextColor) {
+            myMenu.findItem(R.id.R_T_green).setEnabled(false);
+        }
+
+        if (pointsForGoal == 1) {
+            myMenu.findItem(R.id.PPG_1).setEnabled(false);
+        }
+        if (pointsForGoal == 2) {
+            myMenu.findItem(R.id.PPG_2).setEnabled(false);
+        }
+        if (pointsForGoal == 3) {
+            myMenu.findItem(R.id.PPG_3).setEnabled(false);
+        }
+        if (pointsForGoal == 4) {
+            myMenu.findItem(R.id.PPG_4).setEnabled(false);
+        }
+        if (pointsForGoal == 5) {
+            myMenu.findItem(R.id.PPG_5).setEnabled(false);
+        }
+        if (pointsForGoal == 6) {
+            myMenu.findItem(R.id.PPG_6).setEnabled(false);
+        }
+        if (pointsForGoal == 10) {
+            myMenu.findItem(R.id.PPG_10).setEnabled(false);
+        }
+        if (resetScoreTo == 0) {
+            myMenu.findItem(R.id.RS_0).setEnabled(false);
+        }
+        if (resetScoreTo == 4) {
+            myMenu.findItem(R.id.RS_4).setEnabled(false);
+        }
+
     }
 
     public static int getBackgroundColor(TextView textView) {
@@ -217,7 +422,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
                 float xMove = initialX - currentX;
                 if (Math.abs(xMove) > 200) {
-                    if (xMove > 0){
+                    if (xMove > 0) {
                         addThis = -1;
                     }
                 } else {
@@ -396,6 +601,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     protected void onResume() {
         super.onResume();
         isPaused = false;
+        isReturnedCenter = false;
     }
 
     private void clearState() {
@@ -414,14 +620,15 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     private void initState() {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        textLeft.setBackgroundColor(sharedPref.getInt(LEFT_BACKGROUND, 0xffff0000));
-        textRight.setBackgroundColor(sharedPref.getInt(RIGHT_BACKGROUND, 0xff0000ff));
-        textLeft.setTextColor(sharedPref.getInt(LEFT_TEXT, 0xffffffff));
-        textRight.setTextColor(sharedPref.getInt(RIGHT_TEXT, 0xffffffff));
+        textLeft.setBackgroundColor(sharedPref.getInt(LEFT_BACKGROUND, RED));
+        textRight.setBackgroundColor(sharedPref.getInt(RIGHT_BACKGROUND, BLUE));
+        textLeft.setTextColor(sharedPref.getInt(LEFT_TEXT, WHITE));
+        textRight.setTextColor(sharedPref.getInt(RIGHT_TEXT, WHITE));
         leftScore = sharedPref.getInt(LEFT_SCORE, 0);
         rightScore = sharedPref.getInt(RIGHT_SCORE, 0);
         pointsForGoal = sharedPref.getInt(POINT_PER_GOAL, 1);
         resetScoreTo = sharedPref.getInt(RESET_SCORE_TO, 0);
+        disableSelectedMenuItems();
     }
 
     private boolean checkForShake(SensorEvent event) {
@@ -532,7 +739,13 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         isPaused = true;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
+
+        if (pointsPerGoal) {
+            alertDialog.setMessage(message + " \nCurrent Setting: " + pointsForGoal);
+        } else {
+            alertDialog.setMessage(message + " \nCurrent Setting: " + resetScoreTo);
+        }
+
 
         alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
@@ -544,11 +757,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
 
         final EditText input = new EditText(this);
-        if (pointsPerGoal){
-            input.setText(String.valueOf(pointsForGoal));
-        } else {
-            input.setText(String.valueOf(resetScoreTo));
-        }
+
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -565,8 +774,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                         } else {
                             resetScoreTo = ("").equals(text) || null == text ? 1 : Integer.valueOf(text);
                         }
+                        disableSelectedMenuItems();
                     }
                 });
+
 
         alertDialog.setNegativeButton("CANCEL",
                 new DialogInterface.OnClickListener() {
