@@ -422,8 +422,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
                 float xMove = initialX - currentX;
                 if (Math.abs(xMove) > 200) {
+                    addThis = pointsForGoal;
                     if (xMove > 0) {
-                        addThis = -1;
+                        addThis = -1 * pointsForGoal;
                     }
                 } else {
                     if (initialY < event.getY() - 100) {
