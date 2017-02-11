@@ -79,12 +79,12 @@ class ScoreKeeperUtils {
     }
 
     static int getTextSize(int score) {
-        int scoreSize = 200;
+        int scoreSize = 250;
         if (score > 99) {
-            scoreSize = 180;
+            scoreSize = 160;
         }
         if (score > 999) {
-            scoreSize = 140;
+            scoreSize = 120;
         }
 
         if (score > 9999) {

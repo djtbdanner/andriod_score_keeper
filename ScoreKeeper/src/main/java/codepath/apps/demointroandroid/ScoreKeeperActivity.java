@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ScoreKeeperActivity extends Activity implements SensorEventListener {
     private SensorManager mSensorManager;
@@ -191,6 +192,20 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
         textLeft.setTextSize(ScoreKeeperUtils.getTextSize(leftScore));
         textRight.setTextSize(ScoreKeeperUtils.getTextSize(rightScore));
+
+        boolean showToast = false;
+        if (leftScore < 0){
+            leftScore = 0;
+            showToast = true;
+        }
+        if (rightScore < 0){
+            rightScore = 0;
+            showToast = true;
+        }
+        if (showToast){
+            Toast.makeText(this.getBaseContext(), "Score of less than zero isn't realistic.", Toast.LENGTH_SHORT).show();
+        }
+
 
         textLeft.setText(String.valueOf(leftScore));
         textRight.setText(String.valueOf(rightScore));

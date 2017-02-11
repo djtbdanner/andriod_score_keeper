@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 class DialogUtility {
 
@@ -32,8 +33,8 @@ class DialogUtility {
         final EditText input = new EditText(theActivity);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         input.setLayoutParams(lp);
         alertDialog.setView(input);
@@ -42,10 +43,29 @@ class DialogUtility {
                     public void onClick(DialogInterface dialog, int which) {
                         theActivity.isPaused = false;
                         String text = String.valueOf(input.getText());
+                        if ("".equals(text) || text == null){
+                            Toast.makeText(theActivity.getBaseContext(), "Nothing was changed.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        int val =  Integer.valueOf(text);
+                        if (val > 100){
+                            Toast.makeText(theActivity.getBaseContext(), "The entered value of " + val + " doesn't work with this app, entry was changed to 100.", Toast.LENGTH_SHORT).show();
+                            val = 100;
+
+                        }
                         if (pointsPerGoal) {
-                            theActivity.pointsForGoal = ("").equals(text) || null == text ? 1 : Integer.valueOf(text);
+
+                            if (val < 1){
+                                Toast.makeText(theActivity.getBaseContext(), "Points per goal of less than one doesn't work with this app, entry was changd to 1.", Toast.LENGTH_SHORT).show();
+                                val = 1;
+                            }
+                            theActivity.pointsForGoal = val;
                         } else {
-                            theActivity.resetScoreTo = ("").equals(text) || null == text ? 1 : Integer.valueOf(text);
+                            if (val < 0){
+                                Toast.makeText(theActivity.getBaseContext(), "Reset score to less than zero doesn't work with this app, entry was changd to 0.", Toast.LENGTH_SHORT).show();
+                                val = 0;
+                            }
+                            theActivity.resetScoreTo = val;
                         }
                     }
                 });
