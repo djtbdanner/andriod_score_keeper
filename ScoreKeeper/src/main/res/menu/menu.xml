@@ -1,13 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_switch"
-        android:enabled="true"
-        android:showAsAction="collapseActionView"
-        android:title="@string/switch_sides"
-        android:visible="true" />
-
-    <item
         android:id="@+id/menu_reset"
         android:enabled="true"
         android:showAsAction="collapseActionView"
@@ -21,7 +14,7 @@
         android:title="Left Color"
         android:visible="true">
         <menu>
-            <group android:id="@+id/left">
+            <group android:id="@+id/leftBG">
                 <item
                     android:id="@+id/L_B_black"
                     android:title="@string/black" />
@@ -99,7 +92,7 @@
         android:title="Right Color"
         android:visible="true">
         <menu>
-            <group android:id="@+id/right">
+            <group android:id="@+id/rightBG">
                 <item
                     android:id="@+id/R_B_black"
                     android:title="@string/black" />
