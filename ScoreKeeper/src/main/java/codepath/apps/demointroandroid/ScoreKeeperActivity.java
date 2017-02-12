@@ -10,7 +10,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
-import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -314,6 +313,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         if (winBy != null){
             editor.putInt(WIN_BY_POINTS, winBy.getWinningPoint());
             editor.putInt(WIN_BY_SPREAD, winBy.getPointSpread());
+        } else {
+            editor.putInt(WIN_BY_POINTS, -1);
+            editor.putInt(WIN_BY_SPREAD, -1);
         }
         editor.commit();
     }
@@ -495,11 +497,8 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         DialogUtility.showEnterNameDialog(this, isLeft);
     }
 
-    boolean isFileSaveEnabled(){
-        if (ScoreKeeperUtils.getTodayAsNoTimeString().equals(fileSaveFeatureDate)){
-           return fileSaveForToday;
-        }
-        return false;
+    boolean isFileSaveEnabled() {
+        return ScoreKeeperUtils.getTodayAsNoTimeString().equals(fileSaveFeatureDate) && fileSaveForToday;
     }
 
     void enableFileSave(){
