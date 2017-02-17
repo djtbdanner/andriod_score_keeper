@@ -27,6 +27,7 @@ class ScoreKeeperUtils {
     static int BLACK = 0xff000000;
     static int WHITE = 0xffffffff;
     static int PINK = 0xffff1493;
+    static int BROWN = 0xffF4A460;
 
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd", Locale.US);

@@ -3,10 +3,11 @@ package codepath.apps.demointroandroid;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.IntegerRes;
+import android.graphics.Color;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -86,11 +87,103 @@ class DialogUtility {
         Toast.makeText(theActivity.getBaseContext(), "Nothing was changed, input was empty or invalid.", Toast.LENGTH_SHORT).show();
     }
 
-
-    static void showAreYouSureDialog(String title, String message, final boolean scoreOnly, final ScoreKeeperActivity theActivity) {
+    static void showMenuPopUp( final ScoreKeeperActivity theActivity){
         theActivity.isPaused = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
-        builder.setTitle(title);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
+                theActivity.isPaused = false;
+            }
+        });
+
+        View view = new View(theActivity.getApplicationContext());
+        LinearLayout layout = new LinearLayout(view.getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final Button resetScore = new Button(view.getContext());
+        resetScore.setBackgroundColor(Color.DKGRAY);
+        resetScore.setTextColor(Color.LTGRAY);
+        resetScore.setHighlightColor(Color.BLUE);
+        resetScore.setText("reset score");
+        layout.addView(resetScore);
+
+        final Button colorButton = new Button(view.getContext());
+        colorButton.setBackgroundColor(Color.DKGRAY);
+        colorButton.setTextColor(Color.LTGRAY);
+        colorButton.setText("Colors...");
+        layout.addView(colorButton);
+
+        final Button redButton = new Button(view.getContext());
+        redButton.setBackgroundColor(Color.DKGRAY);
+        redButton.setTextColor(Color.LTGRAY);
+        redButton.setText("Preferences...");
+        layout.addView(redButton);
+
+       final AlertDialog alertDialog = builder.create();
+        alertDialog.setView(layout);
+
+        resetScore.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                theActivity.isPaused = false;
+                showAreYouSureDialog("Are you sure you want to reset the score?", true, theActivity);
+            }
+        });
+        redButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                theActivity.isPaused = false;
+                Intent intent = new Intent(theActivity, SettingsActivity.class);
+                theActivity.startActivity(intent);
+            }
+        });
+        colorButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                theActivity.isPaused = false;
+                Intent intent = new Intent(theActivity, ColorActivity.class);
+                theActivity.startActivity(intent);
+            }
+        });
+        alertDialog.show();
+    }
+
+
+//    static void showColorDialog( final ScoreKeeperActivity theActivity){
+//        // Prepare grid view
+//        GridView gridView = (GridView) theActivity.findViewById(R.id.myGrid);
+//      //  grid.setAdapter(new customAdapter());
+//
+//
+//        List<Integer> mList = new ArrayList<Integer>();
+//        for (int i = 1; i < 10; i++) {
+//            mList.add(i);
+//        }
+//
+//        gridView.setAdapter(new ArrayAdapter(theActivity, android.R.layout.simple_list_item_1, mList));
+//
+//        gridView.setNumColumns(3);
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // do something here
+//            }
+//        });
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
+//        builder.setView(gridView);
+//        builder.setTitle("Set Color");
+//        builder.show();
+//    }
+
+    static void showAreYouSureDialog(String message, final boolean scoreOnly, final ScoreKeeperActivity theActivity) {
+        theActivity.isPaused = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
         builder.setMessage(message);
 
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {

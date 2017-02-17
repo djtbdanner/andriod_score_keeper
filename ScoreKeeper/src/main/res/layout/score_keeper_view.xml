@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/strut"
         android:layout_alignParentLeft="true"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:gravity="center_horizontal|bottom"
         android:clickable="true" />
 
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/strut"
         android:layout_alignParentRight="true"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:gravity="center_horizontal|bottom"
         android:clickable="true" />
 
@@ -40,8 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/strut"
         android:layout_below="@id/textNameLeft"
-        android:paddingTop="25dp"
-        android:gravity="center_horizontal|bottom" />
+        android:gravity="top|center_horizontal" />
 
     <TextView
         android:id="@+id/textScoreRight"
@@ -51,19 +50,23 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/textNameRight"
-        android:gravity="center_horizontal|bottom" />
+        android:gravity="top|center_horizontal" />
 
+    <!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/myGrid"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:padding="10dp"-->
+        <!--android:verticalSpacing="10dp"-->
+
+        <!--android:horizontalSpacing="10dp"-->
+        <!--android:numColumns="3"-->
+        <!--android:columnWidth="60dp"-->
+        <!--android:stretchMode="columnWidth"-->
+
+        <!--android:gravity="center"-->
+        <!--/>-->
 
 </RelativeLayout>
 
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/DaveLayout"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:context=".ScoreKeeperActivity"--><!--android:weightSum="1"--><!--android:clickable="false"--><!--&gt;-->
 
-    <!--<--><!--android:id="@+id/textAcc1"--><!--android:hint="0"--><!--android:layout_margin="0dp"--><!--android:layout_width="0dp"-->
-
-    <!--android:layout_height="match_parent"--><!--android:ems="100"--><!--android:clickable="false"--><!--android:layout_weight="0.5"--><!--android:textColor="#FFFFFF"--><!--android:background="#0000FF"--><!--android:gravity="center"--><!--android:textSize="200sp">--><!--<requestFocus />--><!--</TextView>-->
-
-    <!--<TextView--><!--android:id="@+id/textAcc2"--><!--android:hint="0"--><!--android:layout_margin="0dp"--><!--android:layout_width="0dp"-->
-
-    <!--android:layout_height="match_parent"--><!--android:ems="100"--><!--android:clickable="false"--><!--android:layout_weight="0.5"--><!--android:textColor="#FFFFFF"--><!--android:background="#FF0000"--><!--android:gravity="center"--><!--android:textSize="200sp">--><!--<requestFocus />--><!--</TextView>-->
-
-    <!--</LinearLayout>-->

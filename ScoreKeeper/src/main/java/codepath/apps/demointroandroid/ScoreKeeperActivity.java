@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
 import android.util.DisplayMetrics;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -171,9 +173,14 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         storeState();
     }
 
+
+    long downclicktime;
+    float scrollX;
+    float scrollY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
+        System.out.println(event.toString());
+        int SCROLL_THRESHOLD = 10;
         if (isScreenGrey()) {
             return false;
         }
@@ -183,11 +190,29 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case (MotionEvent.ACTION_DOWN):
+                downclicktime = System.currentTimeMillis();
                 initialY = event.getY();
                 initialX = event.getX();
+                scrollX = initialX;
+                scrollY = initialY;
+                handler.postDelayed(mLongPressed, ViewConfiguration.getLongPressTimeout());
             case (MotionEvent.ACTION_MOVE):
+
+                if ((Math.abs(scrollX - event.getX()) > SCROLL_THRESHOLD || Math.abs(scrollY - event.getY()) > SCROLL_THRESHOLD)) {
+                    downclicktime = System.currentTimeMillis();
+                    System.out.println("SCROLLING>>>>>>>>");
+                    handler.removeCallbacks(mLongPressed);
+                }
+                scrollX =  event.getX();
+                scrollY = event.getY();
                 return true;
             case (MotionEvent.ACTION_UP):
+                handler.removeCallbacks(mLongPressed);
+                if (System.currentTimeMillis() - 1000 > downclicktime){
+                    System.out.println("LIFTED UP TOO LIONG");
+                    return false;
+                }
+
                 float center = width / 2;
                 float currentX = event.getX();
                 if (initialX < center && currentX > center) {
@@ -471,29 +496,39 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         // no need to implement anything here
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         isPaused = false;
     }
 
+    Handler handler = new Handler();
+    Runnable mLongPressed = new Runnable() {
+        public void run() {
+            DialogUtility.showMenuPopUp(getMe());
+        }
+    };
+
+    ScoreKeeperActivity getMe (){
+        return this;
+    }
+
     private View.OnLongClickListener leftNameListener = new View.OnLongClickListener() {
 
         public boolean onLongClick(View v) {
-            showDialog(true);
+            showNameDialog(true);
             return true;
         }
     };
     private View.OnLongClickListener rightNameListener = new View.OnLongClickListener() {
 
         public boolean onLongClick(View v) {
-            showDialog(false);
+            showNameDialog(false);
             return true;
         }
     };
 
-    private void showDialog(boolean isLeft){
+    private void showNameDialog(boolean isLeft){
         DialogUtility.showEnterNameDialog(this, isLeft);
     }
 

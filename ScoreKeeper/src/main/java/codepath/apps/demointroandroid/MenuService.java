@@ -230,7 +230,7 @@ class MenuService {
         String menuTitle = String.valueOf(item.getTitle());
 
         if ("Reset Score".equalsIgnoreCase(menuTitle)) {
-            DialogUtility.showAreYouSureDialog("Reset Score", "Are you sure you want to reset the score?", true, theActivity);
+            DialogUtility.showAreYouSureDialog("Are you sure you want to reset the score?", true, theActivity);
         } else if ("red".equalsIgnoreCase(menuTitle)) {
             theActivity.setColorOfItem(item, ScoreKeeperUtils.RED);
         } else if ("blue".equalsIgnoreCase(menuTitle)) {
@@ -254,7 +254,7 @@ class MenuService {
         } else if (item.getItemId() == R.id.RS_Other) {
             DialogUtility.showEnterNumberdialog("Reset Score Value", "Enter the initial score you want to show when you 'Reset Score'.", false, theActivity);
         } else if ("Reset Preferences".equalsIgnoreCase(menuTitle)) {
-            DialogUtility.showAreYouSureDialog("Reset EVERYTHING", "Are you sure you want to reset your settings?", false, theActivity);
+            DialogUtility.showAreYouSureDialog("Are you sure you want to reset your settings?", false, theActivity);
         } else if (ScoreKeeperUtils.isNumeric(menuTitle)) {
 
             int[] ppgItems = {R.id.PPG_1, R.id.PPG_2, R.id.PPG_3, R.id.PPG_4, R.id.PPG_5, R.id.PPG_6, R.id.PPG_10};
