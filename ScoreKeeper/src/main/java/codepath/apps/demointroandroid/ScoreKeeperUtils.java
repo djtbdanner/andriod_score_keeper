@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
@@ -16,6 +17,19 @@ import java.util.Locale;
 
 class ScoreKeeperUtils {
 
+//    static int GREY_BG_COLOR = R.color.greyBackground;
+//    static int GREY_TXT_COLOR = R.color.greytext;
+//    static int RED = R.color.red;
+//    static int BLUE = R.color.blue;
+//    static int YELLOW = R.color.yellow;
+//    static int GREEN = R.color.green;
+//    static int PURPLE = R.color.purple;
+//    static int ORANGE = R.color.orange;
+//    static int BLACK = R.color.black;
+//    static int WHITE = R.color.white;
+//    static int PINK = R.color.pink;
+//    static int BROWN = R.color.brown;
+
     static int GREY_BG_COLOR = 0xffD3D3D3;
     static int GREY_TXT_COLOR = 0xffA9A9A9;
     static int RED = 0xffff0000;
@@ -27,15 +41,24 @@ class ScoreKeeperUtils {
     static int BLACK = 0xff000000;
     static int WHITE = 0xffffffff;
     static int PINK = 0xffff1493;
-    static int BROWN = 0xffF4A460;
+    static int BROWN = 0xffA52A2A;
+
+
+    static String LEFT_BACKGROUND = "L_B";
+    static String RIGHT_BACKGROUND = "R_B";
+    static String LEFT_TEXT = "L_T";
+    static String RIGHT_TEXT = "R_T";
+    static String SHARED_PREFERENCES = "S_P";
+    static String LEFT_SCORE = "L_S";
+    static String RIGHT_SCORE = "R_S";
 
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd", Locale.US);
     static SimpleDateFormat stf = new SimpleDateFormat("hh:mm a", Locale.US);
 
 
-    static int getBackgroundColor(TextView textView) {
-        Drawable drawable = textView.getBackground();
+    static int getBackgroundColor(View view) {
+        Drawable drawable = view.getBackground();
         if (drawable instanceof ColorDrawable) {
             ColorDrawable colorDrawable = (ColorDrawable) drawable;
             if (Build.VERSION.SDK_INT >= 11) {
@@ -138,6 +161,9 @@ class ScoreKeeperUtils {
         }
         if (colorcode == PINK) {
             return "pink";
+        }
+        if (colorcode == BROWN) {
+            return "brown";
         }
         return "NA";
 

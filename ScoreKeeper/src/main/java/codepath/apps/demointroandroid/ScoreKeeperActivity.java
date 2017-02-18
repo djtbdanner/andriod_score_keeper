@@ -42,14 +42,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     int width;
     float initialY;
     float initialX;
-    static String LEFT_SCORE = "L_S";
-    static String RIGHT_SCORE = "R_S";
+
     static String POINT_PER_GOAL = "P_P_G";
     static String RESET_SCORE_TO = "R_S_T";
-    static String LEFT_BACKGROUND = "L_B";
-    static String RIGHT_BACKGROUND = "R_B";
-    static String LEFT_TEXT = "L_T";
-    static String RIGHT_TEXT = "R_T";
     static String RIGHT_TEAM_NAME = "R_T_N";
     static String LEFT_TEAM_NAME = "L_T_N";
     static String FILE_SAVE_FEATURE_DATE ="F_S_F_D";
@@ -321,14 +316,14 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         if (isScreenGrey()) {
             return;
         }
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(LEFT_BACKGROUND, ScoreKeeperUtils.getBackgroundColor(textScoreLeft));
-        editor.putInt(RIGHT_BACKGROUND, ScoreKeeperUtils.getBackgroundColor(textScoreRight));
-        editor.putInt(LEFT_TEXT, textScoreLeft.getCurrentTextColor());
-        editor.putInt(RIGHT_TEXT, textScoreRight.getCurrentTextColor());
-        editor.putInt(LEFT_SCORE, leftScore);
-        editor.putInt(RIGHT_SCORE, rightScore);
+        editor.putInt(ScoreKeeperUtils.LEFT_BACKGROUND, ScoreKeeperUtils.getBackgroundColor(textScoreLeft));
+        editor.putInt(ScoreKeeperUtils.RIGHT_BACKGROUND, ScoreKeeperUtils.getBackgroundColor(textScoreRight));
+        editor.putInt(ScoreKeeperUtils.LEFT_TEXT, textScoreLeft.getCurrentTextColor());
+        editor.putInt(ScoreKeeperUtils.RIGHT_TEXT, textScoreRight.getCurrentTextColor());
+        editor.putInt(ScoreKeeperUtils.LEFT_SCORE, leftScore);
+        editor.putInt(ScoreKeeperUtils.RIGHT_SCORE, rightScore);
         editor.putInt(POINT_PER_GOAL, pointsForGoal);
         editor.putInt(RESET_SCORE_TO, resetScoreTo);
         editor.putString(RIGHT_TEAM_NAME, rightTeamName);
@@ -359,14 +354,14 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
     protected void clearState() {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.remove(LEFT_BACKGROUND);
-        editor.remove(RIGHT_BACKGROUND);
-        editor.remove(LEFT_TEXT);
-        editor.remove(RIGHT_TEXT);
-        editor.remove(LEFT_SCORE);
-        editor.remove(RIGHT_SCORE);
+        editor.remove(ScoreKeeperUtils.LEFT_BACKGROUND);
+        editor.remove(ScoreKeeperUtils.RIGHT_BACKGROUND);
+        editor.remove(ScoreKeeperUtils.LEFT_TEXT);
+        editor.remove(ScoreKeeperUtils.RIGHT_TEXT);
+        editor.remove(ScoreKeeperUtils.LEFT_SCORE);
+        editor.remove(ScoreKeeperUtils.RIGHT_SCORE);
         editor.remove(POINT_PER_GOAL);
         editor.remove(RESET_SCORE_TO);
         editor.remove(LEFT_TEAM_NAME);
@@ -379,11 +374,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
     protected void initState() {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        textScoreLeft.setBackgroundColor(sharedPref.getInt(LEFT_BACKGROUND, ScoreKeeperUtils.RED));
-        textScoreRight.setBackgroundColor(sharedPref.getInt(RIGHT_BACKGROUND, ScoreKeeperUtils.BLUE));
-        textScoreLeft.setTextColor(sharedPref.getInt(LEFT_TEXT, ScoreKeeperUtils.WHITE));
-        textScoreRight.setTextColor(sharedPref.getInt(RIGHT_TEXT, ScoreKeeperUtils.WHITE));
+        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        textScoreLeft.setBackgroundColor(sharedPref.getInt(ScoreKeeperUtils.LEFT_BACKGROUND, ScoreKeeperUtils.RED));
+        textScoreRight.setBackgroundColor(sharedPref.getInt(ScoreKeeperUtils.RIGHT_BACKGROUND, ScoreKeeperUtils.BLUE));
+        textScoreLeft.setTextColor(sharedPref.getInt(ScoreKeeperUtils.LEFT_TEXT, ScoreKeeperUtils.WHITE));
+        textScoreRight.setTextColor(sharedPref.getInt(ScoreKeeperUtils.RIGHT_TEXT, ScoreKeeperUtils.WHITE));
 
         textNameRight.setBackgroundColor(textScoreRight.getCurrentTextColor());
         textNameRight.setTextColor(ScoreKeeperUtils.getBackgroundColor(textScoreRight));
@@ -391,8 +386,8 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         textNameLeft.setTextColor(ScoreKeeperUtils.getBackgroundColor(textScoreLeft));
 
 
-        leftScore = sharedPref.getInt(LEFT_SCORE, 0);
-        rightScore = sharedPref.getInt(RIGHT_SCORE, 0);
+        leftScore = sharedPref.getInt(ScoreKeeperUtils.LEFT_SCORE, 0);
+        rightScore = sharedPref.getInt(ScoreKeeperUtils.RIGHT_SCORE, 0);
         pointsForGoal = sharedPref.getInt(POINT_PER_GOAL, 1);
         resetScoreTo = sharedPref.getInt(RESET_SCORE_TO, 0);
 
@@ -411,6 +406,8 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         if (winByPoints > -1 && winBySpread >-1){
             setWinBy(winByPoints, winBySpread);
         }
+
+        System.out.println(sharedPref.getString("dave", "nope"));
 
     }
 
