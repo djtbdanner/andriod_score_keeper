@@ -31,7 +31,7 @@ class FileUtility {
 
             String dataRow = ScoreKeeperUtils.getTeamInfo(theActivity, true) + "," +
                     theActivity.leftScore + "," +
-                    ScoreKeeperUtils.getTeamInfo(theActivity, false) + "," +
+                    ScoreKeeperUtils.getTeamInfo(theActivity, false).replace(",", " ") + "," +
                     theActivity.rightScore + "," +
                     ScoreKeeperUtils.stf.format(d);
             writeStringToFile(dataRow, f);
