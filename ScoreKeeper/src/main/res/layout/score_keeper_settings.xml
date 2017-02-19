@@ -11,12 +11,12 @@
     tools:context="codepath.apps.demointroandroid.SettingsActivity">
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/settings_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/email_login_form"
+            android:id="@+id/settings_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -79,7 +79,7 @@
                 android:layout_below="@id/reset_score_spinner"
                 android:layout_centerHorizontal="true" />
             <TextView
-                android:id="@+id/win_parameters_label"
+                android:id="@+id/game_point_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@id/strut"
@@ -94,23 +94,23 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/strut"
                 android:layout_below="@+id/strut2horiz"
-                android:id="@+id/enable_game_point_button" />
+                android:id="@+id/game_point_checkbox" />
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/enable_game_point_button"
+                android:layout_toRightOf="@id/game_point_checkbox"
                 android:textSize="20sp"
                 android:layout_marginLeft="10sp"
                 android:layout_below="@id/strut2horiz"
-                android:id="@+id/win_parameters_spinner"
+                android:id="@+id/game_point_spinner"
                 android:entries="@array/list_10_50"
                 android:visibility="invisible"/>
             <TextView
-                android:id="@+id/win_parameters_margin"
+                android:id="@+id/win_by_label"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_below="@id/strut2horiz"
-                android:layout_toRightOf="@id/win_parameters_spinner"
+                android:layout_toRightOf="@id/game_point_spinner"
                 android:text="/"
                 android:textSize="20sp"
                 android:gravity="center_horizontal|center_vertical"
@@ -120,10 +120,10 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/win_parameters_margin"
+                android:layout_toRightOf="@id/win_by_label"
                 android:textSize="20sp"
                 android:layout_below="@id/strut2horiz"
-                android:id="@+id/win_parameters_margin_spinner"
+                android:id="@+id/game_point_margin_spinner"
                 android:entries="@array/list_1_10"
                 android:popupBackground="@android:drawable/spinner_background"
                 android:visibility="invisible"/>
@@ -131,7 +131,7 @@
                 android:id="@+id/strut3horiz"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_below="@id/win_parameters_spinner"
+                android:layout_below="@id/game_point_spinner"
                 android:layout_centerHorizontal="true" />
 
             <TextView
@@ -147,10 +147,10 @@
                 android:clickable="false" />
 
             <CheckBox
-                android:text=" (Disabled)"
+                android:text=" "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/win_parameters_spinner"
+                android:layout_below="@+id/game_point_spinner"
                 android:layout_alignLeft="@id/strut"
                 android:layout_alignParentRight="true"
                 android:id="@+id/enable_game_save_button" />
@@ -169,42 +169,52 @@
                 android:layout_alignRight="@id/strut"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/strut4horiz"
-                android:text="Reset Preferences "
+                android:text="Disable Tilt Feature"
                 android:textSize="20sp"
                 android:gravity="center_horizontal|center_vertical"
                 android:clickable="false" />
 
             <CheckBox
-                android:text=" (preferences and colors)"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/strut4horiz"
                 android:layout_alignLeft="@id/strut"
                 android:layout_alignParentRight="true"
-                android:id="@+id/reset_preferences_button" />
+                android:id="@+id/disable_tilt_feature_checkbox" />
 
             <View
                 android:id="@+id/strut5horiz"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_below="@id/reset_preferences_button"
+                android:layout_below="@id/disable_tilt_feature_checkbox"
                 android:layout_centerHorizontal="true" />
             <Button
                 android:id="@+id/settings_done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="DONE"
+                android:text="OK"
+                android:layout_marginLeft="@dimen/button_buffer"
                 android:layout_below="@id/strut5horiz"
                 android:textSize="20sp"
-                android:layout_centerInParent="true"
+                android:layout_alignLeft="@+id/strut"
                 android:paddingLeft="40sp"
                 android:paddingRight="40sp"
                 />
-
-
+            <Button
+                android:id="@+id/settings_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="@dimen/button_buffer"
+                android:text="RESET"
+                android:layout_below="@id/strut5horiz"
+                android:layout_alignRight="@+id/strut"
+                android:textSize="20sp"
+                android:layout_centerInParent="true"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
+                />
         </RelativeLayout>
     </ScrollView>
-
-
 </LinearLayout>

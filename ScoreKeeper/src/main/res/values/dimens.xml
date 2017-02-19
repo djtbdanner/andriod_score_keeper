@@ -6,4 +6,5 @@
     <dimen name="size_color_box">40sp</dimen>
     <dimen name="half_size_color_box">20sp</dimen>
     <dimen name="buffer_margin_color_box">5sp</dimen>
+    <dimen name="button_buffer">30sp</dimen>
 </resources>

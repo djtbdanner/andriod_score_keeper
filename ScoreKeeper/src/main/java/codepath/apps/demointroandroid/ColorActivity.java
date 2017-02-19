@@ -4,33 +4,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+import codepath.apps.demointroandroid.domain.ScoreKeeperColors;
+import codepath.apps.demointroandroid.domain.ScoreKeeperPrefKeys;
+import codepath.apps.demointroandroid.util.ScoreKeeperUtils;
 
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.BLACK;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.BLUE;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.BROWN;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.GREEN;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.LEFT_SCORE;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.ORANGE;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.PINK;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.PURPLE;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.RED;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.RIGHT_SCORE;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.SHARED_PREFERENCES;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.WHITE;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.YELLOW;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.arrayContains;
-import static codepath.apps.demointroandroid.ScoreKeeperUtils.getBackgroundColor;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.BLACK;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.BLUE;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.BROWN;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.GREEN;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.ORANGE;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.PINK;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.PURPLE;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.RED;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.WHITE;
+import static codepath.apps.demointroandroid.domain.ScoreKeeperColors.YELLOW;
+import static codepath.apps.demointroandroid.util.ScoreKeeperUtils.arrayContains;
+import static codepath.apps.demointroandroid.util.ScoreKeeperUtils.getBackgroundColor;
 
 
 public class ColorActivity extends Activity implements View.OnClickListener {
@@ -48,11 +43,6 @@ public class ColorActivity extends Activity implements View.OnClickListener {
 
     static int[] LEFT_BACKGROUND_COLOR_IDS = {R.id.blue_picker_left, R.id.black_picker_left, R.id.brown_picker_left, R.id.green_picker_left, R.id.orange_picker_left, R.id.pink_picker_left, R.id.purple_picker_left, R.id.red_picker_left, R.id.white_picker_left, R.id.yellow_picker_left};
     static int[] LEFT_TEXT_COLOR_IDS = {R.id.blue_picker_left_2, R.id.black_picker_left_2, R.id.brown_picker_left_2, R.id.green_picker_left_2, R.id.orange_picker_left_2, R.id.pink_picker_left_2, R.id.purple_picker_left_2, R.id.red_picker_left_2, R.id.white_picker_left_2, R.id.yellow_picker_left_2};
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
 
     @Override
@@ -72,9 +62,6 @@ public class ColorActivity extends Activity implements View.OnClickListener {
         hideRightTextColor(rightBackgroundColor);
         hideLeftBackgroundColor(leftTextColor);
         hideRightBackgroundColor(rightTextColor);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void registerViews(ViewGroup viewGroup) {
@@ -284,65 +271,29 @@ public class ColorActivity extends Activity implements View.OnClickListener {
     }
 
     protected void initState() {
-        SharedPreferences sharedPref = this.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        leftBackgroundColor = sharedPref.getInt(ScoreKeeperUtils.LEFT_BACKGROUND, ScoreKeeperUtils.RED);
-        rightBackgroundColor = sharedPref.getInt(ScoreKeeperUtils.RIGHT_BACKGROUND, ScoreKeeperUtils.BLUE);
-        leftTextColor = sharedPref.getInt(ScoreKeeperUtils.LEFT_TEXT, ScoreKeeperUtils.WHITE);
-        rightTextColor = sharedPref.getInt(ScoreKeeperUtils.RIGHT_TEXT, ScoreKeeperUtils.WHITE);
+        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
+        leftBackgroundColor = sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), RED);
+        rightBackgroundColor = sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), BLUE);
+        leftTextColor = sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), WHITE);
+        rightTextColor = sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), WHITE);
 
         leftExample.setBackgroundColor(leftBackgroundColor);
         rightExample.setBackgroundColor(rightBackgroundColor);
         leftExample.setTextColor(leftTextColor);
         rightExample.setTextColor(rightTextColor);
-        rightExample.setText(String.valueOf(sharedPref.getInt(RIGHT_SCORE, 0)));
-        leftExample.setText(String.valueOf(sharedPref.getInt(LEFT_SCORE, 0)));
+        rightExample.setText(String.valueOf(sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_SCORE.name(), 0)));
+        leftExample.setText(String.valueOf(sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_SCORE.name(), 0)));
         System.out.println(sharedPref.getString("dave", "nope"));
     }
 
     protected void setState() {
-        SharedPreferences sharedPref = this.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(ScoreKeeperUtils.LEFT_BACKGROUND, leftBackgroundColor);
-        editor.putInt(ScoreKeeperUtils.RIGHT_BACKGROUND, rightBackgroundColor);
-        editor.putInt(ScoreKeeperUtils.LEFT_TEXT, leftTextColor);
-        editor.putInt(ScoreKeeperUtils.RIGHT_TEXT, rightTextColor);
+        editor.putInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), leftBackgroundColor);
+        editor.putInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), rightBackgroundColor);
+        editor.putInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), leftTextColor);
+        editor.putInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), rightTextColor);
         editor.commit();
-    }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Color Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 }
 

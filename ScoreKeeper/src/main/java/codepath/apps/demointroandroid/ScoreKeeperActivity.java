@@ -12,8 +12,6 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -21,44 +19,50 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ScoreKeeperActivity extends Activity implements SensorEventListener {
+import codepath.apps.demointroandroid.domain.ScoreKeeperColors;
+import codepath.apps.demointroandroid.domain.ScoreKeeperData;
+import codepath.apps.demointroandroid.domain.ScoreKeeperPrefKeys;
+import codepath.apps.demointroandroid.util.ActivityWithState;
+import codepath.apps.demointroandroid.util.CommonPreferencesUtility;
+import codepath.apps.demointroandroid.util.DialogUtility;
+import codepath.apps.demointroandroid.util.FileUtility;
+import codepath.apps.demointroandroid.util.ScoreKeeperUtils;
+
+public class ScoreKeeperActivity extends Activity implements SensorEventListener, ActivityWithState {
+
     private SensorManager mSensorManager;
     private Sensor accelerometer;
-
     long timestampForEvent;
-    TextView textScoreLeft;
-    TextView textScoreRight;
-    private TextView textNameLeft;
-    private TextView textNameRight;
+    public TextView textScoreLeft;
+    public TextView textScoreRight;
+    public TextView textNameLeft;
+    public TextView textNameRight;
     Vibrator v;
     boolean isTiltedLeft = false;
     boolean isTiltedRight = false;
     boolean isReturnedCenter = false;
-    int leftScore = 0;
-    int rightScore = 0;
-    String leftTeamName;
-    String rightTeamName;
     int height;
     int width;
     float initialY;
     float initialX;
-
-    static String POINT_PER_GOAL = "P_P_G";
-    static String RESET_SCORE_TO = "R_S_T";
-    static String RIGHT_TEAM_NAME = "R_T_N";
-    static String LEFT_TEAM_NAME = "L_T_N";
-    static String FILE_SAVE_FEATURE_DATE ="F_S_F_D";
-    static String FILE_SAVE_FEATURE_SWITCH = "F_S_F_S";
-    static String WIN_BY_POINTS = "W_B_P";
-    static String WIN_BY_SPREAD = "W_B_S";
-
-    protected int pointsForGoal = 1;
-    protected int resetScoreTo = 0;
     private long lastShakeTime;
-    protected boolean isPaused = false;
-    protected boolean fileSaveForToday = false;
-    protected String fileSaveFeatureDate;
-    protected WinBy winBy;
+    public boolean isPaused = false;
+    long downclicktime;
+    float scrollX;
+    float scrollY;
+    private ScoreKeeperData scoreKeeperData;
+
+    public ScoreKeeperData getScoreKeeperData() {
+        if (scoreKeeperData == null){
+            scoreKeeperData = new ScoreKeeperData();
+        }
+        return scoreKeeperData;
+    }
+
+    public void setScoreKeeperData(ScoreKeeperData scoreKeeperData) {
+        this.scoreKeeperData = scoreKeeperData;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +79,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
         textNameLeft.setOnLongClickListener(leftNameListener);
         textNameRight.setOnLongClickListener(rightNameListener);
-
-        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        initListeners();
-
         timestampForEvent = System.currentTimeMillis();
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -87,35 +87,24 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         width = metrics.widthPixels;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initState();
+
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (!getScoreKeeperData().disableTiltFeature){
+            initListeners();
+        }
+
         displayScore(false);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return MenuService.onOptionsItemSelected(item, this);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuService.disableSelectedMenuItems(menu, textScoreLeft, textScoreRight, pointsForGoal, resetScoreTo, isFileSaveEnabled(), winBy);
-        return true;
-    }
-
     private void switchSides() {
-        int tempLeftScore = leftScore;
-        int tempRightScore = rightScore;
+        int tempLeftScore = getScoreKeeperData().leftScore;
+        int tempRightScore = getScoreKeeperData().rightScore;
         int tempLeftColor = ScoreKeeperUtils.getBackgroundColor(textScoreLeft);
         int tempRightColor = ScoreKeeperUtils.getBackgroundColor(textScoreRight);
         int tempLeftTextColor = textScoreLeft.getCurrentTextColor();
         int tempRightTextColor = textScoreRight.getCurrentTextColor();
-        String tempLeftTeamName = leftTeamName;
-        String tempRightTeamName = rightTeamName;
+        String tempLeftTeamName = getScoreKeeperData().leftTeamName;
+        String tempRightTeamName = getScoreKeeperData().rightTeamName;
 
         textScoreRight.setTextColor(tempLeftTextColor);
         textScoreRight.setBackgroundColor(tempLeftColor);
@@ -127,17 +116,17 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         textNameRight.setTextColor(tempLeftColor);
         textNameRight.setBackgroundColor(tempLeftTextColor);
 
-        rightScore = tempLeftScore;
-        leftScore = tempRightScore;
+        getScoreKeeperData().rightScore = tempLeftScore;
+        getScoreKeeperData().leftScore = tempRightScore;
 
-        rightTeamName = tempLeftTeamName;
-        leftTeamName = tempRightTeamName;
+        getScoreKeeperData().rightTeamName = tempLeftTeamName;
+        getScoreKeeperData().leftTeamName = tempRightTeamName;
         displayScore(false);
     }
 
-    protected void resetScore() {
+    public void resetScore() {
 
-        if (leftScore == resetScoreTo && rightScore == resetScoreTo){
+        if (getScoreKeeperData().leftScore == getScoreKeeperData().resetScoreTo && getScoreKeeperData().rightScore == getScoreKeeperData().resetScoreTo){
             Toast.makeText(this.getBaseContext(), "Score is already reset - no changes were made.", Toast.LENGTH_LONG).show();
             return;
         }
@@ -145,36 +134,15 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             FileUtility.saveToStorage(this);
         }
 
-        leftScore = resetScoreTo;
-        rightScore = resetScoreTo;
+        getScoreKeeperData().leftScore = getScoreKeeperData().resetScoreTo;
+        getScoreKeeperData().rightScore = getScoreKeeperData().resetScoreTo;
         displayScore(false);
 
     }
 
-    protected void setColorOfItem(MenuItem item, int color) {
-        if (item.getGroupId() == R.id.rightBG) {
-            textScoreRight.setBackgroundColor(color);
-             textNameRight.setTextColor(color);
-        } else if (item.getGroupId() == R.id.leftBG) {
-            textScoreLeft.setBackgroundColor(color);
-            textNameLeft.setTextColor(color);
-        } else if (item.getGroupId() == R.id.rightText) {
-            textScoreRight.setTextColor(color);
-            textNameRight.setBackgroundColor(color);
-        } else if (item.getGroupId() == R.id.leftText) {
-            textScoreLeft.setTextColor(color);
-            textNameLeft.setBackgroundColor(color);
-        }
-        storeState();
-    }
 
-
-    long downclicktime;
-    float scrollX;
-    float scrollY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println(event.toString());
         int SCROLL_THRESHOLD = 10;
         if (isScreenGrey()) {
             return false;
@@ -195,7 +163,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
                 if ((Math.abs(scrollX - event.getX()) > SCROLL_THRESHOLD || Math.abs(scrollY - event.getY()) > SCROLL_THRESHOLD)) {
                     downclicktime = System.currentTimeMillis();
-                    System.out.println("SCROLLING>>>>>>>>");
                     handler.removeCallbacks(mLongPressed);
                 }
                 scrollX =  event.getX();
@@ -204,7 +171,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             case (MotionEvent.ACTION_UP):
                 handler.removeCallbacks(mLongPressed);
                 if (System.currentTimeMillis() - 1000 > downclicktime){
-                    System.out.println("LIFTED UP TOO LIONG");
                     return false;
                 }
 
@@ -223,9 +189,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
                 float xMove = initialX - currentX;
                 if (Math.abs(xMove) > 200) {
-                    addThis = pointsForGoal;
+                    addThis = getScoreKeeperData().pointsForGoal;
                     if (xMove > 0) {
-                        addThis = -1 * pointsForGoal;
+                        addThis = -1 * getScoreKeeperData().pointsForGoal;
                     }
                 } else {
                     if (initialY < event.getY() - 100) {
@@ -245,29 +211,29 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
     private boolean isScreenGrey() {
-        return ScoreKeeperUtils.GREY_BG_COLOR == ScoreKeeperUtils.getBackgroundColor(textScoreRight) || ScoreKeeperUtils.GREY_BG_COLOR == ScoreKeeperUtils.getBackgroundColor(textScoreLeft);
+        return ScoreKeeperColors.GREY_BG_COLOR == ScoreKeeperUtils.getBackgroundColor(textScoreRight) || ScoreKeeperColors.GREY_BG_COLOR == ScoreKeeperUtils.getBackgroundColor(textScoreLeft);
     }
 
-    protected void displayScore(boolean doVibrate) {
+    public void displayScore(boolean doVibrate) {
 
 
         if (doVibrate) {
-            long[] pattern = ScoreKeeperUtils.getVibratePattern(pointsForGoal);
+            long[] pattern = ScoreKeeperUtils.getVibratePattern(getScoreKeeperData().pointsForGoal);
             v.vibrate(pattern, -1);
         }
 
-        textScoreLeft.setTextSize(ScoreKeeperUtils.getTextSize(leftScore));
-        textScoreRight.setTextSize(ScoreKeeperUtils.getTextSize(rightScore));
+        textScoreLeft.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().leftScore));
+        textScoreRight.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().rightScore));
 
         checkScoresForZero();
 
-        textScoreLeft.setText(String.valueOf(leftScore));
-        textScoreRight.setText(String.valueOf(rightScore));
-        textNameLeft.setText(leftTeamName);
-        textNameRight.setText(rightTeamName);
+        textScoreLeft.setText(String.valueOf(getScoreKeeperData().leftScore));
+        textScoreRight.setText(String.valueOf(getScoreKeeperData().rightScore));
+        textNameLeft.setText(getScoreKeeperData().leftTeamName);
+        textNameRight.setText(getScoreKeeperData().rightTeamName);
 
-      if (isGameWon(leftScore, rightScore)){
-          boolean leftWins = leftScore > rightScore;
+      if (isGameWon(getScoreKeeperData().leftScore, getScoreKeeperData().rightScore)){
+          boolean leftWins = getScoreKeeperData().leftScore > getScoreKeeperData().rightScore;
           String winningTeam = ScoreKeeperUtils.getTeamInfo(this, leftWins);
           Toast.makeText(this.getApplicationContext(), winningTeam + " WINS!!!!", Toast.LENGTH_LONG).show();
           long[] pattern = ScoreKeeperUtils.getWinningPattern();
@@ -311,34 +277,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         }
     }
 
-    private void storeState() {
-
-        if (isScreenGrey()) {
-            return;
-        }
-        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(ScoreKeeperUtils.LEFT_BACKGROUND, ScoreKeeperUtils.getBackgroundColor(textScoreLeft));
-        editor.putInt(ScoreKeeperUtils.RIGHT_BACKGROUND, ScoreKeeperUtils.getBackgroundColor(textScoreRight));
-        editor.putInt(ScoreKeeperUtils.LEFT_TEXT, textScoreLeft.getCurrentTextColor());
-        editor.putInt(ScoreKeeperUtils.RIGHT_TEXT, textScoreRight.getCurrentTextColor());
-        editor.putInt(ScoreKeeperUtils.LEFT_SCORE, leftScore);
-        editor.putInt(ScoreKeeperUtils.RIGHT_SCORE, rightScore);
-        editor.putInt(POINT_PER_GOAL, pointsForGoal);
-        editor.putInt(RESET_SCORE_TO, resetScoreTo);
-        editor.putString(RIGHT_TEAM_NAME, rightTeamName);
-        editor.putString(LEFT_TEAM_NAME, leftTeamName);
-        editor.putString(FILE_SAVE_FEATURE_DATE, fileSaveFeatureDate);
-        editor.putBoolean(FILE_SAVE_FEATURE_SWITCH, fileSaveForToday);
-        if (winBy != null){
-            editor.putInt(WIN_BY_POINTS, winBy.getWinningPoint());
-            editor.putInt(WIN_BY_SPREAD, winBy.getPointSpread());
-        } else {
-            editor.putInt(WIN_BY_POINTS, -1);
-            editor.putInt(WIN_BY_SPREAD, -1);
-        }
-        editor.commit();
-    }
 
     @Override
     protected void onPause() {
@@ -353,72 +291,46 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         isReturnedCenter = false;
     }
 
-    protected void clearState() {
-        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+    private void storeState() {
+
+        if (isScreenGrey()) {
+            return;
+        }
+        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.remove(ScoreKeeperUtils.LEFT_BACKGROUND);
-        editor.remove(ScoreKeeperUtils.RIGHT_BACKGROUND);
-        editor.remove(ScoreKeeperUtils.LEFT_TEXT);
-        editor.remove(ScoreKeeperUtils.RIGHT_TEXT);
-        editor.remove(ScoreKeeperUtils.LEFT_SCORE);
-        editor.remove(ScoreKeeperUtils.RIGHT_SCORE);
-        editor.remove(POINT_PER_GOAL);
-        editor.remove(RESET_SCORE_TO);
-        editor.remove(LEFT_TEAM_NAME);
-        editor.remove(RIGHT_TEAM_NAME);
-        editor.remove(FILE_SAVE_FEATURE_DATE);
-        editor.remove(FILE_SAVE_FEATURE_SWITCH);
-        editor.remove(WIN_BY_POINTS);
-        editor.remove(WIN_BY_SPREAD);
-        editor.commit();
+        editor.putInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), ScoreKeeperUtils.getBackgroundColor(textScoreLeft));
+        editor.putInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), ScoreKeeperUtils.getBackgroundColor(textScoreRight));
+        editor.putInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), textScoreLeft.getCurrentTextColor());
+        editor.putInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), textScoreRight.getCurrentTextColor());
+        editor.putInt(ScoreKeeperPrefKeys.LEFT_SCORE.name(), getScoreKeeperData().leftScore);
+        editor.putInt(ScoreKeeperPrefKeys.RIGHT_SCORE.name(), getScoreKeeperData().rightScore);
+
+        CommonPreferencesUtility.storeCommonScoreKeeperDatas(editor, this);
     }
 
-    protected void initState() {
-        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        textScoreLeft.setBackgroundColor(sharedPref.getInt(ScoreKeeperUtils.LEFT_BACKGROUND, ScoreKeeperUtils.RED));
-        textScoreRight.setBackgroundColor(sharedPref.getInt(ScoreKeeperUtils.RIGHT_BACKGROUND, ScoreKeeperUtils.BLUE));
-        textScoreLeft.setTextColor(sharedPref.getInt(ScoreKeeperUtils.LEFT_TEXT, ScoreKeeperUtils.WHITE));
-        textScoreRight.setTextColor(sharedPref.getInt(ScoreKeeperUtils.RIGHT_TEXT, ScoreKeeperUtils.WHITE));
 
+    protected void initState() {
+        SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.toString(), Context.MODE_PRIVATE);
+        textScoreLeft.setBackgroundColor(sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), ScoreKeeperColors.RED));
+        textScoreRight.setBackgroundColor(sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), ScoreKeeperColors.BLUE));
+        textScoreLeft.setTextColor(sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), ScoreKeeperColors.WHITE));
+        textScoreRight.setTextColor(sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), ScoreKeeperColors.WHITE));
         textNameRight.setBackgroundColor(textScoreRight.getCurrentTextColor());
         textNameRight.setTextColor(ScoreKeeperUtils.getBackgroundColor(textScoreRight));
         textNameLeft.setBackgroundColor(textScoreLeft.getCurrentTextColor());
         textNameLeft.setTextColor(ScoreKeeperUtils.getBackgroundColor(textScoreLeft));
 
-
-        leftScore = sharedPref.getInt(ScoreKeeperUtils.LEFT_SCORE, 0);
-        rightScore = sharedPref.getInt(ScoreKeeperUtils.RIGHT_SCORE, 0);
-        pointsForGoal = sharedPref.getInt(POINT_PER_GOAL, 1);
-        resetScoreTo = sharedPref.getInt(RESET_SCORE_TO, 0);
-
-        leftTeamName = sharedPref.getString(LEFT_TEAM_NAME, "Team");
-        rightTeamName = sharedPref.getString(RIGHT_TEAM_NAME, "Team");
-
-        fileSaveFeatureDate = sharedPref.getString(FILE_SAVE_FEATURE_DATE, null);
-        fileSaveForToday = sharedPref.getBoolean(FILE_SAVE_FEATURE_SWITCH, false);
-        if (fileSaveFeatureDate == null || !fileSaveFeatureDate.equals(ScoreKeeperUtils.getTodayAsNoTimeString())){
-            fileSaveFeatureDate = null;
-            fileSaveForToday = false;
-        }
-        int winByPoints = sharedPref.getInt(WIN_BY_POINTS, -1);
-        int winBySpread = sharedPref.getInt(WIN_BY_SPREAD, -1);
-
-        if (winByPoints > -1 && winBySpread >-1){
-            setWinBy(winByPoints, winBySpread);
-        }
-
-        System.out.println(sharedPref.getString("dave", "nope"));
-
+        CommonPreferencesUtility.setCommonScoreKeeperData(sharedPref, this);
     }
 
     private boolean checkForShake(SensorEvent event) {
 
         if (getAcceleration(event) > 8.25f) {
             lastShakeTime = System.currentTimeMillis();
-            textScoreLeft.setBackgroundColor(ScoreKeeperUtils.GREY_BG_COLOR);
-            textScoreRight.setBackgroundColor(ScoreKeeperUtils.GREY_BG_COLOR);
-            textScoreRight.setTextColor(ScoreKeeperUtils.GREY_TXT_COLOR);
-            textScoreLeft.setTextColor(ScoreKeeperUtils.GREY_TXT_COLOR);
+            textScoreLeft.setBackgroundColor(ScoreKeeperColors.GREY_BG_COLOR);
+            textScoreRight.setBackgroundColor(ScoreKeeperColors.GREY_BG_COLOR);
+            textScoreRight.setTextColor(ScoreKeeperColors.GREY_TXT_COLOR);
+            textScoreLeft.setTextColor(ScoreKeeperColors.GREY_TXT_COLOR);
             return true;
         } else {
             return false;
@@ -448,7 +360,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             isTiltedLeft = true;
             isReturnedCenter = false;
             isTiltedRight = false;
-            verifyAndDisplayScore(true, true, pointsForGoal);
+            verifyAndDisplayScore(true, true, getScoreKeeperData().pointsForGoal);
         }
 
         // tilt right
@@ -456,7 +368,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             isTiltedLeft = false;
             isReturnedCenter = false;
             isTiltedRight = true;
-            verifyAndDisplayScore(true, false, pointsForGoal);
+            verifyAndDisplayScore(true, false, getScoreKeeperData().pointsForGoal);
         }
 
         // return to center
@@ -469,8 +381,8 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     private void verifyAndDisplayScore(boolean shouldVibrate, boolean isLeft, int pointValue) {
 
-        int potentialRightScore = rightScore;
-        int potentialLeftScore = leftScore;
+        int potentialRightScore = getScoreKeeperData().rightScore;
+        int potentialLeftScore = getScoreKeeperData().leftScore;
 
         if (isLeft){
             potentialLeftScore = potentialLeftScore + pointValue;
@@ -478,13 +390,13 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             potentialRightScore = potentialRightScore + pointValue;
         }
 
-        if (pointValue > 0 && isGameWon(rightScore, leftScore)){
+        if (pointValue > 0 && isGameWon(getScoreKeeperData().rightScore, getScoreKeeperData().leftScore)){
             Toast.makeText(this.getApplicationContext(), "Game is already won based on the parameters from the menu setting 'Win Parameters'. Score will not change.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        rightScore = potentialRightScore;
-        leftScore = potentialLeftScore;
+        getScoreKeeperData().rightScore = potentialRightScore;
+        getScoreKeeperData().leftScore = potentialLeftScore;
         displayScore(shouldVibrate);
     }
 
@@ -530,27 +442,17 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
     boolean isFileSaveEnabled() {
-        return ScoreKeeperUtils.getTodayAsNoTimeString().equals(fileSaveFeatureDate) && fileSaveForToday;
-    }
-
-    void enableFileSave(){
-        fileSaveFeatureDate = ScoreKeeperUtils.getTodayAsNoTimeString();
-        fileSaveForToday = true;
-    }
-
-    void disableFileSave (){
-        fileSaveFeatureDate = null;
-        fileSaveForToday = false;
+        return ScoreKeeperUtils.getTodayAsNoTimeString().equals(getScoreKeeperData().fileSaveFeatureDate) && getScoreKeeperData().fileSaveForToday;
     }
 
     private void checkScoresForZero() {
         boolean showToast = false;
-        if (leftScore < 0){
-            leftScore = 0;
+        if (getScoreKeeperData().leftScore < 0){
+            getScoreKeeperData().leftScore = 0;
             showToast = true;
         }
-        if (rightScore < 0){
-            rightScore = 0;
+        if (getScoreKeeperData().rightScore < 0){
+            getScoreKeeperData().rightScore = 0;
             showToast = true;
         }
         if (showToast){
@@ -558,18 +460,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         }
     }
 
-    void setWinBy(int winningPoint, int pointSpread){
-        WinBy winBy = new WinBy();
-        winBy.setWinningPoint(winningPoint);
-        winBy.setPointSpread(pointSpread);
-        this.winBy = winBy;
-    }
-
     boolean isGameWon(int thePotentialLeftScore, int thePotentialRightScore){
-        if (winBy != null) {
-            if (thePotentialLeftScore >= winBy.getWinningPoint() || thePotentialRightScore >= winBy.getWinningPoint()) {
+        if (getScoreKeeperData().gamePoint != null) {
+            if (thePotentialLeftScore >= getScoreKeeperData().gamePoint.getGamePoint() || thePotentialRightScore >= getScoreKeeperData().gamePoint.getGamePoint()) {
                 int diff = thePotentialLeftScore - thePotentialRightScore;
-                if (Math.abs(diff) >= winBy.getPointSpread()) {
+                if (Math.abs(diff) >= getScoreKeeperData().gamePoint.getPointSpread()) {
                     return true;
                 }
             }

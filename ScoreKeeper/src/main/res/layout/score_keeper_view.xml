@@ -40,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/strut"
         android:layout_below="@id/textNameLeft"
-        android:gravity="top|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal" />
 
     <TextView
         android:id="@+id/textScoreRight"
@@ -50,7 +50,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/textNameRight"
-        android:gravity="top|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal" />
 
     <!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"-->
         <!--android:id="@+id/myGrid"-->

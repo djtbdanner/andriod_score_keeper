@@ -1,7 +1,9 @@
-package codepath.apps.demointroandroid;
+package codepath.apps.demointroandroid.util;
 
 import android.text.Spanned;
 import android.widget.Toast;
+
+import codepath.apps.demointroandroid.ScoreKeeperActivity;
 
 public class InputFilterMinMax implements android.text.InputFilter {
     private int min, max;

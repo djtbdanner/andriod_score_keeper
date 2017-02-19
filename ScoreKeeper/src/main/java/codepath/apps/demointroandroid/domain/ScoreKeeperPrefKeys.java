@@ -1,0 +1,22 @@
+package codepath.apps.demointroandroid.domain;
+
+
+public enum ScoreKeeperPrefKeys {
+    LEFT_BACKGROUND,
+    RIGHT_BACKGROUND,
+    LEFT_TEXT,
+    RIGHT_TEXT,
+    SHARED_PREFERENCES,
+    LEFT_SCORE,
+    RIGHT_SCORE,
+    POINT_PER_GOAL,
+    RESET_SCORE_TO,
+    RIGHT_TEAM_NAME,
+    LEFT_TEAM_NAME,
+    FILE_SAVE_FEATURE_DATE,
+    FILE_SAVE_FEATURE_SWITCH,
+    GAME_POINT,
+    GAME_POINT_SPREAD,
+    DISABLE_TILT_FEATURE
+
+}

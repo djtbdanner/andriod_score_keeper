@@ -1,4 +1,4 @@
-package codepath.apps.demointroandroid;
+package codepath.apps.demointroandroid.util;
 
 import android.os.Environment;
 import android.widget.Toast;
@@ -9,9 +9,11 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Date;
 
-class FileUtility {
+import codepath.apps.demointroandroid.ScoreKeeperActivity;
 
-    static void saveToStorage(ScoreKeeperActivity theActivity) {
+public class FileUtility {
+
+    public static void saveToStorage(ScoreKeeperActivity theActivity) {
         try {
 
             File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -30,9 +32,9 @@ class FileUtility {
             }
 
             String dataRow = ScoreKeeperUtils.getTeamInfo(theActivity, true) + "," +
-                    theActivity.leftScore + "," +
+                    theActivity.getScoreKeeperData().leftScore + "," +
                     ScoreKeeperUtils.getTeamInfo(theActivity, false).replace(",", " ") + "," +
-                    theActivity.rightScore + "," +
+                    theActivity.getScoreKeeperData().rightScore + "," +
                     ScoreKeeperUtils.stf.format(d);
             writeStringToFile(dataRow, f);
 
