@@ -110,6 +110,7 @@ public class ColorActivity extends Activity implements View.OnClickListener {
         if (R.id.colors_done_button == view.getId()) {
             setState();
             Intent intent = new Intent(this, ScoreKeeperActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             this.startActivity(intent);
         }
     }

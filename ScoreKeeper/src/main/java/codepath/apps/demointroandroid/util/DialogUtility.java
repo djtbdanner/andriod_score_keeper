@@ -111,7 +111,7 @@ public class DialogUtility {
         resetScore.setBackgroundColor(Color.DKGRAY);
         resetScore.setTextColor(Color.LTGRAY);
         resetScore.setHighlightColor(Color.BLUE);
-        resetScore.setText("reset score");
+        resetScore.setText("Reset Score");
         layout.addView(resetScore);
 
         final Button colorButton = new Button(view.getContext());
@@ -123,8 +123,14 @@ public class DialogUtility {
         final Button redButton = new Button(view.getContext());
         redButton.setBackgroundColor(Color.DKGRAY);
         redButton.setTextColor(Color.LTGRAY);
-        redButton.setText("ScoreKeeperPrefKeys...");
+        redButton.setText("Preferences...");
         layout.addView(redButton);
+
+        final Button instructions = new Button(view.getContext());
+        instructions.setBackgroundColor(Color.DKGRAY);
+        instructions.setTextColor(Color.LTGRAY);
+        instructions.setText("Help");
+        layout.addView(instructions);
 
        final AlertDialog alertDialog = builder.create();
         alertDialog.setView(layout);
@@ -143,6 +149,7 @@ public class DialogUtility {
                 alertDialog.dismiss();
                 theActivity.isPaused = false;
                 Intent intent = new Intent(theActivity, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 theActivity.startActivity(intent);
             }
         });
@@ -152,7 +159,16 @@ public class DialogUtility {
                 alertDialog.dismiss();
                 theActivity.isPaused = false;
                 Intent intent = new Intent(theActivity, ColorActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 theActivity.startActivity(intent);
+            }
+        });
+        instructions.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                theActivity.isPaused = false;
+                showInstructionDialog(theActivity);
             }
         });
         alertDialog.show();

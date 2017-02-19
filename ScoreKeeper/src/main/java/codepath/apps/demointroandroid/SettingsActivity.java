@@ -124,6 +124,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
         CommonPreferencesUtility.storeCommonScoreKeeperDatas(sharedPref.edit(), this);
         Intent intent = new Intent(this, ScoreKeeperActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         this.startActivity(intent);
     }
 
