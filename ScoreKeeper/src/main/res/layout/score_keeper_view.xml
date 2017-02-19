@@ -1,45 +1,69 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/DaveLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ScoreKeeperActivity"
-    android:weightSum="1"
-    android:clickable="false"
->
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp">
+
+    <View
+        android:id="@+id/strut"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true" />
 
     <TextView
-        android:id="@+id/textAcc1"
-        android:hint="0"
-        android:layout_margin="0dp"
+        android:id="@+id/textNameLeft"
         android:layout_width="0dp"
-
-        android:layout_height="match_parent"
-        android:ems="100"
-        android:clickable="false"
-        android:layout_weight="0.5"
-        android:textColor="#FFFFFF"
-        android:background="#0000FF"
-        android:gravity="center"
-        android:textSize="200sp">
-        <requestFocus />
-    </TextView>
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
+        android:textSize="20sp"
+        android:gravity="center_horizontal|bottom"
+        android:clickable="true" />
 
     <TextView
-        android:id="@+id/textAcc2"
-        android:hint="0"
-        android:layout_margin="0dp"
+        android:id="@+id/textNameRight"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/strut"
+        android:layout_alignParentRight="true"
+        android:textSize="20sp"
+        android:gravity="center_horizontal|bottom"
+        android:clickable="true" />
 
-        android:layout_height="match_parent"
-        android:ems="100"
-        android:clickable="false"
-        android:layout_weight="0.5"
-        android:textColor="#FFFFFF"
-        android:background="#FF0000"
-        android:gravity="center"
-        android:textSize="200sp">
-        <requestFocus />
-    </TextView>
+    <TextView
+        android:id="@+id/textScoreLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@id/strut"
+        android:layout_below="@id/textNameLeft"
+        android:paddingTop="25dp"
+        android:gravity="center_horizontal|bottom" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textScoreRight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignLeft="@id/strut"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/textNameRight"
+        android:gravity="center_horizontal|bottom" />
+
+
+</RelativeLayout>
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/DaveLayout"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:context=".ScoreKeeperActivity"--><!--android:weightSum="1"--><!--android:clickable="false"--><!--&gt;-->
+
+    <!--<--><!--android:id="@+id/textAcc1"--><!--android:hint="0"--><!--android:layout_margin="0dp"--><!--android:layout_width="0dp"-->
+
+    <!--android:layout_height="match_parent"--><!--android:ems="100"--><!--android:clickable="false"--><!--android:layout_weight="0.5"--><!--android:textColor="#FFFFFF"--><!--android:background="#0000FF"--><!--android:gravity="center"--><!--android:textSize="200sp">--><!--<requestFocus />--><!--</TextView>-->
+
+    <!--<TextView--><!--android:id="@+id/textAcc2"--><!--android:hint="0"--><!--android:layout_margin="0dp"--><!--android:layout_width="0dp"-->
+
+    <!--android:layout_height="match_parent"--><!--android:ems="100"--><!--android:clickable="false"--><!--android:layout_weight="0.5"--><!--android:textColor="#FFFFFF"--><!--android:background="#FF0000"--><!--android:gravity="center"--><!--android:textSize="200sp">--><!--<requestFocus />--><!--</TextView>-->
+
+    <!--</LinearLayout>-->

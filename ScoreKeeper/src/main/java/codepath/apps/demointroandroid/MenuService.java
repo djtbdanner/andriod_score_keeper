@@ -12,7 +12,7 @@ class MenuService {
     private static String TEAM_COLOR_IND = " (associated)";
 
 
-    private static void setSubMenusEnabled(Menu myMenu) {
+    private static void setSubMenusEnabled(Menu myMenu, boolean isFileSaveEnabled) {
 
         int size = myMenu.size();
         for (int itemIndex = 0; itemIndex < size; itemIndex++) {
@@ -35,14 +35,20 @@ class MenuService {
                 }
             }
         }
+
+        if (isFileSaveEnabled) {
+            myMenu.findItem(R.id.menu_file).setTitle("Disable Game File Save");
+        } else {
+            myMenu.findItem(R.id.menu_file).setTitle("Enable Game File Save");
+        }
     }
 
-    static void disableSelectedMenuItems(Menu myMenu, TextView textLeft, TextView textRight, int pointsForGoal, int resetScoreTo) {
+    static void disableSelectedMenuItems(Menu myMenu, TextView textLeft, TextView textRight, int pointsForGoal, int resetScoreTo, boolean isFileSaveEnabled, WinBy winBy) {
         if (myMenu == null) {
             return;
         }
 
-        setSubMenusEnabled(myMenu);
+        setSubMenusEnabled(myMenu, isFileSaveEnabled);
 
         int leftBGColor = ScoreKeeperUtils.getBackgroundColor(textLeft);
         int rightBGColor = ScoreKeeperUtils.getBackgroundColor(textRight);
@@ -197,6 +203,20 @@ class MenuService {
             myMenu.findItem(R.id.RS_4).setEnabled(false);
         }
 
+        if (winBy == null) {
+            myMenu.findItem(R.id.W_B_None).setEnabled(false);
+        } else {
+
+            if (winBy.getWinningPoint() == 11 && winBy.getPointSpread() == 2) {
+                myMenu.findItem(R.id._11_2).setEnabled(false);
+            } else if (winBy.getWinningPoint() == 15 && winBy.getPointSpread() == 2) {
+                myMenu.findItem(R.id._15_2).setEnabled(false);
+            } else if (winBy.getWinningPoint() == 21 && winBy.getPointSpread() == 2) {
+                myMenu.findItem(R.id._21_2).setEnabled(false);
+            } else if (winBy.getWinningPoint() == 25 && winBy.getPointSpread() == 2) {
+                myMenu.findItem(R.id._25_2).setEnabled(false);
+            }
+        }
     }
 
     private static void disableColorMenuItems(MenuItem main, MenuItem secondary) {
@@ -243,6 +263,33 @@ class MenuService {
             } else {
                 theActivity.resetScoreTo = Integer.valueOf(menuTitle);
             }
+        } else if (R.id.menu_file == item.getItemId()) {
+            if (menuTitle != null && menuTitle.contains("Disable")) {
+                theActivity.disableFileSave();
+            } else {
+                theActivity.enableFileSave();
+            }
+        } else if (R.id.menu_instructions == item.getItemId()) {
+            DialogUtility.showInstructionDialog(theActivity);
+        }
+
+        if (item.getItemId() == R.id._11_2) {
+            theActivity.setWinBy(11, 2);
+        }
+        if (item.getItemId() == R.id._15_2) {
+            theActivity.setWinBy(15, 2);
+        }
+        if (item.getItemId() == R.id._21_2) {
+            theActivity.setWinBy(21, 2);
+        }
+        if (item.getItemId() == R.id._25_2) {
+            theActivity.setWinBy(25, 2);
+        }
+        if (item.getItemId() == R.id.W_B_Other) {
+            DialogUtility.showWinParametersDialog(theActivity);
+        }
+        if (item.getItemId() == R.id.W_B_None) {
+            theActivity.winBy = null;
         }
         return true;
     }

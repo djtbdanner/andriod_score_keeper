@@ -11,7 +11,7 @@
         android:id="@+id/menu_leftColor"
         android:enabled="true"
         android:showAsAction="collapseActionView"
-        android:title="Left Color"
+        android:title="Left Base Color"
         android:visible="true">
         <menu>
             <group android:id="@+id/leftBG">
@@ -51,7 +51,7 @@
         android:id="@+id/menu_leftText"
         android:enabled="true"
         android:showAsAction="collapseActionView"
-        android:title="Left Text Color"
+        android:title="Left Highlight Color"
         android:visible="true">
         <menu>
             <group android:id="@+id/leftText">
@@ -89,7 +89,7 @@
         android:id="@+id/menu_rightColor"
         android:enabled="true"
         android:showAsAction="collapseActionView"
-        android:title="Right Color"
+        android:title="Right Base Color"
         android:visible="true">
         <menu>
             <group android:id="@+id/rightBG">
@@ -128,7 +128,7 @@
         android:id="@+id/menu_rightText"
         android:checkable="false"
         android:showAsAction="collapseActionView"
-        android:title="Right Text Color">
+        android:title="Right Highlight Color">
         <menu>
             <group android:id="@+id/rightText">
                 <item
@@ -209,17 +209,57 @@
             <group android:id="@+id/resetScoreTo">
                 <item
                     android:id="@+id/RS_0"
-                    android:title="0" />/>
+                    android:title="0" />
                 <item
                     android:id="@+id/RS_4"
-                    android:title="4" />/>
+                    android:title="4" />
                 <item
                     android:id="@+id/RS_Other"
-                    android:title="Other..." />/>
+                    android:title="Other..." />
             </group>
         </menu>
 
     </item>
+
+
+    <item
+        android:id="@+id/win_by_params"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
+        android:title="@string/winBy"
+        android:visible="true">
+        <menu>
+            <group android:id="@+id/win_by_group">
+                <item
+                    android:id="@+id/W_B_None"
+                    android:title="No Winning Point" />
+                <item
+                    android:id="@+id/_11_2"
+                    android:title="11x2" />
+                <item
+                    android:id="@+id/_15_2"
+                    android:title="15x2" />
+                <item
+                    android:id="@+id/_21_2"
+                    android:title="21x2" />
+                <item
+                    android:id="@+id/_25_2"
+                    android:title="25x2" />
+                <item
+                    android:id="@+id/W_B_Other"
+                    android:title="Other..." />
+            </group>
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/menu_file"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
+        android:title="@string/enableDisableFileSave"
+        android:visible="true" />
+
 
     <item
         android:id="@+id/menu_reset_pref"
@@ -228,5 +268,12 @@
         android:title="@string/resetPreferences"
         android:visible="true" />
 
+
+    <item
+        android:id="@+id/menu_instructions"
+        android:enabled="true"
+        android:showAsAction="collapseActionView"
+        android:title="@string/instructions"
+        android:visible="true" />
 
 </menu>

@@ -7,9 +7,12 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 class ScoreKeeperUtils {
 
@@ -24,6 +27,10 @@ class ScoreKeeperUtils {
     static int BLACK = 0xff000000;
     static int WHITE = 0xffffffff;
     static int PINK = 0xffff1493;
+
+
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd", Locale.US);
+    static SimpleDateFormat stf = new SimpleDateFormat("hh:mm a", Locale.US);
 
 
     static int getBackgroundColor(TextView textView) {
@@ -78,8 +85,65 @@ class ScoreKeeperUtils {
         return pattern;
     }
 
+    static long[] getWinningPattern() {
+        // WIN in morse code
+        int betweenCode = 200;
+        int longCode = 500;
+        int shortCode = 200;
+        int betweenLetter = 700;
+        return new long[]{0, shortCode, betweenCode, longCode, betweenCode, longCode, betweenLetter, shortCode, betweenCode, shortCode, betweenLetter, longCode, betweenCode, shortCode};
+    }
+
+    static boolean isEmptyOrNonInt(String s) {
+        if (s == null) {
+            return true;
+        }
+        if ("".equals(s)) {
+            return true;
+        }
+
+        try {
+            Integer.getInteger(s);
+        } catch (Exception e) {
+            return true;
+        }
+        return false;
+    }
+
+    static String getColorName(int colorcode) {
+        if (colorcode == BLACK) {
+            return "black";
+        }
+        if (colorcode == BLUE) {
+            return "blue";
+        }
+        if (colorcode == RED) {
+            return "red";
+        }
+        if (colorcode == YELLOW) {
+            return "yellow";
+        }
+        if (colorcode == GREEN) {
+            return "green";
+        }
+        if (colorcode == PURPLE) {
+            return "purple";
+        }
+        if (colorcode == ORANGE) {
+            return "orange";
+        }
+        if (colorcode == WHITE) {
+            return "white";
+        }
+        if (colorcode == PINK) {
+            return "pink";
+        }
+        return "NA";
+
+    }
+
     static int getTextSize(int score) {
-        int scoreSize = 250;
+        int scoreSize = 200;
         if (score > 99) {
             scoreSize = 160;
         }
@@ -97,4 +161,43 @@ class ScoreKeeperUtils {
 
         return scoreSize;
     }
+
+    static String getTodayAsNoTimeString() {
+        return sdf.format(new Date());
+    }
+
+    static String getTeamInfo(ScoreKeeperActivity theActivity, boolean isLeft) {
+
+        String teamName;
+        int bgColor;
+        int txtColor;
+
+        StringBuilder builder = new StringBuilder();
+
+        if (isLeft) {
+            teamName = theActivity.leftTeamName;
+            txtColor = theActivity.textScoreLeft.getCurrentTextColor();
+            bgColor = ScoreKeeperUtils.getBackgroundColor(theActivity.textScoreLeft);
+        } else {
+            teamName = theActivity.rightTeamName;
+            txtColor = theActivity.textScoreRight.getCurrentTextColor();
+            bgColor = ScoreKeeperUtils.getBackgroundColor(theActivity.textScoreRight);
+        }
+
+        boolean appendParen = false;
+        if (null != teamName && !"".equals(teamName)) {
+            builder.append(teamName);
+            builder.append(" (");
+            appendParen = true;
+
+        }
+        builder.append(ScoreKeeperUtils.getColorName(txtColor)).append(" on ");
+        builder.append(ScoreKeeperUtils.getColorName(bgColor));
+        if (appendParen) {
+            builder.append(")");
+        }
+        return builder.toString();
+
+    }
+
 }

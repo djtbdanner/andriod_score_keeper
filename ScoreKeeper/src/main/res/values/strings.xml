@@ -16,4 +16,7 @@
     <string name="pink">Pink</string>
     <string name="resetTo">Reset Score To</string>
     <string name="resetPreferences">Reset Preferences</string>
+    <string name="enableDisableFileSave">File Save</string>
+    <string name="instructions">Instructions</string>
+    <string name="winBy">Win Parameters</string>
 </resources>
