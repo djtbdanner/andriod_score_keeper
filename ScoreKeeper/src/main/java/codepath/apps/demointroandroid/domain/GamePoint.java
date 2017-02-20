@@ -1,8 +1,8 @@
 package codepath.apps.demointroandroid.domain;
 
 public class GamePoint {
-    int gamePoint;
-    int pointSpread;
+    private int gamePoint;
+    private int pointSpread;
 
     public void setPointSpread(int pointSpread) {
         this.pointSpread = pointSpread;
@@ -28,5 +28,7 @@ public class GamePoint {
                 ", pointSpread=" + pointSpread +
                 '}';
     }
+
+
 
 }

@@ -1,20 +1,31 @@
-Keep track of team points by tilting your phone to the left or right.
+Keep track of the score by tilting your phone to the left or right. Score can also be tracked by tapping the score or swiping up to increase or down to decrease the score. Swiping the score left or right always increases or decreases the score by one point.
+ - The tilt has a vibration feature that pauses input if you move the phone when cheering for you team.
+ - Tilts, taps and swipes up will increase the score by the number of points you have set in your preferences.
+ - Swipes down will decrease the score by the number of points you have set in your preferences.
+ - Swipes right will increase the score by one point, swipes left will decrease the score by one point.
+ - Full swipes from left to right or right to left will swap team sides.
 
-You can choose the number of points per goal via menu (i.e. 2 points for basket ball goal). The number of points per goal will register with a left or right tilt or left or right swipe (left swipe will remove mistakes). Swiping up or down always registers one point only so you can keep track of the single point goals.
+Long clicks on the score or header brings up menus or text fields for editing the team name or choosing preferences.
 
-You can choose the team colors for each side via menu.
+Team names can be set by long clicking the the left or right title bar.
 
-You can swap team sides at half time by swiping fully from left to right or right to left.
+A menu to reset the score, set preferences or team colors can be accessed by long clicking the left or right score.
 
-You can enter team names with a long click on the menu.
-
-You can choose the reset points start point (i.e. some volleyball games start at 4 points) via the menu.
-
-You can set the win parameters via the menu (i.e. volleyball win is 25 with a 2 point spread required). Note that once a team has won the scoring will no longer increase, however if you or the device add some points incorrectly, they can be rolled back with a swipe down on the score.
-
-You can enable a game saving feature for a day via the menu. The game save feature will save the game scores to the download folder on yourdevice and it can be opened with a spreadsheet program. The save to file feature, when enabled, will only be enabled for the day. Once the day is over the feature will be disabled unless you re-enable it.
+From the initial menu choose...
+ - Reset Score
+ - Colors...
+    - Chose the background and text colors for each of the teams.
+    - There is an example of the scoreboard colors located at the bottom left and right of the Colors screen.
+ - Preferences...
+    - Set the Points Per Goal (e.g. basketball goal is 2 points - other games have differnt points per goal)
+    - Set the Initial Score (e.g. some volleyball tournaments start scoring at 4 points on each side)
+    - Set the Game Point/Margin (e.g. volleyball games are won with 25 points and require a point spread of 2)
+    - Set Save today's games - This will save the game data every time you reset the score. The file is stored in the download folder and can be opened and viewed with a spreadsheet program. This setting will automatically turn itself off after the end of the day (midnight).
+    - Disable Tilt Feature - If you do not want the tilt feature, you can choose to turn that off here.
+    - RESET - Reset to the default preferences.
 
 Your team colors, score, points per goal, team names and reset start point are stored with every change so the app can be shut down or minimized at any time there is a pause in the game. Your colors and score will be stored and waiting for you when the game starts back up.
 
 Hope you have fun with Score Keeper!
+
 

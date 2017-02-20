@@ -2,9 +2,6 @@ package codepath.apps.demointroandroid.domain;
 
 import codepath.apps.demointroandroid.util.ScoreKeeperUtils;
 
-/**
- * Created by Owner on 2/18/2017.
- */
 
 public class ScoreKeeperData {
 
@@ -19,6 +16,8 @@ public class ScoreKeeperData {
     public  String fileSaveFeatureDate;
     public GamePoint gamePoint;
     public boolean disableTiltFeature = false;
+    public boolean hasCelebratedWin = false;
+
 
     public void enableFileSave(){
         fileSaveFeatureDate = ScoreKeeperUtils.getTodayAsNoTimeString();

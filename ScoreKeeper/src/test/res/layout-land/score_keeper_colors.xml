@@ -1,0 +1,583 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="codepath.apps.demointroandroid.ColorActivity">
+
+    <!--<ScrollView-->
+        <!--android:id="@+id/login_form"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/DimGray">-->
+
+        <RelativeLayout
+            android:id="@+id/color_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/DimGray"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
+            <!--Left Primary -->
+            <TextView
+                android:id="@+id/blue_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:background="@color/blue"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/black_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/blue_picker_left"
+                android:background="@color/black"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/brown_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/black_picker_left"
+                android:background="@color/brown"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/green_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/brown_picker_left"
+                android:background="@color/green"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                 
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/orange_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/green_picker_left"
+                android:background="@color/orange"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/pink_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/blue_picker_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:background="@color/pink"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/purple_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/black_picker_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/pink_picker_left"
+                android:background="@color/purple"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/red_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/brown_picker_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/purple_picker_left"
+                android:background="@color/red"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/white_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/green_picker_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/red_picker_left"
+                android:background="@color/white"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/yellow_picker_left"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/orange_picker_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/white_picker_left"
+                android:background="@color/yellow"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+
+            <!--Right Primary-->
+
+            <TextView
+                android:id="@+id/orange_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:background="@color/orange"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/green_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/orange_picker_right"
+                android:background="@color/green"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/brown_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/green_picker_right"
+                android:background="@color/brown"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/black_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/brown_picker_right"
+                android:background="@color/black"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/blue_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/black_picker_right"
+                android:background="@color/blue"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/yellow_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/orange_picker_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:background="@color/yellow"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/white_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/green_picker_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/yellow_picker_right"
+                android:background="@color/white"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/red_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/brown_picker_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/white_picker_right"
+                android:background="@color/red"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/purple_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/black_picker_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/red_picker_right"
+                android:background="@color/purple"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/pink_picker_right"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_below="@id/blue_picker_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/purple_picker_right"
+                android:background="@color/pink"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+
+            <!-- Stuff at the bottom -->
+            <Button
+                android:id="@+id/colors_done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"
+                android:paddingLeft="40sp"
+                android:paddingRight="40sp"
+                android:text="DONE"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/example_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_size_color_box"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:textSize="40sp"
+                android:clickable="false"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="false"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/example_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_size_color_box"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:textSize="40sp"
+                android:clickable="false"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="false"
+                android:gravity="center"/>
+
+             <!--Left Secondary -->
+
+            <TextView
+                android:id="@+id/pink_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_marginBottom="25sp"
+                android:background="@color/pink"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/purple_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/pink_picker_left_2"
+                android:background="@color/purple"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/red_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/purple_picker_left_2"
+                android:background="@color/red"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/white_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/red_picker_left_2"
+                android:background="@color/white"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/yellow_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_left"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/white_picker_left_2"
+                android:background="@color/yellow"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/blue_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_left_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:background="@color/blue"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/black_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_left_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/blue_picker_left_2"
+                android:background="@color/black"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/brown_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_left_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/black_picker_left_2"
+                android:background="@color/brown"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/green_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_left_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/brown_picker_left_2"
+                android:background="@color/green"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/orange_picker_left_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_left_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toRightOf="@id/green_picker_left_2"
+                android:background="@color/orange"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+
+            <!--Right Secondary-->
+            <TextView
+                android:id="@+id/yellow_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_alignParentRight="true"
+                android:layout_above="@id/example_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:background="@color/yellow"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/white_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/yellow_picker_right"
+                android:background="@color/white"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/red_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/white_picker_right_2"
+                android:background="@color/red"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/purple_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/red_picker_right_2"
+                android:background="@color/purple"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="@dimen/margin_color_box"
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/pink_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/example_right"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/purple_picker_right_2"
+                android:background="@color/pink"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                 
+                android:hapticFeedbackEnabled="true" />
+            <TextView
+                android:id="@+id/orange_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_alignParentRight="true"
+                android:layout_above="@id/yellow_picker_right_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:background="@color/orange"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                 
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/green_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_right_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/orange_picker_right_2"
+                android:background="@color/green"
+                android:clickable="true"
+                android:fadingEdge="horizontal|vertical"
+                 android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/brown_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/green_picker_right_2"
+                android:background="@color/brown"
+                android:layout_above="@id/yellow_picker_right_2"
+                android:clickable="true"
+          
+                android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/black_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_right_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/brown_picker_right_2"
+                android:background="@color/black"
+                android:clickable="true"
+                 android:hapticFeedbackEnabled="true" />
+
+            <TextView
+                android:id="@+id/blue_picker_right_2"
+                android:layout_width="@dimen/size_color_box"
+                android:layout_height="@dimen/size_color_box"
+                android:layout_above="@id/yellow_picker_right_2"
+                android:layout_margin="@dimen/buffer_margin_color_box"
+                android:layout_toLeftOf="@id/black_picker_right_2"
+                android:background="@color/blue"
+                android:clickable="true"
+                android:hapticFeedbackEnabled="true" />
+<!---->
+
+
+
+        </RelativeLayout>
+    <!--</ScrollView>-->
+
+
+</LinearLayout>

@@ -1,9 +1,11 @@
 package codepath.apps.demointroandroid.util;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Spinner;
 
@@ -15,10 +17,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import codepath.apps.demointroandroid.R;
 import codepath.apps.demointroandroid.ScoreKeeperActivity;
-import codepath.apps.demointroandroid.domain.ScoreKeeperColors;
 
 public class ScoreKeeperUtils {
+
+    private static ScoreKeeperUtils instance;
+
+    private ScoreKeeperUtils() {
+
+    }
+    public static ScoreKeeperUtils getInstance() {
+        if (instance == null) {
+            instance = new ScoreKeeperUtils();
+
+        }
+        return instance;
+    }
+
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd", Locale.US);
     static SimpleDateFormat stf = new SimpleDateFormat("hh:mm a", Locale.US);
@@ -45,21 +61,17 @@ public class ScoreKeeperUtils {
         return 0;
     }
 
-    public static boolean arrayContains(int[] array, int key) {
+    public boolean intArrayContains(int[] array, int key) {
         Arrays.sort(array);
         return Arrays.binarySearch(array, key) >= 0;
     }
 
-    public static int getIntWithDefault(String string, int defaultVal){
+    public static int getIntWithDefault(String string, int defaultVal) {
 
-        if (!isEmptyOrNonInt(string)){
+        if (!isEmptyOrNonInt(string)) {
             return Integer.valueOf(string);
         }
         return defaultVal;
-    }
-
-    public static boolean isNumeric(String chars) {
-        return TextUtils.isDigitsOnly(chars);
     }
 
     public static long[] getVibratePattern(int points) {
@@ -93,82 +105,120 @@ public class ScoreKeeperUtils {
         return new long[]{0, shortCode, betweenCode, longCode, betweenCode, longCode, betweenLetter, shortCode, betweenCode, shortCode, betweenLetter, longCode, betweenCode, shortCode};
     }
 
-    public static boolean isEmptyOrNonInt(String s) {
+    private static boolean isEmptyOrNonInt(String s) {
         if (s == null) {
             return true;
         }
         if ("".equals(s)) {
             return true;
         }
-
         try {
-            Integer.getInteger(s);
+            Integer integer = Integer.getInteger(s);
         } catch (Exception e) {
             return true;
         }
         return false;
     }
 
-    public static String getColorName(int colorcode) {
-        if (colorcode == ScoreKeeperColors.BLACK) {
-            return "black";
+    private String getColorName(int colorcode, Resources resources) {
+
+        if (colorcode == resources.getColor(R.color.black)) {
+            return resources.getString(R.string.black);
         }
-        if (colorcode == ScoreKeeperColors.BLUE) {
-            return "blue";
+        if (colorcode == resources.getColor(R.color.blue)) {
+            return resources.getString(R.string.blue);
         }
-        if (colorcode == ScoreKeeperColors.RED) {
-            return "red";
+        if (colorcode == resources.getColor(R.color.brown)) {
+            return resources.getString(R.string.brown);
         }
-        if (colorcode == ScoreKeeperColors.YELLOW) {
-            return "yellow";
+
+        if (colorcode == resources.getColor(R.color.green)) {
+            return resources.getString(R.string.green);
         }
-        if (colorcode == ScoreKeeperColors.GREEN) {
-            return "green";
+
+        if (colorcode == resources.getColor(R.color.orange)) {
+            return resources.getString(R.string.orange);
         }
-        if (colorcode == ScoreKeeperColors.PURPLE) {
-            return "purple";
+
+        if (colorcode == resources.getColor(R.color.pink)) {
+            return resources.getString(R.string.pink);
         }
-        if (colorcode == ScoreKeeperColors.ORANGE) {
-            return "orange";
+
+        if (colorcode == resources.getColor(R.color.purple)) {
+            return resources.getString(R.string.purple);
         }
-        if (colorcode == ScoreKeeperColors.WHITE) {
-            return "white";
+
+        if (colorcode == resources.getColor(R.color.red)) {
+            return resources.getString(R.string.red);
         }
-        if (colorcode == ScoreKeeperColors.PINK) {
-            return "pink";
+        if (colorcode == resources.getColor(R.color.white)) {
+            return resources.getString(R.string.white);
         }
-        if (colorcode == ScoreKeeperColors.BROWN) {
-            return "brown";
+        if (colorcode == resources.getColor(R.color.yellow)) {
+            return resources.getString(R.string.yellow);
         }
         return "NA";
 
     }
 
-    public static int getTextSize(int score) {
+    public static int getTextSize(int score, int screenSize, int density) {
+
+
         int scoreSize = 200;
+        if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+            scoreSize = 500;
+        }
+
+
         if (score > 99) {
             scoreSize = 160;
+            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+                scoreSize = 360;
+            }
+            if (density <= DisplayMetrics.DENSITY_HIGH) {
+                scoreSize = 140;
+            }
+
         }
         if (score > 999) {
             scoreSize = 120;
+            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+                scoreSize = 260;
+            }
+            if (density <= DisplayMetrics.DENSITY_HIGH) {
+                scoreSize = 100;
+            }
         }
 
         if (score > 9999) {
             scoreSize = 100;
+            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+                scoreSize = 200;
+            }
+            if (density <= DisplayMetrics.DENSITY_HIGH) {
+                scoreSize = 80;
+            }
         }
 
         if (score > 99999) {
             scoreSize = 80;
+            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+                scoreSize = 150;
+            }
+            if (density <= DisplayMetrics.DENSITY_HIGH) {
+                scoreSize = 70;
+            }
         }
 
         return scoreSize;
     }
 
+
     public static String getTodayAsNoTimeString() {
         return sdf.format(new Date());
     }
 
-    public static String getTeamInfo(ScoreKeeperActivity theActivity, boolean isLeft) {
+    public String getTeamInfo(ScoreKeeperActivity theActivity, boolean isLeft) {
 
         String teamName;
         int bgColor;
@@ -186,17 +236,11 @@ public class ScoreKeeperUtils {
             bgColor = ScoreKeeperUtils.getBackgroundColor(theActivity.textScoreRight);
         }
 
-        boolean appendParen = false;
         if (null != teamName && !"".equals(teamName)) {
             builder.append(teamName);
-            builder.append(" (");
-            appendParen = true;
-
-        }
-        builder.append(ScoreKeeperUtils.getColorName(txtColor)).append(" on ");
-        builder.append(ScoreKeeperUtils.getColorName(bgColor));
-        if (appendParen) {
-            builder.append(")");
+        } else {
+            builder.append(getColorName(txtColor, theActivity.getResources())).append(" on ");
+            builder.append(getColorName(bgColor, theActivity.getResources()));
         }
         return builder.toString();
 

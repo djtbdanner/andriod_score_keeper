@@ -65,9 +65,9 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 child.setOnClickListener(this);
             } else if (child instanceof Spinner) {
                 ((Spinner) child).setOnItemSelectedListener(this);
-            } else if (child instanceof CheckBox) {
-                child.setOnClickListener(this);
-            }
+           } //else if (child instanceof CheckBox) {
+//                child.setOnClickListener(this);
+//            }
         }
     }
 
@@ -112,17 +112,14 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             getScoreKeeperData().disableFileSave();
         }
 
-        if (disableTiltFeatureCheckBox.isChecked()) {
-            getScoreKeeperData().disableTiltFeature = true;
-        } else {
-            getScoreKeeperData().disableTiltFeature = false;
-        }
+        getScoreKeeperData().disableTiltFeature = disableTiltFeatureCheckBox.isChecked();
 
     }
 
     void saveAndReturnToScoreKeeper() {
         SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
         CommonPreferencesUtility.storeCommonScoreKeeperDatas(sharedPref.edit(), this);
+
         Intent intent = new Intent(this, ScoreKeeperActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         this.startActivity(intent);
@@ -177,10 +174,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             scoreKeeperData = new ScoreKeeperData();
         }
         return scoreKeeperData;
-    }
-
-    public void setScoreKeeperData(ScoreKeeperData scoreKeeperData) {
-        this.scoreKeeperData = scoreKeeperData;
     }
 
     // when something from a spinner is selected

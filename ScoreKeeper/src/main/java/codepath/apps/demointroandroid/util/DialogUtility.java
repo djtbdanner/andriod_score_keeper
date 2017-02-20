@@ -6,93 +6,23 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import codepath.apps.demointroandroid.ColorActivity;
+import codepath.apps.demointroandroid.R;
 import codepath.apps.demointroandroid.ScoreKeeperActivity;
 import codepath.apps.demointroandroid.SettingsActivity;
-import codepath.apps.demointroandroid.domain.ScoreKeeperColors;
 
 public class DialogUtility {
 
-    static void showEnterNumberdialog(String title, String message, final boolean pointsPerGoal, final ScoreKeeperActivity theActivity) {
-        theActivity.isPaused = true;
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(theActivity);
-        alertDialog.setTitle(title);
-
-        if (pointsPerGoal) {
-            alertDialog.setMessage(message + " \nCurrent Setting: " + theActivity.getScoreKeeperData().pointsForGoal);
-        } else {
-            alertDialog.setMessage(message + " \nCurrent Setting: " + theActivity.getScoreKeeperData().resetScoreTo);
-        }
-
-
-        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                dialog.dismiss();
-                theActivity.isPaused = false;
-            }
-        });
-
-
-        final EditText input = new EditText(theActivity);
-        if (pointsPerGoal) {
-            input.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000, theActivity)});
-        } else {
-            input.setFilters(new InputFilter[]{new InputFilterMinMax(0, 100, theActivity)});
-        }
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
-        alertDialog.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        theActivity.isPaused = false;
-                        String text = String.valueOf(input.getText());
-                        if (ScoreKeeperUtils.isEmptyOrNonInt(text)) {
-                            showInvalidParamToast(theActivity);
-                            return;
-                        }
-                        int val = Integer.valueOf(text);
-                        if (pointsPerGoal) {
-                            if (val == 0){
-                                showInvalidParamToast(theActivity);
-                            } else {
-                                theActivity.getScoreKeeperData().pointsForGoal = val;
-                            }
-                        } else {
-                            theActivity.getScoreKeeperData().resetScoreTo = val;
-                        }
-                    }
-                });
-
-
-        alertDialog.setNegativeButton("CANCEL",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        theActivity.isPaused = false;
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog.show();
-    }
-
-    private static void showInvalidParamToast(ScoreKeeperActivity theActivity) {
-        Toast.makeText(theActivity.getBaseContext(), "Nothing was changed, input was empty or invalid.", Toast.LENGTH_SHORT).show();
-    }
-
-    public static void showMenuPopUp( final ScoreKeeperActivity theActivity){
+    public static void showMenuPopUp(final ScoreKeeperActivity theActivity) {
         theActivity.isPaused = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -111,39 +41,39 @@ public class DialogUtility {
         resetScore.setBackgroundColor(Color.DKGRAY);
         resetScore.setTextColor(Color.LTGRAY);
         resetScore.setHighlightColor(Color.BLUE);
-        resetScore.setText("Reset Score");
+        resetScore.setText(theActivity.getResources().getString(R.string.reset_score));
         layout.addView(resetScore);
 
         final Button colorButton = new Button(view.getContext());
         colorButton.setBackgroundColor(Color.DKGRAY);
         colorButton.setTextColor(Color.LTGRAY);
-        colorButton.setText("Colors...");
+        colorButton.setText(theActivity.getResources().getString(R.string.colors));
         layout.addView(colorButton);
 
         final Button redButton = new Button(view.getContext());
         redButton.setBackgroundColor(Color.DKGRAY);
         redButton.setTextColor(Color.LTGRAY);
-        redButton.setText("Preferences...");
+        redButton.setText(theActivity.getResources().getString(R.string.preferences));
         layout.addView(redButton);
 
         final Button instructions = new Button(view.getContext());
         instructions.setBackgroundColor(Color.DKGRAY);
         instructions.setTextColor(Color.LTGRAY);
-        instructions.setText("Help");
+        instructions.setText(theActivity.getResources().getString(R.string.help));
         layout.addView(instructions);
 
-       final AlertDialog alertDialog = builder.create();
+        final AlertDialog alertDialog = builder.create();
         alertDialog.setView(layout);
 
-        resetScore.setOnClickListener( new View.OnClickListener() {
+        resetScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
                 theActivity.isPaused = false;
-                showAreYouSureDialog("Are you sure you want to reset the score?",  theActivity);
+                showAreYouSureDialog("Are you sure you want to reset the score?", theActivity);
             }
         });
-        redButton.setOnClickListener( new View.OnClickListener() {
+        redButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
@@ -153,7 +83,7 @@ public class DialogUtility {
                 theActivity.startActivity(intent);
             }
         });
-        colorButton.setOnClickListener( new View.OnClickListener() {
+        colorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
@@ -163,7 +93,7 @@ public class DialogUtility {
                 theActivity.startActivity(intent);
             }
         });
-        instructions.setOnClickListener( new View.OnClickListener() {
+        instructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
@@ -174,35 +104,7 @@ public class DialogUtility {
         alertDialog.show();
     }
 
-
-//    static void showColorDialog( final ScoreKeeperActivity theActivity){
-//        // Prepare grid view
-//        GridView gridView = (GridView) theActivity.findViewById(R.id.myGrid);
-//      //  grid.setAdapter(new customAdapter());
-//
-//
-//        List<Integer> mList = new ArrayList<Integer>();
-//        for (int i = 1; i < 10; i++) {
-//            mList.add(i);
-//        }
-//
-//        gridView.setAdapter(new ArrayAdapter(theActivity, android.R.layout.simple_list_item_1, mList));
-//
-//        gridView.setNumColumns(3);
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // do something here
-//            }
-//        });
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
-//        builder.setView(gridView);
-//        builder.setTitle("Set Color");
-//        builder.show();
-//    }
-
-    public static void showAreYouSureDialog(String message, final ScoreKeeperActivity theActivity) {
+    private static void showAreYouSureDialog(String message, final ScoreKeeperActivity theActivity) {
         theActivity.isPaused = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
         builder.setMessage(message);
@@ -215,22 +117,24 @@ public class DialogUtility {
             }
         });
 
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        // switching the side of the positive and negative buttons for better user experience
+        builder.setNegativeButton("YES", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 theActivity.resetScore();
                 theActivity.isPaused = false;
+
+
             }
         });
-
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
+        builder.setPositiveButton("NO", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 theActivity.isPaused = false;
                 dialog.dismiss();
-
             }
         });
+
 
         AlertDialog alert = builder.create();
         alert.show();
@@ -255,118 +159,45 @@ public class DialogUtility {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+
         input.setLayoutParams(lp);
+        if (left) {
+            input.setText(theActivity.getScoreKeeperData().leftTeamName);
+
+        } else {
+            input.setText(theActivity.getScoreKeeperData().rightTeamName);
+        }
+        input.setFilters(new InputFilter[]{new StringLengthFilter(theActivity)});
+
+
         builder.setView(input);
-
-        builder.setMessage("Current Team Name is: " + (left ? theActivity.getScoreKeeperData().leftTeamName : theActivity.getScoreKeeperData().rightTeamName) + ".")
-
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String text = String.valueOf(input.getText());
-                        if (left) {
-                            theActivity.getScoreKeeperData().leftTeamName = text;
-                        } else {
-                            theActivity.getScoreKeeperData().rightTeamName = text;
-                        }
-                        theActivity.isPaused = false;
-                        theActivity.displayScore(false);
-                        dialog.dismiss();
+        final AlertDialog dialog = builder.create();
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent e) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    theActivity.isPaused = false;
+                    String text = String.valueOf(input.getText());
+                    if (left) {
+                        theActivity.getScoreKeeperData().leftTeamName = text;
+                        theActivity.textNameLeft.setText(text);
+                    } else {
+                        theActivity.getScoreKeeperData().rightTeamName = text;
+                        theActivity.textNameRight.setText(text);
                     }
-                })
-                .setNegativeButton("ClearName", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (left) {
-                            theActivity.getScoreKeeperData().leftTeamName = "";
-                        } else {
-                            theActivity.getScoreKeeperData().rightTeamName = "";
-                        }
-                        theActivity.isPaused = false;
-                        theActivity.displayScore(false);
-                        dialog.dismiss();
-                    }
-                });
+                    dialog.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
 
-        AlertDialog dialog = builder.create();
+
         dialog.show();
+        input.requestFocus();
     }
 
-//    public static void showWinParametersDialog(final ScoreKeeperActivity theActivity) {
-//        theActivity.isPaused = true;
-//        AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
-//
-//        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                dialog.dismiss();
-//                theActivity.isPaused = false;
-//            }
-//        });
-//
-//        View view = new View(theActivity.getApplicationContext());
-//        LinearLayout layout = new LinearLayout(view.getContext());
-//        layout.setOrientation(LinearLayout.VERTICAL);
-//
-//        final TextView tView = new TextView(view.getContext());
-//
-//        tView.setText("Set the winning point value here. Currently " + (theActivity.getScoreKeeperData().gamePoint == null ? " no win parameters are set." : " winning score is " + theActivity.getScoreKeeperData().gamePoint.getGamePoint() + "."));
-//        tView.setBackgroundColor(ScoreKeeperColors.WHITE);
-//        tView.setTextColor(ScoreKeeperColors.BLACK);
-//        tView.setTextSize(10);
-//        layout.addView(tView);
-//
-//        final EditText winPointsBox = new EditText(view.getContext());
-//        winPointsBox.setTextColor(ScoreKeeperColors.BLACK);
-//        winPointsBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-//        winPointsBox.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000, theActivity)});
-//        layout.addView(winPointsBox);
-//
-//        final TextView tViewII = new TextView(view.getContext());
-//        tViewII.setBackgroundColor(ScoreKeeperColors.WHITE);
-//        tViewII.setTextColor(ScoreKeeperColors.BLACK);
-//        tViewII.setTextSize(10);
-//        tViewII.setText("Set number of lead points required here.  Currently " + (theActivity.getScoreKeeperData().gamePoint == null ? " no win parameters are set." : " point spread is " + theActivity.getScoreKeeperData().gamePoint.getPointSpread() + "."));
-//        layout.addView(tViewII);
-//
-//        final EditText pointSpreadBox = new EditText(view.getContext());
-//        pointSpreadBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-//        pointSpreadBox.setTextColor(ScoreKeeperColors.BLACK);
-//        pointSpreadBox.setWidth(80);
-//        pointSpreadBox.setFilters(new InputFilter[]{new InputFilterMinMax(1, 100, theActivity)});
-//        layout.addView(pointSpreadBox);
-//
-//        builder.setCancelable(true);
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                theActivity.isPaused = false;
-//                String pointSpread = String.valueOf(pointSpreadBox.getText());
-//                String winPoints = String.valueOf(winPointsBox.getText());
-//                if (ScoreKeeperUtils.isEmptyOrNonInt(pointSpread) || ScoreKeeperUtils.isEmptyOrNonInt(winPoints)) {
-//                    showInvalidParamToast(theActivity);
-//                } else {
-//                    theActivity.setGamePoint(Integer.valueOf(winPoints), Integer.valueOf(pointSpread));
-//                    dialog.dismiss();
-//                }
-//            }
-//        });
-//
-//        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                theActivity.isPaused = false;
-//                theActivity.getScoreKeeperData().gamePoint = null;
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        AlertDialog alertDialog = builder.create();
-//
-//        alertDialog.setTitle("Set Win Parameters");
-//        alertDialog.setView(layout);
-//
-//
-//        alertDialog.show();
-//    }
-
-    public static void showInstructionDialog(final ScoreKeeperActivity theActivity) {
+    private static void showInstructionDialog(final ScoreKeeperActivity theActivity) {
         theActivity.isPaused = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
 
@@ -389,13 +220,13 @@ public class DialogUtility {
         final TextView t_view = new TextView(theActivity.getApplicationContext());
         t_view.setText(getInstructions());
         t_view.setTextSize(10);
-        t_view.setBackgroundColor(ScoreKeeperColors.GREY_BG_COLOR);
-        t_view.setTextColor(ScoreKeeperColors.BLACK);
+        t_view.setBackgroundColor(theActivity.getResources().getColor(R.color.greyBackground));
+        t_view.setTextColor(theActivity.getResources().getColor(R.color.black));
         s_view.addView(t_view);
 
         AlertDialog alertDialog = builder.create();
 
-        alertDialog.setTitle("Directions");
+        alertDialog.setMessage("Directions");
         alertDialog.setView(s_view);
 
 
@@ -403,34 +234,66 @@ public class DialogUtility {
     }
 
     static private String getInstructions() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         String lineSep = System.getProperty("line.separator");
-        buf.append("Keep track of team points by tilting your phone to the left or right.");
+        buf.append("Keep track of the score by tilting your phone to the left or right. Score can also be tracked by tapping the score or swiping up to increase or down to decrease the score. Swiping the score");
+        buf.append("left or right always increases or decreases the score by one point.");
+        buf.append(lineSep);
+        buf.append("- The tilt has a vibration feature that pauses input if you move the phone when cheering for you team.");
+        buf.append(lineSep);
+
+        buf.append("- Tilts, taps and swipes up will increase the score by the number of points you have set in your preferences.");
+        buf.append(lineSep);
+
+        buf.append("- Swipes down will decrease the score by the number of points you have set in your preferences.");
+        buf.append(lineSep);
+
+        buf.append("- Swipes right will increase the score by one point, swipes left will decrease the score by one point.");
+        buf.append(lineSep);
+
+        buf.append("- Full swipes from left to right or right to left will swap team sides.");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("You can choose the number of points per goal via menu (i.e. 2 points for basket ball goal). The number of points per goal will register with a left or right tilt or left or right swipe (left swipe will remove mistakes). Swiping up or down always registers one point only so you can keep track of the single point goals.");
+        buf.append("Long clicks on the score or header brings up menus or text fields for editing the team name or choosing preferences.");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("You can choose the team colors for each side via menu.");
+        buf.append("Team names can be set by long clicking the the left or right title bar.");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("You can swap team sides at half time by swiping fully from left to right or right to left.");
+        buf.append("A menu to reset the score, set preferences or team colors can be accessed by long clicking the left or right score.");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("You can enter team names with a long click on the menu.");
+        buf.append("From the initial menu choose ...");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("You can choose the reset points start point (i.e. some volleyball games start at 4 points) via the menu.");
+        buf.append("- Reset Score");
+        buf.append(lineSep);
+        buf.append("- Colors...");
+        buf.append(lineSep);
+        buf.append("    - Chose the background and text colors for each of the teams.");
+        buf.append(lineSep);
+        buf.append("    - There is an example of the scoreboard colors located at the bottom left and right of the Colors screen.");
+        buf.append(lineSep);
+        buf.append("- Preferences...");
+        buf.append(lineSep);
+        buf.append("   - Set the Points Per Goal (e.g. basketball goal is 2 points - other games have differnt points per goal)");
+        buf.append(lineSep);
+        buf.append("    - Set the Initial Score (e.g. some volleyball tournaments start scoring at 4 points on each side)");
+        buf.append(lineSep);
+        buf.append("    - Set the Game Point/Margin (e.g. volleyball games are won with 25 points and require a point spread of 2)");
+        buf.append(lineSep);
+        buf.append(" - Set Save today's games - This will save the game data every time you reset the score. The file is stored in the download folder and can be opened and viewed with a spreadsheet program. This setting will automatically turn itself off after the end of the day (midnight).");
+        buf.append(lineSep);
+        buf.append(" - Disable Tilt Feature - If you do not want the tilt feature, you can choose to turn that off here.");
+        buf.append(lineSep);
+        buf.append(" - RESET - Reset to the default preferences.");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("You can set the win parameters via the menu (i.e. volleyball win is 25 with a 2 point spread required). Note that once a team has won the scoring will no longer increase, however if you or the device add some points incorrectly, they can be rolled back with a swipe down on the score.");
+        buf.append("Your team colors, score, points per goal, team names and reset start point are stored with every change so the app can be shut down or minimized at any time there is a pause in the game.");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("You can enable a game saving feature for a day via the menu. The game save feature will save the game scores to the download folder on your device and it can be opened with a spreadsheet program. The save to file feature, when enabled, will only be enabled for the day. Once the day is over the feature will be disabled unless you re-enable it.");
-        buf.append(lineSep);
-        buf.append(lineSep);
-        buf.append("Your team colors, score, points per goal, team names and reset start point are stored with every change so the app can be shut down or minimized at any time there is a pause in the game. Your colors and score will be stored and waiting for you when the game starts back up.");
+        buf.append("Your colors and score will be stored and waiting for you when the game starts back up.");
         buf.append(lineSep);
         buf.append(lineSep);
         buf.append("Hope you have fun with Score Keeper!");

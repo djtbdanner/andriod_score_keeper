@@ -3,6 +3,7 @@ package codepath.apps.demointroandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -19,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import codepath.apps.demointroandroid.domain.ScoreKeeperColors;
 import codepath.apps.demointroandroid.domain.ScoreKeeperData;
 import codepath.apps.demointroandroid.domain.ScoreKeeperPrefKeys;
 import codepath.apps.demointroandroid.util.ActivityWithState;
@@ -53,16 +53,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     private ScoreKeeperData scoreKeeperData;
 
     public ScoreKeeperData getScoreKeeperData() {
-        if (scoreKeeperData == null){
+        if (scoreKeeperData == null) {
             scoreKeeperData = new ScoreKeeperData();
         }
         return scoreKeeperData;
     }
-
-    public void setScoreKeeperData(ScoreKeeperData scoreKeeperData) {
-        this.scoreKeeperData = scoreKeeperData;
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +84,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         initState();
 
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        if (!getScoreKeeperData().disableTiltFeature){
+        if (!getScoreKeeperData().disableTiltFeature) {
             initListeners();
         }
 
@@ -126,8 +121,8 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     public void resetScore() {
 
-        if (getScoreKeeperData().leftScore == getScoreKeeperData().resetScoreTo && getScoreKeeperData().rightScore == getScoreKeeperData().resetScoreTo){
-            Toast.makeText(this.getBaseContext(), "Score is already reset - no changes were made.", Toast.LENGTH_LONG).show();
+        if (getScoreKeeperData().leftScore == getScoreKeeperData().resetScoreTo && getScoreKeeperData().rightScore == getScoreKeeperData().resetScoreTo) {
+            Toast.makeText(this.getBaseContext(), "Score is already reset - no changes were made.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (isFileSaveEnabled()) {
@@ -144,6 +139,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int SCROLL_THRESHOLD = 10;
+
+        int density = getResources().getDisplayMetrics().densityDpi;
+        if (density <= DisplayMetrics.DENSITY_HIGH ){
+            SCROLL_THRESHOLD = 5;
+        }
         if (isScreenGrey()) {
             return false;
         }
@@ -165,12 +165,13 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                     downclicktime = System.currentTimeMillis();
                     handler.removeCallbacks(mLongPressed);
                 }
-                scrollX =  event.getX();
+                scrollX = event.getX();
                 scrollY = event.getY();
                 return true;
             case (MotionEvent.ACTION_UP):
                 handler.removeCallbacks(mLongPressed);
-                if (System.currentTimeMillis() - 1000 > downclicktime){
+                // should have called the long click process
+                if (System.currentTimeMillis() - 1000 > downclicktime) {
                     return false;
                 }
 
@@ -180,29 +181,35 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
                     switchSides();
                     return true;
                 }
+                // swiped side to side
                 if (initialX > center && currentX < center) {
                     switchSides();
                     return true;
                 }
 
                 int addThis = 1;
-
                 float xMove = initialX - currentX;
-                if (Math.abs(xMove) > 200) {
-                    addThis = getScoreKeeperData().pointsForGoal;
+                float isHorizantalThreashold = 200;
+                if (density <= DisplayMetrics.DENSITY_HIGH ){
+                    isHorizantalThreashold = 100;
+                }
+                if (Math.abs(xMove) > isHorizantalThreashold) {
+                    // horizontal swipe
                     if (xMove > 0) {
-                        addThis = -1 * getScoreKeeperData().pointsForGoal;
+                        addThis = -1 ;
                     }
                 } else {
+                    // vertical swipe or tap
+                    addThis = getScoreKeeperData().pointsForGoal;
                     if (initialY < event.getY() - 100) {
-                        addThis = -1;
+                        addThis = -1 * getScoreKeeperData().pointsForGoal;
                     }
                 }
                 if (currentX < center) {
-                 //   leftScore = leftScore + addThis;
+                    //   leftScore = leftScore + addThis;
                     verifyAndDisplayScore(false, true, addThis);
                 } else {
-                  //  rightScore = rightScore + addThis;
+                    //  rightScore = rightScore + addThis;
                     verifyAndDisplayScore(false, false, addThis);
                 }
                 return true;
@@ -211,7 +218,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
     private boolean isScreenGrey() {
-        return ScoreKeeperColors.GREY_BG_COLOR == ScoreKeeperUtils.getBackgroundColor(textScoreRight) || ScoreKeeperColors.GREY_BG_COLOR == ScoreKeeperUtils.getBackgroundColor(textScoreLeft);
+        return getResources().getColor(R.color.greyBackground) == ScoreKeeperUtils.getBackgroundColor(textScoreRight) || getResources().getColor(R.color.greytext) == ScoreKeeperUtils.getBackgroundColor(textScoreLeft);
     }
 
     public void displayScore(boolean doVibrate) {
@@ -222,8 +229,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             v.vibrate(pattern, -1);
         }
 
-        textScoreLeft.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().leftScore));
-        textScoreRight.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().rightScore));
+        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        int density = getResources().getDisplayMetrics().densityDpi;
+        textScoreLeft.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().leftScore, screenSize, density));
+        textScoreRight.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().rightScore, screenSize, density));
 
         checkScoresForZero();
 
@@ -232,15 +241,51 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         textNameLeft.setText(getScoreKeeperData().leftTeamName);
         textNameRight.setText(getScoreKeeperData().rightTeamName);
 
-      if (isGameWon(getScoreKeeperData().leftScore, getScoreKeeperData().rightScore)){
-          boolean leftWins = getScoreKeeperData().leftScore > getScoreKeeperData().rightScore;
-          String winningTeam = ScoreKeeperUtils.getTeamInfo(this, leftWins);
-          Toast.makeText(this.getApplicationContext(), winningTeam + " WINS!!!!", Toast.LENGTH_LONG).show();
-          long[] pattern = ScoreKeeperUtils.getWinningPattern();
-          v.vibrate(pattern, -1);
-      }
+        if (isGameWon(getScoreKeeperData().leftScore, getScoreKeeperData().rightScore)) {
+            boolean leftWins = getScoreKeeperData().leftScore > getScoreKeeperData().rightScore;
+            long[] pattern = ScoreKeeperUtils.getWinningPattern();
+            showWinFlash(leftWins);
+            if (!getScoreKeeperData().hasCelebratedWin) {
+                v.vibrate(pattern, -1);
+            }
+            getScoreKeeperData().hasCelebratedWin = true;
+        } else {
+            findViewById(R.id.textWinLeft).setVisibility(View.INVISIBLE);
+            findViewById(R.id.textWinRight).setVisibility(View.INVISIBLE);
+            getScoreKeeperData().hasCelebratedWin = false;
+        }
 
         storeState();
+    }
+
+
+    private void showWinFlash(boolean left) {
+        TextView tView;
+        String teamName = ScoreKeeperUtils.getInstance().getTeamInfo(this, left);
+        int points;
+        int backgroundColor;
+        int textColor;
+        if (left) {
+            tView = (TextView) findViewById(R.id.textWinLeft);
+            points = getScoreKeeperData().leftScore;
+            backgroundColor = ScoreKeeperUtils.getBackgroundColor(textScoreLeft);
+            textColor = textScoreLeft.getCurrentTextColor();
+        } else {
+            tView = (TextView) findViewById(R.id.textWinRight);
+            points = getScoreKeeperData().rightScore;
+            backgroundColor = ScoreKeeperUtils.getBackgroundColor(textScoreRight);
+            textColor = textScoreRight.getCurrentTextColor();
+        }
+        boolean teamNameEndsWithS = false;
+        if (teamName != null && teamName.toLowerCase().endsWith("s")) {
+            teamNameEndsWithS = true;
+        }
+        tView.setVisibility(View.VISIBLE);
+        tView.setBackgroundColor(backgroundColor);
+        tView.setTextColor(textColor);
+        tView.setText(teamName + " win" + (teamNameEndsWithS ? "" : "s") + " with " + points + " points!");
+        tView.bringToFront();
+
     }
 
 
@@ -311,10 +356,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     protected void initState() {
         SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.toString(), Context.MODE_PRIVATE);
-        textScoreLeft.setBackgroundColor(sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), ScoreKeeperColors.RED));
-        textScoreRight.setBackgroundColor(sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), ScoreKeeperColors.BLUE));
-        textScoreLeft.setTextColor(sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), ScoreKeeperColors.WHITE));
-        textScoreRight.setTextColor(sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), ScoreKeeperColors.WHITE));
+        textScoreLeft.setBackgroundColor(sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), getResources().getColor(R.color.red)));
+        textScoreRight.setBackgroundColor(sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), getResources().getColor(R.color.blue)));
+        textScoreLeft.setTextColor(sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), getResources().getColor(R.color.white)));
+        textScoreRight.setTextColor(sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), getResources().getColor(R.color.white)));
         textNameRight.setBackgroundColor(textScoreRight.getCurrentTextColor());
         textNameRight.setTextColor(ScoreKeeperUtils.getBackgroundColor(textScoreRight));
         textNameLeft.setBackgroundColor(textScoreLeft.getCurrentTextColor());
@@ -327,10 +372,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
         if (getAcceleration(event) > 8.25f) {
             lastShakeTime = System.currentTimeMillis();
-            textScoreLeft.setBackgroundColor(ScoreKeeperColors.GREY_BG_COLOR);
-            textScoreRight.setBackgroundColor(ScoreKeeperColors.GREY_BG_COLOR);
-            textScoreRight.setTextColor(ScoreKeeperColors.GREY_TXT_COLOR);
-            textScoreLeft.setTextColor(ScoreKeeperColors.GREY_TXT_COLOR);
+            textScoreLeft.setBackgroundColor(getResources().getColor(R.color.greyBackground));
+            textScoreRight.setBackgroundColor(getResources().getColor(R.color.greyBackground));
+            textScoreRight.setTextColor(getResources().getColor(R.color.greytext));
+            textScoreLeft.setTextColor(getResources().getColor(R.color.greytext));
             return true;
         } else {
             return false;
@@ -384,14 +429,14 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         int potentialRightScore = getScoreKeeperData().rightScore;
         int potentialLeftScore = getScoreKeeperData().leftScore;
 
-        if (isLeft){
+        if (isLeft) {
             potentialLeftScore = potentialLeftScore + pointValue;
         } else {
             potentialRightScore = potentialRightScore + pointValue;
         }
 
-        if (pointValue > 0 && isGameWon(getScoreKeeperData().rightScore, getScoreKeeperData().leftScore)){
-            Toast.makeText(this.getApplicationContext(), "Game is already won based on the parameters from the menu setting 'Win Parameters'. Score will not change.", Toast.LENGTH_LONG).show();
+        if (pointValue > 0 && isGameWon(getScoreKeeperData().rightScore, getScoreKeeperData().leftScore)) {
+            //  Toast.makeText(this.getApplicationContext(), "Game is already won based on the parameters from the menu setting 'Win Parameters'. Score will not change.", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -414,11 +459,12 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     Handler handler = new Handler();
     Runnable mLongPressed = new Runnable() {
         public void run() {
+            storeState();
             DialogUtility.showMenuPopUp(getMe());
         }
     };
 
-    ScoreKeeperActivity getMe (){
+    ScoreKeeperActivity getMe() {
         return this;
     }
 
@@ -437,7 +483,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         }
     };
 
-    private void showNameDialog(boolean isLeft){
+    private void showNameDialog(boolean isLeft) {
         DialogUtility.showEnterNameDialog(this, isLeft);
     }
 
@@ -446,21 +492,15 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
     private void checkScoresForZero() {
-        boolean showToast = false;
-        if (getScoreKeeperData().leftScore < 0){
+        if (getScoreKeeperData().leftScore < 0) {
             getScoreKeeperData().leftScore = 0;
-            showToast = true;
         }
-        if (getScoreKeeperData().rightScore < 0){
+        if (getScoreKeeperData().rightScore < 0) {
             getScoreKeeperData().rightScore = 0;
-            showToast = true;
-        }
-        if (showToast){
-            Toast.makeText(this.getBaseContext(), "Score of less than zero isn't realistic.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    boolean isGameWon(int thePotentialLeftScore, int thePotentialRightScore){
+    boolean isGameWon(int thePotentialLeftScore, int thePotentialRightScore) {
         if (getScoreKeeperData().gamePoint != null) {
             if (thePotentialLeftScore >= getScoreKeeperData().gamePoint.getGamePoint() || thePotentialRightScore >= getScoreKeeperData().gamePoint.getGamePoint()) {
                 int diff = thePotentialLeftScore - thePotentialRightScore;

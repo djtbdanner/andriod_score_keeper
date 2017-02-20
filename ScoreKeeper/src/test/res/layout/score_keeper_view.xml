@@ -6,20 +6,25 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:visibility="gone"
-        android:id="@+id/editTextLeft" />
-
     <View
         android:id="@+id/strut"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true" />
+
+
+    <TextView
+        android:id="@+id/textWinLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignLeft="@id"
+        android:layout_alignParentLeft="true"
+        android:textSize="30sp"
+        android:gravity="center_horizontal|bottom"
+        android:clickable="false"
+    />
+
 
     <TextView
         android:id="@+id/textNameLeft"
@@ -31,6 +36,18 @@
         android:gravity="center_horizontal|bottom"
         android:clickable="true" />
 
+    <TextView
+        android:id="@+id/textWinLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignLeft="@id/textNameLeft"
+        android:layout_alignParentLeft="true"
+        android:textSize="30sp"
+        android:gravity="center_horizontal|bottom"
+        android:clickable="false"
+
+    />
 
     <TextView
         android:id="@+id/textNameRight"
@@ -53,18 +70,6 @@
         android:gravity="center_vertical|center_horizontal" />
 
     <TextView
-        android:id="@+id/textWinLeft"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@id/strut"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textNameLeft"
-        android:visibility="invisible"
-        android:textSize="30sp"
-        android:gravity="center_horizontal|bottom"
-        android:clickable="true" />
-
-    <TextView
         android:id="@+id/textScoreRight"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -73,19 +78,6 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/textNameRight"
         android:gravity="center_vertical|center_horizontal" />
-
-    <TextView
-        android:id="@+id/textWinRight"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/strut"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/textNameRight"
-        android:visibility="invisible"
-        android:textSize="30sp"
-        android:gravity="center_horizontal|bottom"
-        android:clickable="true" />
-
 
 </RelativeLayout>
 

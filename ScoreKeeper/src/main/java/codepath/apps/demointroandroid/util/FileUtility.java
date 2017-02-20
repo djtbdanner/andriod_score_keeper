@@ -31,18 +31,17 @@ public class FileUtility {
                 writeStringToFile("Team, Score, Team, Score, Finish Time", f);
             }
 
-            String dataRow = ScoreKeeperUtils.getTeamInfo(theActivity, true) + "," +
+            String dataRow = ScoreKeeperUtils.getInstance().getTeamInfo(theActivity, true) + "," +
                     theActivity.getScoreKeeperData().leftScore + "," +
-                    ScoreKeeperUtils.getTeamInfo(theActivity, false).replace(",", " ") + "," +
+                    ScoreKeeperUtils.getInstance().getTeamInfo(theActivity, false).replace(",", " ") + "," +
                     theActivity.getScoreKeeperData().rightScore + "," +
                     ScoreKeeperUtils.stf.format(d);
             writeStringToFile(dataRow, f);
 
-            Toast.makeText(theActivity.getBaseContext(), "The scores from this game were saved in " + fileName + ". The file is in your downloads folder. You can turn off the file feature in the menu.", Toast.LENGTH_LONG).show();
+            Toast.makeText(theActivity.getBaseContext(), "The scores from this game were saved in " + fileName + ". The file is in your download folder.", Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
-            System.out.println(e.toString());
-            Toast.makeText(theActivity.getBaseContext(), "Sorry, an error prevent the app from saving a file with the scores (may be due to permissions granted to the app). You can turn off the file feature in the menu.", Toast.LENGTH_LONG).show();
+               Toast.makeText(theActivity.getBaseContext(), "Sorry, an error prevent the app from saving a file with the scores (may be due to permissions granted to the app). You can turn off the file feature in the menu.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -57,7 +56,4 @@ public class FileUtility {
             }
         }
     }
-
-
-
 }
