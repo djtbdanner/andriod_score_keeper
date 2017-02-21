@@ -167,8 +167,10 @@ public class DialogUtility {
         } else {
             input.setText(theActivity.getScoreKeeperData().rightTeamName);
         }
-        input.setFilters(new InputFilter[]{new StringLengthFilter(theActivity)});
 
+        InputFilter[] filterArray = new InputFilter[1];
+        filterArray[0] = new InputFilter.LengthFilter(20);
+        input.setFilters(filterArray);
 
         builder.setView(input);
         final AlertDialog dialog = builder.create();
@@ -219,7 +221,7 @@ public class DialogUtility {
         final ScrollView s_view = new ScrollView(theActivity.getApplicationContext());
         final TextView t_view = new TextView(theActivity.getApplicationContext());
         t_view.setText(getInstructions());
-        t_view.setTextSize(10);
+        t_view.setTextSize(14);
         t_view.setBackgroundColor(theActivity.getResources().getColor(R.color.greyBackground));
         t_view.setTextColor(theActivity.getResources().getColor(R.color.black));
         s_view.addView(t_view);
@@ -237,22 +239,13 @@ public class DialogUtility {
         StringBuilder buf = new StringBuilder();
 
         String lineSep = System.getProperty("line.separator");
-        buf.append("Keep track of the score by tilting your phone to the left or right. Score can also be tracked by tapping the score or swiping up to increase or down to decrease the score. Swiping the score");
-        buf.append("left or right always increases or decreases the score by one point.");
+        buf.append("Keep track of the score by tilting your phone to the left or right. Score can also be tracked by tapping (increase), swiping up (increase), swiping down (decrease), swiping right (increase) or swiping left (decrease). Swiping left or right always increases or decreases the score by one point no matter what you've set the points per goal in the preferences.");
         buf.append(lineSep);
-        buf.append("- The tilt has a vibration feature that pauses input if you move the phone when cheering for you team.");
         buf.append(lineSep);
-
-        buf.append("- Tilts, taps and swipes up will increase the score by the number of points you have set in your preferences.");
+        buf.append("The app has a feature that pauses the tilt input if you move the phone erratically... like when cheering for you team. This is to help prevent accidentally adding points.");
         buf.append(lineSep);
-
-        buf.append("- Swipes down will decrease the score by the number of points you have set in your preferences.");
         buf.append(lineSep);
-
-        buf.append("- Swipes right will increase the score by one point, swipes left will decrease the score by one point.");
-        buf.append(lineSep);
-
-        buf.append("- Full swipes from left to right or right to left will swap team sides.");
+        buf.append("Full swipes from left to right or right to left will swap team sides.");
         buf.append(lineSep);
         buf.append(lineSep);
         buf.append("Long clicks on the score or header brings up menus or text fields for editing the team name or choosing preferences.");
@@ -269,11 +262,13 @@ public class DialogUtility {
         buf.append(lineSep);
         buf.append("- Reset Score");
         buf.append(lineSep);
+        buf.append(lineSep);
         buf.append("- Colors...");
         buf.append(lineSep);
         buf.append("    - Chose the background and text colors for each of the teams.");
         buf.append(lineSep);
         buf.append("    - There is an example of the scoreboard colors located at the bottom left and right of the Colors screen.");
+        buf.append(lineSep);
         buf.append(lineSep);
         buf.append("- Preferences...");
         buf.append(lineSep);
@@ -283,17 +278,25 @@ public class DialogUtility {
         buf.append(lineSep);
         buf.append("    - Set the Game Point/Margin (e.g. volleyball games are won with 25 points and require a point spread of 2)");
         buf.append(lineSep);
-        buf.append(" - Set Save today's games - This will save the game data every time you reset the score. The file is stored in the download folder and can be opened and viewed with a spreadsheet program. This setting will automatically turn itself off after the end of the day (midnight).");
         buf.append(lineSep);
-        buf.append(" - Disable Tilt Feature - If you do not want the tilt feature, you can choose to turn that off here.");
+        buf.append("- Save today's games");
         buf.append(lineSep);
-        buf.append(" - RESET - Reset to the default preferences.");
-        buf.append(lineSep);
-        buf.append(lineSep);
-        buf.append("Your team colors, score, points per goal, team names and reset start point are stored with every change so the app can be shut down or minimized at any time there is a pause in the game.");
+        buf.append("    - This will save the game data to a file every time you reset the score. The file is stored in the device's download folder and can be opened and viewed with a spreadsheet program. This setting will automatically turn itself off after the end of the day (midnight).");
         buf.append(lineSep);
         buf.append(lineSep);
-        buf.append("Your colors and score will be stored and waiting for you when the game starts back up.");
+        buf.append("- Disable Tilt Feature");
+        buf.append(lineSep);
+        buf.append("    - If you do not want the tilt feature, you can choose to turn that off here.");
+        buf.append(lineSep);
+        buf.append(lineSep);
+        buf.append(" - RESET ");
+        buf.append(lineSep);
+        buf.append("    - Reset to the default preferences.");
+        buf.append(lineSep);
+        buf.append(lineSep);
+        buf.append(lineSep);
+        buf.append("Your team colors, score, team names and preferences are stored with every change so the app can be shut down or minimized at any time there is a pause in the game. Your colors and score will be waiting for you when the game starts back up.");
+        buf.append(lineSep);
         buf.append(lineSep);
         buf.append(lineSep);
         buf.append("Hope you have fun with Score Keeper!");

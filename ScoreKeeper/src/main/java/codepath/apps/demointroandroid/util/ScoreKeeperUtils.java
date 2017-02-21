@@ -113,7 +113,7 @@ public class ScoreKeeperUtils {
             return true;
         }
         try {
-            Integer integer = Integer.getInteger(s);
+           Integer.getInteger(s);
         } catch (Exception e) {
             return true;
         }
@@ -164,14 +164,17 @@ public class ScoreKeeperUtils {
     public static int getTextSize(int score, int screenSize, int density) {
 
 
-        int scoreSize = 200;
+        int scoreSize = 240;
         if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
             scoreSize = 500;
         }
 
+        if (density <= DisplayMetrics.DENSITY_HIGH) {
+            scoreSize = 200;
+        }
 
         if (score > 99) {
-            scoreSize = 160;
+            scoreSize = 180;
             if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
                 scoreSize = 360;
             }
@@ -181,7 +184,7 @@ public class ScoreKeeperUtils {
 
         }
         if (score > 999) {
-            scoreSize = 120;
+            scoreSize = 140;
             if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
                 scoreSize = 260;
             }

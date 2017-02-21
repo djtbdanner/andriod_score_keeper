@@ -13,8 +13,8 @@ public class CommonPreferencesUtility {
         theActivity.getScoreKeeperData().pointsForGoal = sharedPref.getInt(ScoreKeeperPrefKeys.POINT_PER_GOAL.name(), 1);
         theActivity.getScoreKeeperData().resetScoreTo = sharedPref.getInt(ScoreKeeperPrefKeys.RESET_SCORE_TO.name(), 0);
 
-        theActivity.getScoreKeeperData().leftTeamName = sharedPref.getString(ScoreKeeperPrefKeys.LEFT_TEAM_NAME.name(), "Team");
-        theActivity.getScoreKeeperData().rightTeamName = sharedPref.getString(ScoreKeeperPrefKeys.RIGHT_TEAM_NAME.name(), "Team");
+        theActivity.getScoreKeeperData().leftTeamName = sharedPref.getString(ScoreKeeperPrefKeys.LEFT_TEAM_NAME.name(), "Us");
+        theActivity.getScoreKeeperData().rightTeamName = sharedPref.getString(ScoreKeeperPrefKeys.RIGHT_TEAM_NAME.name(), "Them");
 
         theActivity.getScoreKeeperData().fileSaveFeatureDate = sharedPref.getString(ScoreKeeperPrefKeys.FILE_SAVE_FEATURE_DATE.name(), null);
         theActivity.getScoreKeeperData().fileSaveForToday = sharedPref.getBoolean(ScoreKeeperPrefKeys.FILE_SAVE_FEATURE_SWITCH.name(), false);
@@ -24,9 +24,6 @@ public class CommonPreferencesUtility {
         }
         int winByPoints = sharedPref.getInt(ScoreKeeperPrefKeys.GAME_POINT.name(), -1);
         int winBySpread = sharedPref.getInt(ScoreKeeperPrefKeys.GAME_POINT_SPREAD.name(), -1);
-
-        theActivity.getScoreKeeperData().leftTeamName = sharedPref.getString(ScoreKeeperPrefKeys.LEFT_TEAM_NAME.name(), "");
-        theActivity.getScoreKeeperData().rightTeamName = sharedPref.getString(ScoreKeeperPrefKeys.RIGHT_TEAM_NAME.name(), "");
 
         if (winByPoints > -1 && winBySpread > -1) {
             theActivity.getScoreKeeperData().setGamePoint(winByPoints, winBySpread);

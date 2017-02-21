@@ -41,10 +41,10 @@ public class ColorActivity extends Activity implements View.OnClickListener {
         leftExampleTextView = (TextView) findViewById(R.id.example_left);
         rightExampleTextView = (TextView) findViewById(R.id.example_right);
         initState();
-        hideLeftTextColor(leftExampleTextView.getCurrentTextColor());
-        hideRightTextColor(rightExampleTextView.getCurrentTextColor());
-        hideLeftBackgroundColor(ScoreKeeperUtils.getBackgroundColor(leftExampleTextView));
-        hideRightBackgroundColor(ScoreKeeperUtils.getBackgroundColor(rightExampleTextView));
+        hideLeftBackgroundColor(leftExampleTextView.getCurrentTextColor());
+        hideRightBackgroundColor(rightExampleTextView.getCurrentTextColor());
+        hideLeftTextColor(ScoreKeeperUtils.getBackgroundColor(leftExampleTextView));
+        hideRightTextColor(ScoreKeeperUtils.getBackgroundColor(rightExampleTextView));
     }
 
     private void registerViews(ViewGroup viewGroup) {
@@ -114,10 +114,10 @@ public class ColorActivity extends Activity implements View.OnClickListener {
 
     protected void initState() {
         SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
-        int leftBackgroundColor = sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), R.color.red);
-        int rightBackgroundColor = sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), R.color.blue);
-        int leftTextColor = sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), R.color.white);
-        int rightTextColor = sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), R.color.white);
+        int leftBackgroundColor = sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_BACKGROUND.name(), theColor(R.color.red));
+        int rightBackgroundColor = sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_BACKGROUND.name(), theColor(R.color.blue));
+        int leftTextColor = sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_TEXT.name(), theColor(R.color.white));
+        int rightTextColor = sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_TEXT.name(), theColor(R.color.white));
 
         leftExampleTextView.setBackgroundColor(leftBackgroundColor);
         rightExampleTextView.setBackgroundColor(rightBackgroundColor);
@@ -211,6 +211,7 @@ public class ColorActivity extends Activity implements View.OnClickListener {
     void hideLeftTextColor(int color) {
         for (int LEFT_TEXT_COLOR_ID : LEFT_TEXT_COLOR_IDS) {
             findViewById(LEFT_TEXT_COLOR_ID).setVisibility(View.VISIBLE);
+            // ((TextView) findViewById(LEFT_TEXT_COLOR_ID)).setBackgroundResource(R.drawable.rounded_corners);
         }
 
         if (theColor(R.color.black) == color)
