@@ -1,31 +1,37 @@
-Keep track of the score by tilting your phone to the left or right. Score can also be tracked by tapping the score or swiping up to increase or down to decrease the score. Swiping the score left or right always increases or decreases the score by one point.
- - The tilt has a vibration feature that pauses input if you move the phone when cheering for you team.
- - Tilts, taps and swipes up will increase the score by the number of points you have set in your preferences.
- - Swipes down will decrease the score by the number of points you have set in your preferences.
- - Swipes right will increase the score by one point, swipes left will decrease the score by one point.
- - Full swipes from left to right or right to left will swap team sides.
+Keep track of the score by tilting your phone to the left or right. Score can also be tracked by tapping (increase), swiping up (increase), swiping down (decrease), swiping right (increase) or swiping left (decrease). Swiping left or right always increases or decreases the score by one point no matter what you've set the points per goal in the preferences.
+
+The app has a feature that pauses the tilt input if you move the phone erratically... like when cheering for you team. This is to help prevent accidentally adding points.
+       
+Full swipes from left to right or right to left will swap team sides.
 
 Long clicks on the score or header brings up menus or text fields for editing the team name or choosing preferences.
 
 Team names can be set by long clicking the the left or right title bar.
-
+ 
 A menu to reset the score, set preferences or team colors can be accessed by long clicking the left or right score.
 
-From the initial menu choose...
- - Reset Score
- - Colors...
-    - Chose the background and text colors for each of the teams.
-    - There is an example of the scoreboard colors located at the bottom left and right of the Colors screen.
- - Preferences...
-    - Set the Points Per Goal (e.g. basketball goal is 2 points - other games have differnt points per goal)
-    - Set the Initial Score (e.g. some volleyball tournaments start scoring at 4 points on each side)
-    - Set the Game Point/Margin (e.g. volleyball games are won with 25 points and require a point spread of 2)
-    - Set Save today's games - This will save the game data every time you reset the score. The file is stored in the download folder and can be opened and viewed with a spreadsheet program. This setting will automatically turn itself off after the end of the day (midnight).
-    - Disable Tilt Feature - If you do not want the tilt feature, you can choose to turn that off here.
-    - RESET - Reset to the default preferences.
+From the initial menu choose ...
 
-Your team colors, score, points per goal, team names and reset start point are stored with every change so the app can be shut down or minimized at any time there is a pause in the game. Your colors and score will be stored and waiting for you when the game starts back up.
+- Reset Score
+
+- Colors...
+  - Chose the background and text colors for each of the teams.
+  - There is an example of the scoreboard colors located at the bottom left and right of the Colors screen.
+
+- Preferences...
+  - Set the Points Per Goal (e.g. basketball goal is 2 points - other games have differnt points per goal)
+  - Set the Initial Score (e.g. some volleyball tournaments start scoring at 4 points on each side)
+  - Set the Game Point/Margin (e.g. volleyball games are won with 25 points and require a point spread of 2)
+
+- Save today's games
+  - This will save the game data to a file every time you reset the score. The file is stored in the device's download folder and can be opened and viewed with a spreadsheet program. This setting will automatically turn itself off after the end of the day (midnight).
+
+- Disable Tilt Feature
+  - If you do not want the tilt feature, you can choose to turn that off here.
+
+- RESET 
+  - Reset to the default preferences.
+
+Your team colors, score, team names and preferences are stored with every change so the app can be shut down or minimized at any time there is a pause in the game. Your colors and score will be waiting for you when the game starts back up.
 
 Hope you have fun with Score Keeper!
-
-
