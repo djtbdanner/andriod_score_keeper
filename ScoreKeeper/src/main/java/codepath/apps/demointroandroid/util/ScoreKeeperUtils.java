@@ -1,7 +1,9 @@
 package codepath.apps.demointroandroid.util;
 
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -163,52 +165,54 @@ public class ScoreKeeperUtils {
 
     public static int getTextSize(int score, int screenSize, int density) {
 
+        boolean largeScreen = Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize;
+        boolean lowDensity = density <= DisplayMetrics.DENSITY_HIGH;
 
         int scoreSize = 240;
-        if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+        if (largeScreen) {
             scoreSize = 500;
         }
 
-        if (density <= DisplayMetrics.DENSITY_HIGH) {
+        if (lowDensity && !largeScreen) {
             scoreSize = 200;
         }
 
         if (score > 99) {
-            scoreSize = 180;
-            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+            scoreSize = 160;
+            if (largeScreen) {
                 scoreSize = 360;
             }
-            if (density <= DisplayMetrics.DENSITY_HIGH) {
+            if (lowDensity && !largeScreen) {
                 scoreSize = 140;
             }
 
         }
         if (score > 999) {
             scoreSize = 140;
-            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+            if (largeScreen) {
                 scoreSize = 260;
             }
-            if (density <= DisplayMetrics.DENSITY_HIGH) {
+            if (lowDensity && !largeScreen) {
                 scoreSize = 100;
             }
         }
 
         if (score > 9999) {
             scoreSize = 100;
-            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+            if (largeScreen) {
                 scoreSize = 200;
             }
-            if (density <= DisplayMetrics.DENSITY_HIGH) {
+            if (lowDensity && !largeScreen) {
                 scoreSize = 80;
             }
         }
 
         if (score > 99999) {
             scoreSize = 80;
-            if (Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize) {
+            if (largeScreen) {
                 scoreSize = 150;
             }
-            if (density <= DisplayMetrics.DENSITY_HIGH) {
+            if (lowDensity && !largeScreen) {
                 scoreSize = 70;
             }
         }
@@ -260,5 +264,29 @@ public class ScoreKeeperUtils {
             }
         }
         return index;
+    }
+
+    public static Typeface getTypeface(String fontName, AssetManager assets){
+        Typeface typeface = Typeface.create("sans-serif", Typeface.NORMAL);
+        if (fontName != null) {
+            if (fontName.equalsIgnoreCase("Default")) {
+                typeface = Typeface.create("sans-serif", Typeface.NORMAL);
+            } else if (fontName.equalsIgnoreCase("Default Bold")) {
+                typeface = Typeface.create("sans-serif", Typeface.BOLD);
+            } else if (fontName.equalsIgnoreCase("Default Italic")) {
+                typeface = Typeface.create("sans-serif", Typeface.ITALIC);
+            } else if (fontName.equalsIgnoreCase("Default Bold Italic")) {
+                typeface = Typeface.create("sans-serif", Typeface.BOLD_ITALIC);
+            } else {
+                try {
+                    typeface = Typeface.createFromAsset(assets, "fonts/" + fontName + ".ttf");
+                } catch (Exception e) {
+                    // don't do anything here.. just default
+                    System.out.println("Font not found " + e.getMessage());
+                }
+
+            }
+        }
+        return typeface;
     }
 }

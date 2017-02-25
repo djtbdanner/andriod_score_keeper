@@ -188,6 +188,32 @@
                 android:layout_height="0dp"
                 android:layout_below="@id/disable_tilt_feature_checkbox"
                 android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/font_picker_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/strut"
+                android:layout_alignParentLeft="true"
+                android:textSize="20sp"
+                android:text="Font Picker"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_below="@id/strut5horiz"
+                android:clickable="false" />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/strut"
+                android:textSize="20sp"
+                android:layout_below="@id/strut5horiz"
+                android:id="@+id/font_picker"
+                android:entries="@array/list_fonts" />
+
+            <View
+                android:id="@+id/strut6horiz"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_below="@id/font_picker"
+                android:layout_centerHorizontal="true" />
             <Button
                 android:id="@+id/settings_done"
                 android:layout_width="wrap_content"
@@ -195,7 +221,7 @@
                 android:layout_marginTop="16dp"
                 android:text="OK"
                 android:layout_marginLeft="@dimen/button_padding"
-                android:layout_below="@id/strut5horiz"
+                android:layout_below="@id/strut6horiz"
                 android:textSize="20sp"
                 android:layout_alignLeft="@+id/strut"
                 android:paddingLeft="40sp"
@@ -208,7 +234,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="@dimen/button_padding"
                 android:text="RESET"
-                android:layout_below="@id/strut5horiz"
+                android:layout_below="@id/strut6horiz"
                 android:layout_alignRight="@+id/strut"
                 android:textSize="20sp"
                 android:layout_centerInParent="true"

@@ -18,6 +18,7 @@ public enum ScoreKeeperPrefKeys {
     GAME_POINT,
     GAME_POINT_SPREAD,
     DISABLE_TILT_FEATURE,
-    HAS_CELEBRATED_WIN
+    HAS_CELEBRATED_WIN,
+    FONT_NAME
 
 }

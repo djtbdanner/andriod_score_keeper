@@ -183,4 +183,13 @@
         <item>109</item>
         <item>110</item>
     </string-array>
+    <string-array name="list_fonts">
+        <item>Default</item>
+        <item>digital-7 (italic)</item>
+        <item>Handwriting</item>]
+        <item>TeamSpiritNF</item>
+        <item>Default Bold</item>
+        <item>Default Bold Italic</item>
+        <item>Default Italic</item>
+    </string-array>
 </resources>

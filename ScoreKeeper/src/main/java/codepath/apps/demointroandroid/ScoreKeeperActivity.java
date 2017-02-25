@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -87,11 +88,25 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         if (!getScoreKeeperData().disableTiltFeature) {
             initListeners();
         }
+        setFont();
+
 
         displayScore(false);
     }
 
+    private void setFont() {
+        Typeface typeface = ScoreKeeperUtils.getTypeface(getScoreKeeperData().fontName, getAssets());
+        textScoreLeft.setTypeface(typeface);
+        textNameLeft.setTypeface(typeface);
+        textScoreRight.setTypeface(typeface);
+        textNameRight.setTypeface(typeface);
+    }
+
     private void switchSides() {
+
+        findViewById(R.id.textWinLeft).setVisibility(View.INVISIBLE);
+        findViewById(R.id.textWinRight).setVisibility(View.INVISIBLE);
+
         int tempLeftScore = getScoreKeeperData().leftScore;
         int tempRightScore = getScoreKeeperData().rightScore;
         int tempLeftColor = ScoreKeeperUtils.getBackgroundColor(textScoreLeft);

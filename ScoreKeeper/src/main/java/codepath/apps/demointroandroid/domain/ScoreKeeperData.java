@@ -17,6 +17,7 @@ public class ScoreKeeperData {
     public GamePoint gamePoint;
     public boolean disableTiltFeature = false;
     public boolean hasCelebratedWin = false;
+    public String fontName;
 
 
     public void enableFileSave(){

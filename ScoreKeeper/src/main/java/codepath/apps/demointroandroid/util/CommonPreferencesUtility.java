@@ -30,6 +30,7 @@ public class CommonPreferencesUtility {
         }
         theActivity.getScoreKeeperData().disableTiltFeature = sharedPref.getBoolean(ScoreKeeperPrefKeys.DISABLE_TILT_FEATURE.name(), false);
         theActivity.getScoreKeeperData().hasCelebratedWin = sharedPref.getBoolean(ScoreKeeperPrefKeys.HAS_CELEBRATED_WIN.name(), false);
+        theActivity.getScoreKeeperData().fontName = sharedPref.getString(ScoreKeeperPrefKeys.FONT_NAME.name(), "DS-GIGI");
     }
 
 
@@ -50,6 +51,7 @@ public class CommonPreferencesUtility {
         editor.putString(ScoreKeeperPrefKeys.LEFT_TEAM_NAME.name(), theActivity.getScoreKeeperData().leftTeamName);
         editor.putString(ScoreKeeperPrefKeys.RIGHT_TEAM_NAME.name(), theActivity.getScoreKeeperData().rightTeamName);
         editor.putBoolean(ScoreKeeperPrefKeys.HAS_CELEBRATED_WIN.name(), theActivity.getScoreKeeperData().hasCelebratedWin);
+        editor.putString(ScoreKeeperPrefKeys.FONT_NAME.name(), theActivity.getScoreKeeperData().fontName);
         editor.commit();
     }
 }

@@ -272,7 +272,7 @@ public class DialogUtility {
         buf.append(lineSep);
         buf.append("- Preferences...");
         buf.append(lineSep);
-        buf.append("   - Set the Points Per Goal (e.g. basketball goal is 2 points - other games have differnt points per goal)");
+        buf.append("   - Set the Points Per Goal (e.g. basketball goal is 2 points - other games have different points per goal)");
         buf.append(lineSep);
         buf.append("    - Set the Initial Score (e.g. some volleyball tournaments start scoring at 4 points on each side)");
         buf.append(lineSep);
@@ -296,6 +296,16 @@ public class DialogUtility {
         buf.append(lineSep);
         buf.append(lineSep);
         buf.append("Your team colors, score, team names and preferences are stored with every change so the app can be shut down or minimized at any time there is a pause in the game. Your colors and score will be waiting for you when the game starts back up.");
+        buf.append(lineSep);
+        buf.append(lineSep);
+        buf.append(lineSep);
+        buf.append("Font credits...");
+        buf.append(lineSep);
+        buf.append(" - Team Spirit: Nick Curtis");
+        buf.append(lineSep);
+        buf.append(" - digital - 7(italic): http://www.styleseven.com/");
+        buf.append(lineSep);
+        buf.append(" - Handwriting: http://www.myscriptfont.com/ ");
         buf.append(lineSep);
         buf.append(lineSep);
         buf.append(lineSep);

@@ -32,6 +32,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     CheckBox gamePointCheckBox;
     CheckBox saveTodaysGameCheckBox;
     CheckBox disableTiltFeatureCheckBox;
+    Spinner fontSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         gamePointCheckBox = (CheckBox) findViewById(R.id.game_point_checkbox);
         saveTodaysGameCheckBox = (CheckBox) findViewById(R.id.enable_game_save_button);
         disableTiltFeatureCheckBox = (CheckBox) findViewById(R.id.disable_tilt_feature_checkbox);
+        fontSpinner = (Spinner) findViewById(R.id.font_picker);
 
         SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
         CommonPreferencesUtility.setCommonScoreKeeperData(sharedPref, this);
@@ -113,6 +115,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         }
 
         getScoreKeeperData().disableTiltFeature = disableTiltFeatureCheckBox.isChecked();
+        getScoreKeeperData().fontName = fontSpinner.getSelectedItem().toString();
 
     }
 
@@ -149,6 +152,9 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         pointsPerGoalSpinner.setSelection(isReset ? 0 : ScoreKeeperUtils.getSpinnerIndexOfValue(pointsPerGoalSpinner, String.valueOf(getScoreKeeperData().pointsForGoal)));
         resetScoreToSpinner.setSelection(isReset ? 0 : ScoreKeeperUtils.getSpinnerIndexOfValue(resetScoreToSpinner, String.valueOf(getScoreKeeperData().resetScoreTo)));
+        fontSpinner.setSelection(isReset ? 0 : ScoreKeeperUtils.getSpinnerIndexOfValue(fontSpinner, String.valueOf(getScoreKeeperData().fontName)));
+
+        setFontOnLabel();
 
         if (isReset && gamePointCheckBox.isChecked()) {
             gamePointCheckBox.toggle();
@@ -169,6 +175,11 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    private void setFontOnLabel() {
+        TextView fontLabel = (TextView) findViewById(R.id.font_picker_label);
+        fontLabel.setTypeface(ScoreKeeperUtils.getTypeface(getScoreKeeperData().fontName, getAssets() ));
+    }
+
     public ScoreKeeperData getScoreKeeperData() {
         if (scoreKeeperData == null) {
             scoreKeeperData = new ScoreKeeperData();
@@ -179,7 +190,11 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     // when something from a spinner is selected
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
         setScoreKeeperDataValues();
+        if (adapterView.getId() == R.id.font_picker){
+            setFontOnLabel();
+        }
     }
 
     @Override
