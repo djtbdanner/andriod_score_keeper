@@ -60,7 +60,7 @@
         <!--Left Primary -->
 
 
-        <TextView
+        <View
             android:id="@+id/black_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -71,7 +71,7 @@
             android:layout_toLeftOf="@+id/brown_picker_left"
             android:layout_above="@+id/purple_picker_left" />
 
-        <TextView
+        <View
             android:id="@+id/brown_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -82,7 +82,7 @@
             android:layout_toLeftOf="@+id/green_picker_left"
             android:layout_above="@+id/red_picker_left" />
 
-        <TextView
+        <View
             android:id="@+id/blue_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -97,7 +97,7 @@
 
 
 
-        <TextView
+        <View
             android:id="@+id/green_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -110,7 +110,7 @@
             android:layout_toLeftOf="@+id/orange_picker_left"
             android:layout_above="@+id/white_picker_left" />
 
-        <TextView
+        <View
             android:id="@+id/orange_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -121,7 +121,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_above="@+id/yellow_picker_left" />
 
-        <TextView
+        <View
             android:id="@+id/pink_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -132,7 +132,7 @@
             android:layout_toLeftOf="@+id/purple_picker_left"
             android:layout_above="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/purple_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -143,7 +143,7 @@
             android:layout_toLeftOf="@+id/red_picker_left"
             android:layout_above="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/red_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -154,7 +154,7 @@
             android:layout_toLeftOf="@+id/white_picker_left"
             android:layout_above="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/white_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -165,7 +165,7 @@
             android:layout_toLeftOf="@+id/yellow_picker_left"
             android:layout_above="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/yellow_picker_left"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -179,7 +179,7 @@
 
         <!--Right Primary-->
 
-        <TextView
+        <View
             android:id="@+id/blue_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -190,7 +190,7 @@
             android:layout_toRightOf="@+id/vertical_divider"
             android:layout_above="@+id/pink_picker_right" />
 
-        <TextView
+        <View
             android:id="@+id/black_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -201,7 +201,7 @@
             android:layout_toRightOf="@+id/blue_picker_right"
             android:layout_above="@+id/purple_picker_right" />
 
-        <TextView
+        <View
             android:id="@+id/brown_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -212,7 +212,7 @@
             android:layout_toRightOf="@+id/black_picker_right"
             android:layout_above="@+id/red_picker_right" />
 
-        <TextView
+        <View
             android:id="@+id/green_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -223,7 +223,7 @@
             android:layout_toRightOf="@+id/brown_picker_right"
             android:layout_above="@+id/white_picker_right" />
 
-        <TextView
+        <View
             android:id="@+id/orange_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -234,7 +234,7 @@
             android:layout_toRightOf="@+id/green_picker_right"
             android:layout_above="@+id/yellow_picker_right" />
 
-        <TextView
+        <View
             android:id="@+id/yellow_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -245,7 +245,7 @@
             android:layout_toRightOf="@+id/white_picker_right"
             android:layout_above="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/white_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -256,7 +256,7 @@
             android:layout_toRightOf="@+id/red_picker_right_2"
             android:layout_above="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/red_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -267,7 +267,7 @@
             android:layout_toRightOf="@+id/purple_picker_right"
             android:layout_above="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/purple_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -278,7 +278,7 @@
             android:layout_toRightOf="@+id/pink_picker_right"
             android:layout_margin="@dimen/buffer_margin_color_box" />
 
-        <TextView
+        <View
             android:id="@+id/pink_picker_right"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -291,7 +291,7 @@
 
 
         <!--Left Secondary -->
-        <TextView
+        <View
             android:id="@+id/blue_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -304,7 +304,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/black_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/black_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -317,7 +317,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/brown_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/brown_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -330,7 +330,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/green_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/green_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -343,7 +343,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/orange_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/orange_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -357,7 +357,7 @@
             android:layout_toLeftOf="@+id/vertical_divider" />
 
 
-        <TextView
+        <View
             android:id="@+id/pink_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -371,7 +371,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/purple_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/purple_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -384,7 +384,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/red_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/red_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -397,7 +397,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/white_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/white_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -410,7 +410,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/yellow_picker_left_2" />
 
-        <TextView
+        <View
             android:id="@+id/yellow_picker_left_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -428,7 +428,7 @@
 
         <!--Right Secondary-->
 
-        <TextView
+        <View
             android:id="@+id/blue_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -439,7 +439,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/vertical_divider" />
 
-        <TextView
+        <View
             android:id="@+id/black_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -450,7 +450,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/blue_picker_right_2" />
 
-        <TextView
+        <View
             android:id="@+id/brown_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -463,7 +463,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/black_picker_right_2" />
 
-        <TextView
+        <View
             android:id="@+id/green_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -474,7 +474,7 @@
             android:layout_toRightOf="@+id/brown_picker_right_2"
             android:layout_below="@+id/horizontal_divider" />
 
-        <TextView
+        <View
             android:id="@+id/orange_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -486,7 +486,7 @@
             android:layout_below="@+id/horizontal_divider" />
 
 
-        <TextView
+        <View
             android:id="@+id/yellow_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -497,7 +497,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/white_picker_right_2" />
 
-        <TextView
+        <View
             android:id="@+id/white_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -508,7 +508,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/red_picker_right_2" />
 
-        <TextView
+        <View
             android:id="@+id/red_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -519,7 +519,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/purple_picker_right_2" />
 
-        <TextView
+        <View
             android:id="@+id/purple_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"
@@ -530,7 +530,7 @@
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/pink_picker_right_2" />
 
-        <TextView
+        <View
             android:id="@+id/pink_picker_right_2"
             android:layout_width="@dimen/size_color_box"
             android:layout_height="@dimen/size_color_box"

@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import codepath.apps.demointroandroid.domain.ScoreKeeperPrefKeys;
 import codepath.apps.demointroandroid.util.ScoreKeeperUtils;
@@ -54,7 +60,7 @@ public class ColorActivity extends Activity implements View.OnClickListener {
                 registerViews((ViewGroup) child);
             } else if (child instanceof Button) {
                 child.setOnClickListener(this);
-            } else if (child instanceof TextView) {
+            } else if (child instanceof View) {
                 child.setOnClickListener(this);
             }
         }
@@ -64,22 +70,38 @@ public class ColorActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         if (isLeftBackgroundColorPicker(view)) {
             int color = getBackgroundColor(view);
+            if (color == leftExampleTextView.getCurrentTextColor()) {
+                showMessage();
+                return;
+            }
             leftExampleTextView.setBackgroundColor(color);
             hideLeftTextColor(color);
         }
         if (isLeftTextColorPicker(view)) {
             int color = getBackgroundColor(view);
+            if (color == ScoreKeeperUtils.getBackgroundColor(leftExampleTextView)) {
+                showMessage();
+                return;
+            }
             leftExampleTextView.setTextColor(color);
             hideLeftBackgroundColor(color);
 
         }
         if (isRightBackgroundColorPicker(view)) {
             int color = getBackgroundColor(view);
+            if (color == rightExampleTextView.getCurrentTextColor()) {
+                showMessage();
+                return;
+            }
             rightExampleTextView.setBackgroundColor(color);
             hideRightTextColor(color);
         }
         if (isRightTextColorPicker(view)) {
             int color = getBackgroundColor(view);
+            if (color == ScoreKeeperUtils.getBackgroundColor(rightExampleTextView)) {
+                showMessage();
+                return;
+            }
             rightExampleTextView.setTextColor(color);
             hideRightBackgroundColor(color);
         }
@@ -93,7 +115,12 @@ public class ColorActivity extends Activity implements View.OnClickListener {
     }
 
     int theColor(int id) {
-        return getResources().getColor(id);
+        try {
+            return getResources().getColor(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     boolean isLeftBackgroundColorPicker(View view) {
@@ -139,145 +166,179 @@ public class ColorActivity extends Activity implements View.OnClickListener {
     }
 
     void hideRightTextColor(int color) {
-        for (int RIGHT_TEXT_COLOR_ID : RIGHT_TEXT_COLOR_IDS) {
-            findViewById(RIGHT_TEXT_COLOR_ID).setVisibility(View.VISIBLE);
+        for (int RIGHT_BACKGROUND_COLOR_ID : RIGHT_BACKGROUND_COLOR_IDS) {
+            setRound(findViewById(RIGHT_BACKGROUND_COLOR_ID));
         }
         if (theColor(R.color.black) == color)
-            findViewById(R.id.black_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.black_picker_right));
 
         if (theColor(R.color.blue) == color)
-            findViewById(R.id.blue_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.blue_picker_right));
 
         if (theColor(R.color.brown) == color)
-            findViewById(R.id.brown_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.brown_picker_right));
 
         if (theColor(R.color.green) == color)
-            findViewById(R.id.green_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.green_picker_right));
 
         if (theColor(R.color.orange) == color)
-            findViewById(R.id.orange_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.orange_picker_right));
 
         if (theColor(R.color.pink) == color)
-            findViewById(R.id.pink_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.pink_picker_right));
 
         if (theColor(R.color.purple) == color)
-            findViewById(R.id.purple_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.purple_picker_right));
 
         if (theColor(R.color.red) == color)
-            findViewById(R.id.red_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.red_picker_right));
 
         if (theColor(R.color.white) == color)
-            findViewById(R.id.white_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.white_picker_right));
 
         if (theColor(R.color.yellow) == color)
-            findViewById(R.id.yellow_picker_right_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.yellow_picker_right));
     }
 
     void hideRightBackgroundColor(int color) {
-        for (int RIGHT_BACKGROUND_COLOR_ID : RIGHT_BACKGROUND_COLOR_IDS) {
-            findViewById(RIGHT_BACKGROUND_COLOR_ID).setVisibility(View.VISIBLE);
+        for (int RIGHT_TEXT_COLOR_ID : RIGHT_TEXT_COLOR_IDS) {
+            setRound(findViewById(RIGHT_TEXT_COLOR_ID));
         }
         if (theColor(R.color.black) == color)
-            findViewById(R.id.black_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.black_picker_right_2));
 
         if (theColor(R.color.blue) == color)
-            findViewById(R.id.blue_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.blue_picker_right_2));
 
         if (theColor(R.color.brown) == color)
-            findViewById(R.id.brown_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.brown_picker_right_2));
 
         if (theColor(R.color.green) == color)
-            findViewById(R.id.green_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.green_picker_right_2));
 
         if (theColor(R.color.orange) == color)
-            findViewById(R.id.orange_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.orange_picker_right_2));
 
         if (theColor(R.color.pink) == color)
-            findViewById(R.id.pink_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.pink_picker_right_2));
 
         if (theColor(R.color.purple) == color)
-            findViewById(R.id.purple_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.purple_picker_right_2));
 
         if (theColor(R.color.red) == color)
-            findViewById(R.id.red_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.red_picker_right_2));
 
         if (theColor(R.color.white) == color)
-            findViewById(R.id.white_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.white_picker_right_2));
 
         if (theColor(R.color.yellow) == color)
-            findViewById(R.id.yellow_picker_right).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.yellow_picker_right_2));
     }
 
     void hideLeftTextColor(int color) {
-        for (int LEFT_TEXT_COLOR_ID : LEFT_TEXT_COLOR_IDS) {
-            findViewById(LEFT_TEXT_COLOR_ID).setVisibility(View.VISIBLE);
-            // ((TextView) findViewById(LEFT_TEXT_COLOR_ID)).setBackgroundResource(R.drawable.rounded_corners);
+        for (int LEFT_BACKGROUND_COLOR_ID : LEFT_BACKGROUND_COLOR_IDS) {
+            setRound(findViewById(LEFT_BACKGROUND_COLOR_ID));
         }
-
+        int highLightColor = theColor(R.color.black);
         if (theColor(R.color.black) == color)
-            findViewById(R.id.black_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.black_picker_left));
 
         if (theColor(R.color.blue) == color)
-            findViewById(R.id.blue_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.blue_picker_left));
 
         if (theColor(R.color.brown) == color)
-            findViewById(R.id.brown_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.brown_picker_left));
 
         if (theColor(R.color.green) == color)
-            findViewById(R.id.green_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.green_picker_left));
 
         if (theColor(R.color.orange) == color)
-            findViewById(R.id.orange_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.orange_picker_left));
 
         if (theColor(R.color.pink) == color)
-            findViewById(R.id.pink_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.pink_picker_left));
 
         if (theColor(R.color.purple) == color)
-            findViewById(R.id.purple_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.purple_picker_left));
 
         if (theColor(R.color.red) == color)
-            findViewById(R.id.red_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.red_picker_left));
 
         if (theColor(R.color.white) == color)
-            findViewById(R.id.white_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.white_picker_left));
 
         if (theColor(R.color.yellow) == color)
-            findViewById(R.id.yellow_picker_left_2).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.yellow_picker_left));
     }
 
     void hideLeftBackgroundColor(int color) {
-        for (int LEFT_BACKGROUND_COLOR_ID : LEFT_BACKGROUND_COLOR_IDS) {
-            findViewById(LEFT_BACKGROUND_COLOR_ID).setVisibility(View.VISIBLE);
+        for (int LEFT_TEXT_COLOR_ID : LEFT_TEXT_COLOR_IDS) {
+            setRound(findViewById(LEFT_TEXT_COLOR_ID));
         }
+        int highLightColor = ScoreKeeperUtils.getBackgroundColor(leftExampleTextView);
         if (theColor(R.color.black) == color)
-            findViewById(R.id.black_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.black_picker_left_2));
 
         if (theColor(R.color.blue) == color)
-            findViewById(R.id.blue_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.blue_picker_left_2));
 
         if (theColor(R.color.brown) == color)
-            findViewById(R.id.brown_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.brown_picker_left_2));
 
         if (theColor(R.color.green) == color)
-            findViewById(R.id.green_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.green_picker_left_2));
 
         if (theColor(R.color.orange) == color)
-            findViewById(R.id.orange_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.orange_picker_left_2));
 
         if (theColor(R.color.pink) == color)
-            findViewById(R.id.pink_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.pink_picker_left_2));
 
         if (theColor(R.color.purple) == color)
-            findViewById(R.id.purple_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.purple_picker_left_2));
 
         if (theColor(R.color.red) == color)
-            findViewById(R.id.red_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.red_picker_left_2));
 
         if (theColor(R.color.white) == color)
-            findViewById(R.id.white_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.white_picker_left_2));
 
         if (theColor(R.color.yellow) == color)
-            findViewById(R.id.yellow_picker_left).setVisibility(View.INVISIBLE);
+            makeViewSquare(findViewById(R.id.yellow_picker_left_2));
     }
+
+    private void setRound(View view) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            GradientDrawable gd = new GradientDrawable();
+            gd.setColor(ScoreKeeperUtils.getBackgroundColor(view));
+            gd.setCornerRadius(45);
+            //   gd.setStroke(3, theColor(R.color.black));
+            view.setBackground(gd);
+        }
+    }
+
+
+    private void makeViewSquare(View view) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            Drawable drawable = (Drawable) view.getBackground();
+            if (drawable != null) {
+                if (drawable instanceof GradientDrawable) {
+                    GradientDrawable gd = (GradientDrawable) drawable;
+                    gd.setCornerRadius(0);
+                    int bgColor = ScoreKeeperUtils.getBackgroundColor(view);
+                    if (bgColor == theColor(R.color.white)) {
+                        gd.setStroke(3, theColor(R.color.black));
+                    } else {
+                        gd.setStroke(3, theColor(R.color.white));
+                    }
+                }
+            }
+        }
+    }
+
+    void showMessage() {
+        Toast.makeText(this.getBaseContext(), "Please choose another color.", Toast.LENGTH_SHORT).show();
+    }
+
 }
 

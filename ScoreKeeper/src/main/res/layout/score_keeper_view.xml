@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/strut"
         android:layout_below="@id/textNameLeft"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/textWinLeft"
@@ -59,8 +59,8 @@
         android:layout_alignRight="@id/strut"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textNameLeft"
-        android:visibility="invisible"
-        android:textSize="30sp"
+        android:visibility="gone"
+        android:textSize="25sp"
         android:gravity="center_horizontal|bottom"
         android:clickable="true" />
 
@@ -72,7 +72,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/textNameRight"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/textWinRight"
@@ -81,8 +81,8 @@
         android:layout_alignLeft="@id/strut"
         android:layout_alignParentRight="true"
         android:layout_below="@id/textNameRight"
-        android:visibility="invisible"
-        android:textSize="30sp"
+        android:visibility="gone"
+        android:textSize="25sp"
         android:gravity="center_horizontal|bottom"
         android:clickable="true" />
 

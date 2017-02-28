@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -44,7 +45,7 @@ public class ScoreKeeperUtils {
 
     public static int getBackgroundColor(View view) {
         Drawable drawable = view.getBackground();
-        if (drawable instanceof ColorDrawable) {
+        if (drawable instanceof ColorDrawable ) {
             ColorDrawable colorDrawable = (ColorDrawable) drawable;
             if (Build.VERSION.SDK_INT >= 11) {
                 return colorDrawable.getColor();
@@ -57,6 +58,27 @@ public class ScoreKeeperUtils {
                 field.setAccessible(true);
                 return field.getInt(object);
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (drawable instanceof GradientDrawable){
+            GradientDrawable gd = (GradientDrawable) drawable;
+//            if (Build.VERSION.SDK_INT >= 24) {
+//                return gd.getColors()[0];
+//            }
+            try {
+                Field field = gd.getClass().getDeclaredField("mGradientState");
+                field.setAccessible(true);
+                Object object = field.get(gd);
+                field = object.getClass().getDeclaredField("mSolidColors");
+                field.setAccessible(true);
+                object = field.get(object);
+                field = object.getClass().getDeclaredField("mColors");
+                field.setAccessible(true);
+                object = field.get(object);
+                int[] colors = (int[]) object;
+                return colors[0];
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }

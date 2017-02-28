@@ -289,6 +289,11 @@ public class DialogUtility {
         buf.append("    - If you do not want the tilt feature, you can choose to turn that off here.");
         buf.append(lineSep);
         buf.append(lineSep);
+        buf.append("- Select Font...");
+        buf.append(lineSep);
+        buf.append("    - Select the font (selecting a font will change the font on the Select Font label).");
+        buf.append(lineSep);
+        buf.append(lineSep);
         buf.append(" - RESET ");
         buf.append(lineSep);
         buf.append("    - Reset to the default preferences.");
