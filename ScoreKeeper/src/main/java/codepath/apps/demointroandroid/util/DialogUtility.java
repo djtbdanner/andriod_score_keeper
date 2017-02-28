@@ -196,7 +196,9 @@ public class DialogUtility {
 
 
         dialog.show();
+        input.setSelectAllOnFocus(true);
         input.requestFocus();
+        input.selectAll();
     }
 
     private static void showInstructionDialog(final ScoreKeeperActivity theActivity) {
