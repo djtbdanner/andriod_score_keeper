@@ -294,7 +294,7 @@ public class DialogUtility {
         buf.append(lineSep);
         buf.append("- Select Font...");
         buf.append(lineSep);
-        buf.append("    - Select the font (selecting a font will change the font on the Select Font label).");
+        buf.append("    - Select the font.");
         buf.append(lineSep);
         buf.append(lineSep);
         buf.append(" - RESET ");
