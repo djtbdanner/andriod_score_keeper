@@ -3,7 +3,6 @@
 
     <string name="app_name">Score Keeper</string>
     <string name="title_activity">Score Keeper</string>
-    <string name="switch_sides">Switch Sides</string>
     <string name="reset">Reset Score</string>
     <string name="red">Red</string>
     <string name="blue">Blue</string>
@@ -21,7 +20,56 @@
     <string name="reset_score">Reset Score</string>
     <string name="colors">Colors...</string>
     <string name="preferences">Preferences...</string>
-
     <string name="help">Help</string>
+
+
+
+
+    <string name="scoring_preferences">Scoring Preferences</string>
+    <string name="points_per_goal">Points per goal</string>
+    <string name="points_per_goal_summary">Set the number of points each goal is worth (e.g. basketball = 2). Current Value : %s</string>
+    <string name="points_per_goal_key">points_per_goal</string>
+    <string name="initial_score">Initial score</string>
+    <string name="initial_score_summary">Starting points on score reset (e.g. some volleyball tournaments start at 4 points). Current value : %s</string>
+    <string name="initial_score_key">initial_score_key</string>
+    <string name="game_point">Game Point...</string>
+    <string name="game_point_summary">Set the points and margin required to win the game.</string>
+    <string name="game_point_key">game_point_key</string>
+    <string name="game_point_score">\t\t\tPoints</string>
+    <string name="game_point_score_summary">%s</string>
+    <string name="game_point_score_key">game_point_score_key</string>
+    <string name="game_point_margin">\t\t\tMargin</string>
+    <string name="game_point_margin_summary">%s</string>
+    <string name="game_point_margin_key">game_point_margin_key</string>
+
+    <string name="other_preferences">Other Preferences</string>
+    <string name="save_todays_games">Save today\'s games</string>
+    <string name="save_todays_games_summary">Save the score of today\'s games in a spreadsheet in your device\'s download folder.</string>
+    <string name="save_todays_games_key">save_todays_games_key</string>
+
+    <string name="disable_tilt_feature">Disable Tilt Feature</string>
+    <string name="disable_tilt_feature_key">disable_tilt_feature_key</string>
+
+    <string name="select_font">Select Font</string>
+    <string name="select_font_summary">%s</string>
+    <string name="select_font_key">select_font_key</string>
+
+    <string name="default_button">Reset</string>
+    <string name="default_button_summary">Reset preferences to default.</string>
+    <string name="default_button_key">default_button_key</string>
+
+    <string name="exit_reset_preference">Reset Exit</string>
+    <string name="exit_button">Return</string>
+    <string name="exit_button_summary">Exit preferences screen.</string>
+    <string name="exit_button_key">exit_button_key</string>
+
+    <!--<string name="pref_send_report_summary">Helps to fix bugs</string>-->
+    <!--<string name="pref_sync_frequency">Sync frequency</string>-->
+    <!--<string name="pref_sync_frequency_summary">Set the sync frequency</string>-->
+    <!--<string name="pref_user_name">Set username</string>-->
+    <!--<string name="pref_user_name_summary">Set your username</string>-->
+
+    <!--<string name="pref_user_profile">User Profile</string>-->
+    <!--<string name="pref_update_setting">Update Settings</string>-->
 
 </resources>

@@ -104,8 +104,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/green"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/orange_picker_left"
             android:layout_above="@+id/white_picker_left" />
@@ -251,7 +249,6 @@
             android:layout_height="@dimen/size_color_box"
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/white"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/red_picker_right_2"
             android:layout_above="@+id/horizontal_divider" />
@@ -262,7 +259,6 @@
             android:layout_height="@dimen/size_color_box"
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/red"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/purple_picker_right"
             android:layout_above="@+id/horizontal_divider" />
@@ -299,8 +295,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/blue"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/black_picker_left_2" />
 
@@ -312,8 +306,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/black"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/brown_picker_left_2" />
 
@@ -325,8 +317,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/brown"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/green_picker_left_2" />
 
@@ -338,8 +328,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/green"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/orange_picker_left_2" />
 
@@ -351,8 +339,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/orange"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/vertical_divider" />
 
@@ -366,8 +352,6 @@
             android:layout_marginBottom="25sp"
             android:background="@color/pink"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/purple_picker_left_2" />
 
@@ -379,8 +363,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/purple"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/red_picker_left_2" />
 
@@ -392,8 +374,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/red"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/white_picker_left_2" />
 
@@ -405,8 +385,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/white"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/yellow_picker_left_2" />
 
@@ -418,8 +396,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/yellow"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="@dimen/buffer_margin_color_box"
             android:hapticFeedbackEnabled="true"
             android:layout_toLeftOf="@+id/vertical_divider" />
 
@@ -538,8 +514,6 @@
             android:layout_margin="@dimen/buffer_margin_color_box"
             android:background="@color/pink"
             android:clickable="true"
-            android:fadingEdge="horizontal|vertical"
-
             android:hapticFeedbackEnabled="true"
             android:layout_toRightOf="@+id/vertical_divider" />
 

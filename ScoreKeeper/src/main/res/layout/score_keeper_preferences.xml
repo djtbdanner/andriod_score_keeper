@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/score_keeper_preferences"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/scoring_preferences">
+
+        <ListPreference
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:entries="@array/list_1_50"
+            android:entryValues="@array/list_1_50"
+            android:key="@string/points_per_goal_key"
+            android:summary="@string/points_per_goal_summary"
+            android:title="@string/points_per_goal" />
+
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="0"
+            android:entries="@array/list_0_10"
+            android:entryValues="@array/list_0_10"
+            android:key="@string/initial_score_key"
+            android:summary="@string/initial_score_summary"
+            android:title="@string/initial_score" />
+
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="@string/game_point_key"
+            android:summary="@string/game_point_summary"
+            android:title="@string/game_point" />
+
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="25"
+            android:dependency="@string/game_point_key"
+            android:entries="@array/list_1_110"
+            android:entryValues="@array/list_1_110"
+            android:key="@string/game_point_score_key"
+            android:summary="@string/game_point_score_summary"
+            android:title="@string/game_point_score" />
+
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="2"
+            android:dependency="@string/game_point_key"
+            android:entries="@array/list_1_10"
+            android:entryValues="@array/list_1_10"
+            android:key="@string/game_point_margin_key"
+            android:summary="@string/game_point_margin_summary"
+            android:title="@string/game_point_margin" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/other_preferences">
+
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="@string/save_todays_games_key"
+            android:summary="@string/save_todays_games_summary"
+            android:title="@string/save_todays_games" />
+
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="@string/disable_tilt_feature_key"
+            android:title="@string/disable_tilt_feature" />
+
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="Default"
+            android:entries="@array/list_fonts"
+            android:entryValues="@array/list_fonts"
+            android:key="@string/select_font_key"
+            android:summary="@string/select_font_summary"
+            android:title="@string/select_font" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:key="dave"
+        android:title="@string/exit_reset_preference">
+
+        <Preference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:key="@string/default_button_key"
+            android:layout_alignRight="@+id/exit_button"
+            android:summary="@string/default_button_summary"
+            android:title="@string/default_button"
+            android:id="@+id/default_button"/>
+
+        <Preference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/default_button"
+            android:key="@string/exit_button_key"
+            android:summary="@string/exit_button_summary"
+            android:title="@string/exit_button"
+            android:id="@+id/exit_button"/>/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

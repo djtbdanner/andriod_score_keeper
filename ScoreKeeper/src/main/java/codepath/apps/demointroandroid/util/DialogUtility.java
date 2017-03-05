@@ -18,7 +18,7 @@ import android.widget.TextView;
 import codepath.apps.demointroandroid.ColorActivity;
 import codepath.apps.demointroandroid.R;
 import codepath.apps.demointroandroid.ScoreKeeperActivity;
-import codepath.apps.demointroandroid.SettingsActivity;
+import codepath.apps.demointroandroid.ScoreKeeperPreferencesActivity;
 
 public class DialogUtility {
 
@@ -78,7 +78,8 @@ public class DialogUtility {
             public void onClick(View v) {
                 alertDialog.dismiss();
                 theActivity.isPaused = false;
-                Intent intent = new Intent(theActivity, SettingsActivity.class);
+                Intent intent = new Intent(theActivity, ScoreKeeperPreferencesActivity.class);
+//               Intent intent = new Intent(theActivity, SettingsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 theActivity.startActivity(intent);
             }
