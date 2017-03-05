@@ -326,7 +326,7 @@ public class ColorActivity extends Activity implements View.OnClickListener {
                     GradientDrawable gd = (GradientDrawable) drawable;
                     gd.setCornerRadius(0);
                     int bgColor = ScoreKeeperUtils.getBackgroundColor(view);
-                    if (bgColor == theColor(R.color.white)) {
+                    if (bgColor == theColor(R.color.white) || bgColor == theColor(R.color.yellow)) {
                         gd.setStroke(3, theColor(R.color.black));
                     } else {
                         gd.setStroke(3, theColor(R.color.white));

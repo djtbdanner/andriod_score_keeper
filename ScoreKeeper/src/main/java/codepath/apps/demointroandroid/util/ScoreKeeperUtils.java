@@ -64,13 +64,17 @@ public class ScoreKeeperUtils {
         if (drawable instanceof GradientDrawable){
             GradientDrawable gd = (GradientDrawable) drawable;
 //            if (Build.VERSION.SDK_INT >= 24) {
-//                return gd.getColors()[0];
+//                return gd.setColors()[0];
 //            }
             try {
                 Field field = gd.getClass().getDeclaredField("mGradientState");
                 field.setAccessible(true);
                 Object object = field.get(gd);
-                field = object.getClass().getDeclaredField("mSolidColors");
+                try {
+                    field = object.getClass().getDeclaredField("mSolidColors");
+                } catch (Exception e){
+                    field = object.getClass().getDeclaredField("mColorStateList");
+                }
                 field.setAccessible(true);
                 object = field.get(object);
                 field = object.getClass().getDeclaredField("mColors");
