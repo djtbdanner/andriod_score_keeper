@@ -308,7 +308,7 @@ public class ColorActivity extends Activity implements View.OnClickListener {
     }
 
     private void setRound(View view) {
-        if (Build.VERSION.SDK_INT >= 16) {
+        if (Build.VERSION.SDK_INT > 16) {
             GradientDrawable gd = new GradientDrawable();
             gd.setColor(ScoreKeeperUtils.getBackgroundColor(view));
             gd.setCornerRadius(45);
@@ -319,7 +319,7 @@ public class ColorActivity extends Activity implements View.OnClickListener {
 
 
     private void makeViewSquare(View view) {
-        if (Build.VERSION.SDK_INT >= 16) {
+        if (Build.VERSION.SDK_INT > 16) {
             Drawable drawable = (Drawable) view.getBackground();
             if (drawable != null) {
                 if (drawable instanceof GradientDrawable) {
