@@ -36,7 +36,7 @@ public class ScoreKeeperPreferencesActivity extends PreferenceActivity implement
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.toString(), Context.MODE_PRIVATE);
         CommonPreferencesUtility.storeCommonScoreKeeperDatas(sharedPref.edit(), this);
         super.onPause();
@@ -45,12 +45,7 @@ public class ScoreKeeperPreferencesActivity extends PreferenceActivity implement
     private void buildTheScreen() {
 
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (getScoreKeeperData().fileSaveFeatureDate == null || !getScoreKeeperData().fileSaveFeatureDate.contains(ScoreKeeperUtils.getTodayAsNoTimeString())){
-            getScoreKeeperData().fileSaveFeatureDate = null;
-            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-            editor.putBoolean(getResources().getString(R.string.save_todays_games_key), false);
-            editor.commit();
-        }
+        resetSaveGameByDatePreference();
 
         addPreferencesFromResource(R.layout.score_keeper_preferences);
         Preference button = getPreferenceManager().findPreference(getResources().getString(R.string.default_button_key));
@@ -78,6 +73,17 @@ public class ScoreKeeperPreferencesActivity extends PreferenceActivity implement
         Preference fileSavePreference = getPreferenceManager().findPreference(getResources().getString(R.string.save_todays_games_key));
         fileSavePreference.setOnPreferenceChangeListener(fileSaveListener);
 
+    }
+
+    private void resetSaveGameByDatePreference() {
+        if (defaultSharedPreferences.getBoolean(getResources().getString(R.string.save_todays_game_key), false)) {
+            if (getScoreKeeperData().fileSaveFeatureDate == null || !getScoreKeeperData().fileSaveFeatureDate.contains(ScoreKeeperUtils.getTodayAsNoTimeString())) {
+                getScoreKeeperData().fileSaveFeatureDate = null;
+                SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+                editor.putBoolean(getResources().getString(R.string.save_todays_games_key), false);
+                editor.commit();
+            }
+        }
     }
 
     private void setGamePointSummaryValues(boolean showTheSummaries) {

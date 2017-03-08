@@ -31,8 +31,6 @@ import codepath.apps.demointroandroid.util.ScoreKeeperUtils;
 
 public class ScoreKeeperActivity extends Activity implements SensorEventListener, ActivityWithState {
 
-    private SensorManager mSensorManager;
-    private Sensor accelerometer;
     long timestampForEvent;
     public TextView textScoreLeft;
     public TextView textScoreRight;
@@ -65,8 +63,8 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.score_keeper_view);
 
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+
 
         textScoreLeft = (TextView) findViewById(R.id.textScoreLeft);
         textScoreRight = (TextView) findViewById(R.id.textScoreRight);
@@ -82,12 +80,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         height = metrics.heightPixels;
         width = metrics.widthPixels;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        initState();
-
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        if (!getScoreKeeperData().disableTiltFeature) {
-            initListeners();
-        }
+
+        initState();
+        processListener();
         setFont();
         displayScore(false);
     }
@@ -302,10 +298,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     }
 
 
-    public void initListeners() {
-        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
-    }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -348,6 +340,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         isPaused = false;
         isReturnedCenter = false;
         initState();
+        processListener();
         setFont();
         displayScore(false);
     }
@@ -526,5 +519,16 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             }
         }
         return false;
+    }
+
+    private void processListener() {
+        SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        if (!getScoreKeeperData().disableTiltFeature) {
+            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        } else {
+            mSensorManager.unregisterListener(this);
+        }
     }
 }
