@@ -76,7 +76,7 @@ public class ScoreKeeperPreferencesActivity extends PreferenceActivity implement
     }
 
     private void resetSaveGameByDatePreference() {
-        if (defaultSharedPreferences.getBoolean(getResources().getString(R.string.save_todays_game_key), false)) {
+        if (defaultSharedPreferences.getBoolean(getResources().getString(R.string.save_todays_games_key), false)) {
             if (getScoreKeeperData().fileSaveFeatureDate == null || !getScoreKeeperData().fileSaveFeatureDate.contains(ScoreKeeperUtils.getTodayAsNoTimeString())) {
                 getScoreKeeperData().fileSaveFeatureDate = null;
                 SharedPreferences.Editor editor = defaultSharedPreferences.edit();
