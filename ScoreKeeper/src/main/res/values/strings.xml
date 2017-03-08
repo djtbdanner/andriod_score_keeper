@@ -58,7 +58,7 @@
     <string name="default_button_summary">Reset preferences to default.</string>
     <string name="default_button_key">default_button_key</string>
 
-    <string name="exit_reset_preference">Reset Exit</string>
+    <string name="exit_reset_preference">Reset preferences</string>
     <string name="exit_button">Return</string>
     <string name="exit_button_summary">Exit preferences screen.</string>
     <string name="exit_button_key">exit_button_key</string>

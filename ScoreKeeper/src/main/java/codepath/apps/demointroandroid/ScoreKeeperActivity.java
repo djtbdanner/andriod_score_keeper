@@ -89,8 +89,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             initListeners();
         }
         setFont();
-
-
         displayScore(false);
     }
 
@@ -349,6 +347,9 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         super.onResume();
         isPaused = false;
         isReturnedCenter = false;
+        initState();
+        setFont();
+        displayScore(false);
     }
 
     private void storeState() {
@@ -380,7 +381,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         textNameLeft.setBackgroundColor(textScoreLeft.getCurrentTextColor());
         textNameLeft.setTextColor(ScoreKeeperUtils.getBackgroundColor(textScoreLeft));
 
-        CommonPreferencesUtility.setCommonScoreKeeperData(sharedPref, this);
+        CommonPreferencesUtility.pullDataFromPreferences(sharedPref, this);
     }
 
     private boolean checkForShake(SensorEvent event) {

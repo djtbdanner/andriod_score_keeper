@@ -9,7 +9,7 @@ import codepath.apps.demointroandroid.domain.ScoreKeeperPrefKeys;
 
 public class CommonPreferencesUtility {
 
-    public static void setCommonScoreKeeperData(SharedPreferences sharedPref, ActivityWithState theActivity) {
+    public static void pullDataFromPreferences(SharedPreferences sharedPref, ActivityWithState theActivity) {
         //  SharedPreferences sharedPref = theActivity.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
         theActivity.getScoreKeeperData().leftScore = sharedPref.getInt(ScoreKeeperPrefKeys.LEFT_SCORE.name(), 0);
         theActivity.getScoreKeeperData().rightScore = sharedPref.getInt(ScoreKeeperPrefKeys.RIGHT_SCORE.name(), 0);
@@ -32,6 +32,8 @@ public class CommonPreferencesUtility {
 
         if (winByPoints > -1 && winBySpread > -1) {
             theActivity.getScoreKeeperData().setGamePoint(winByPoints, winBySpread);
+        } else {
+            theActivity.getScoreKeeperData().gamePoint = null;
         }
         theActivity.getScoreKeeperData().disableTiltFeature = sharedPref.getBoolean(ScoreKeeperPrefKeys.DISABLE_TILT_FEATURE.name(), false);
         theActivity.getScoreKeeperData().hasCelebratedWin = sharedPref.getBoolean(ScoreKeeperPrefKeys.HAS_CELEBRATED_WIN.name(), false);

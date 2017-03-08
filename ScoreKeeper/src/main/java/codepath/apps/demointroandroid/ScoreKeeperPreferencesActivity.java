@@ -1,20 +1,11 @@
 package codepath.apps.demointroandroid;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.prefs.PreferenceChangeEvent;
 
 import codepath.apps.demointroandroid.domain.ScoreKeeperData;
 import codepath.apps.demointroandroid.domain.ScoreKeeperPrefKeys;
@@ -40,28 +31,33 @@ public class ScoreKeeperPreferencesActivity extends PreferenceActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonPreferencesUtility.pullDataFromPreferences(this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.toString(), Context.MODE_PRIVATE), this);
         buildTheScreen();
     }
 
     @Override
-    protected void onStop(){
-        super.onStop();
+    protected void onPause(){
         SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.toString(), Context.MODE_PRIVATE);
         CommonPreferencesUtility.storeCommonScoreKeeperDatas(sharedPref.edit(), this);
-        //--TODO-- need to use the actual preferences instead of doing this
-        Intent intent = new Intent(this, ScoreKeeperActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        this.startActivity(intent);
+        super.onPause();
     }
 
     private void buildTheScreen() {
+
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        if (getScoreKeeperData().fileSaveFeatureDate == null || !getScoreKeeperData().fileSaveFeatureDate.contains(ScoreKeeperUtils.getTodayAsNoTimeString())){
+            getScoreKeeperData().fileSaveFeatureDate = null;
+            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+            editor.putBoolean(getResources().getString(R.string.save_todays_games_key), false);
+            editor.commit();
+        }
 
         addPreferencesFromResource(R.layout.score_keeper_preferences);
         Preference button = getPreferenceManager().findPreference(getResources().getString(R.string.default_button_key));
         button.setOnPreferenceClickListener(preferenceResetClickListener);
 
-        Preference exit = getPreferenceManager().findPreference(getResources().getString(R.string.exit_button_key));
-        exit.setOnPreferenceClickListener(preferenceExitListener);
+//        Preference exit = getPreferenceManager().findPreference(getResources().getString(R.string.exit_button_key));
+//        exit.setOnPreferenceClickListener(preferenceExitListener);
 
         Preference gamePointSelector = getPreferenceManager().findPreference(getResources().getString(R.string.game_point_key));
         gamePointSelector.setOnPreferenceChangeListener(gamePointMarginChangeListener);
@@ -76,14 +72,6 @@ public class ScoreKeeperPreferencesActivity extends PreferenceActivity implement
         fontPreference.setOnPreferenceChangeListener(preferenceChangeListener);
         gamePoingScore = getPreferenceManager().findPreference(getResources().getString(R.string.game_point_score_key));
         gamePoingScore.setOnPreferenceChangeListener(preferenceChangeListener);
-
-        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (getScoreKeeperData().fileSaveFeatureDate != null && getScoreKeeperData().fileSaveFeatureDate != ScoreKeeperUtils.getTodayAsNoTimeString()){
-            getScoreKeeperData().fileSaveFeatureDate = null;
-            defaultSharedPreferences.edit().putBoolean(getResources().getString(R.string.save_todays_games_key), false);
-            defaultSharedPreferences.edit().commit();
-        }
-
 
         setGamePointSummaryValues(defaultSharedPreferences.getBoolean(getResources().getString(R.string.game_point_key), false));
 
@@ -106,34 +94,32 @@ public class ScoreKeeperPreferencesActivity extends PreferenceActivity implement
 
         @Override
         public boolean onPreferenceClick(Preference p) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
             editor.clear();
             editor.commit();
-            PreferenceManager.setDefaultValues(getBaseContext(), R.layout.score_keeper_preferences, true);
-            preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             setPreferenceScreen(null);
             buildTheScreen();
             return true;
         }
     };
 
-    private Preference.OnPreferenceClickListener preferenceExitListener = new Preference.OnPreferenceClickListener() {
-
-        @Override
-        public boolean onPreferenceClick(Preference p) {
-            finish();
-            return true;
-        }
-    };
+//    private Preference.OnPreferenceClickListener preferenceExitListener = new Preference.OnPreferenceClickListener() {
+//
+//        @Override
+//        public boolean onPreferenceClick(Preference p) {
+//            finish();
+//            return true;
+//        }
+//    };
 
 
     private Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
 
         @Override
         public boolean onPreferenceChange(Preference p, Object newValue) {
-            String currentSummary = p.getSummary().toString();
-            if (currentSummary != null) {
+            String currentSummary = "";
+            if (p.getSummary() != null) {
+                currentSummary = p.getSummary().toString();
                 if (currentSummary.contains(":")) {
                     currentSummary = currentSummary.substring(0, currentSummary.indexOf(":") + 2);
                 } else {
