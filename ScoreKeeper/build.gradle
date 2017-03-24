@@ -8,8 +8,8 @@ android {
         applicationId "codepath.apps.demointroandroid"
         minSdkVersion 11
         targetSdkVersion 17
-        versionCode 16
-        versionName "5.3.0"
+        versionCode 17
+        versionName "5.3.1"
     }
 
     buildTypes {

@@ -97,8 +97,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     final Runnable alertAndShutDownTheApp = new Runnable() {
         @Override
         public void run() {
-            v.vibrate(500);
-            showToastInThread("Due to inactivity Score Keeper will shut down in 15 seconds.");
+            if (!isPaused) {
+                v.vibrate(500);
+                showToastInThread("Due to inactivity Score Keeper will shut down in 15 seconds.");
+            }
             if (future != null) {
                 future.cancel(true);
             }
