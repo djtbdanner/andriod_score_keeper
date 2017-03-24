@@ -28,7 +28,10 @@ From the initial menu choose ...
 
 - Disable Tilt Feature
   - If you do not want the tilt feature, you can choose to turn that off here.
-  
+
+- Inactivity timeout...
+   - Select the number of minutes of inactivity before application shuts down.
+
 - Select Font
   - Select the font.
  

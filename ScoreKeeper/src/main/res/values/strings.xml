@@ -54,7 +54,7 @@
     <string name="select_font_summary">%s</string>
     <string name="select_font_key">select_font_key</string>
 
-    <string name="shut_down_minutes">Inactivity Shut Down</string>
+    <string name="shut_down_minutes">Inactivity timeout</string>
     <string name="shut_down_minutes_summary">Number of minutes of inactivity before shutting down. Current Value : %s</string>
     <string name="shut_down_minutes_key">shut_down_minutes</string>
 

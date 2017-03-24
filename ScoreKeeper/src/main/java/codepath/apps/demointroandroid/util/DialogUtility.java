@@ -248,8 +248,13 @@ public class DialogUtility {
         });
 
         AlertDialog alertDialog = builder.create();
-
-        alertDialog.setMessage("Long Click team name to edit.\nLong Click points for app menu.\nLeft or right swipes on score registers one point.\nLeft or right swipes across screen swaps team sides.");
+        StringBuffer message = new StringBuffer();
+        message.append("● Long Click team points for menu (reset score, color selector, preferences and help).\n");
+        message.append("● Tilt device or tap score to add points.\n");
+        message.append("● Left or right swipe across screen to swap team sides.\n");
+        message.append("● Up or down swipe to add or remove points.\n");
+        message.append("● Left or right swipe to add or remove one point only.\n");
+        alertDialog.setMessage(message.toString());
         alertDialog.show();
     }
 
@@ -311,6 +316,11 @@ public class DialogUtility {
         buf.append("- Select Font...");
         buf.append(lineSep);
         buf.append("    - Select the font.");
+        buf.append(lineSep);
+        buf.append(lineSep);
+        buf.append("- Inactivity timeout...");
+        buf.append(lineSep);
+        buf.append("    - Select the number of minutes of inactivity before application shuts down.");
         buf.append(lineSep);
         buf.append(lineSep);
         buf.append(" - RESET ");
