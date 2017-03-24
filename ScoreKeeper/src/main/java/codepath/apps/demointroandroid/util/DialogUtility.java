@@ -188,13 +188,13 @@ public class DialogUtility {
                         theActivity.getScoreKeeperData().rightTeamName = text;
                         theActivity.textNameRight.setText(text);
                     }
+                    theActivity.storeState();
                     dialog.dismiss();
                     return true;
                 }
                 return false;
             }
         });
-
 
         dialog.show();
         input.setSelectAllOnFocus(true);
@@ -233,10 +233,26 @@ public class DialogUtility {
 
         alertDialog.setMessage("Directions");
         alertDialog.setView(s_view);
-
-
         alertDialog.show();
     }
+
+
+    public static void showGotItDialog(final ScoreKeeperActivity theActivity) {
+        theActivity.isPaused = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
+        builder.setCancelable(false).setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                theActivity.isPaused = false;
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.setMessage("Long Click team name to edit.\nLong Click points for app menu.\nLeft or right swipes on score registers one point.\nLeft or right swipes across screen swaps team sides.");
+        alertDialog.show();
+    }
+
 
     static private String getInstructions() {
         StringBuilder buf = new StringBuilder();

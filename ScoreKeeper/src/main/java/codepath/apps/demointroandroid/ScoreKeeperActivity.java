@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -20,6 +21,11 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import codepath.apps.demointroandroid.domain.ScoreKeeperData;
 import codepath.apps.demointroandroid.domain.ScoreKeeperPrefKeys;
@@ -50,6 +56,8 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     float scrollX;
     float scrollY;
     private ScoreKeeperData scoreKeeperData;
+    final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    ScheduledFuture<?> future;
 
     public ScoreKeeperData getScoreKeeperData() {
         if (scoreKeeperData == null) {
@@ -58,13 +66,50 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         return scoreKeeperData;
     }
 
+    final Runnable shutDownTheApp = new Runnable() {
+        @Override
+        public void run() {
+            if (Build.VERSION.SDK_INT >= 21)
+
+            {
+                getMe().finishAndRemoveTask();
+            } else if (Build.VERSION.SDK_INT >= 16)
+
+            {
+                getMe().finishAffinity();
+            } else
+
+            {
+                getMe().finish();
+            }
+            System.exit(0);
+        }
+    };
+
+    public void showToastInThread(final String toast) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getBaseContext(), toast, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    final Runnable alertAndShutDownTheApp = new Runnable() {
+        @Override
+        public void run() {
+            v.vibrate(500);
+            showToastInThread("Due to inactivity Score Keeper will shut down in 15 seconds.");
+            if (future != null) {
+                future.cancel(true);
+            }
+            future = scheduler.schedule(shutDownTheApp, 15, TimeUnit.SECONDS);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.score_keeper_view);
-
-
-
 
         textScoreLeft = (TextView) findViewById(R.id.textScoreLeft);
         textScoreRight = (TextView) findViewById(R.id.textScoreRight);
@@ -86,9 +131,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         processListener();
         setFont();
         displayScore(false);
+        showGotItDialogOnceOnly();
     }
 
     private void setFont() {
+
         Typeface typeface = ScoreKeeperUtils.getTypeface(getScoreKeeperData().fontName, getAssets());
         textScoreLeft.setTypeface(typeface);
         textNameLeft.setTypeface(typeface);
@@ -143,7 +190,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         displayScore(false);
 
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -232,7 +278,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
 
     public void displayScore(boolean doVibrate) {
 
-
         if (doVibrate) {
             long[] pattern = ScoreKeeperUtils.getVibratePattern(getScoreKeeperData().pointsForGoal);
             v.vibrate(pattern, -1);
@@ -265,6 +310,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         }
 
         storeState();
+        resetShutDownTimer();
     }
 
 
@@ -345,7 +391,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         displayScore(false);
     }
 
-    private void storeState() {
+    public void storeState() {
 
         if (isScreenGrey()) {
             return;
@@ -493,6 +539,7 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     };
 
     private void showNameDialog(boolean isLeft) {
+        storeState();
         DialogUtility.showEnterNameDialog(this, isLeft);
     }
 
@@ -530,5 +577,23 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         } else {
             mSensorManager.unregisterListener(this);
         }
+    }
+
+    private void showGotItDialogOnceOnly() {
+
+       SharedPreferences sharedPref = this.getSharedPreferences(ScoreKeeperPrefKeys.SHARED_PREFERENCES.name(), Context.MODE_PRIVATE);
+        if ( !sharedPref.getBoolean("showedGotIt", false) ){
+            DialogUtility.showGotItDialog(this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("showedGotIt", true);
+            editor.commit();
+        }
+    }
+
+    private void resetShutDownTimer() {
+        if (future != null) {
+            future.cancel(true);
+        }
+        future =  scheduler.schedule(alertAndShutDownTheApp,getScoreKeeperData().shutDownMinutes, TimeUnit.MINUTES);
     }
 }

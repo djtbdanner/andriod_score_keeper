@@ -1,8 +1,5 @@
 package codepath.apps.demointroandroid.domain;
 
-import codepath.apps.demointroandroid.util.ScoreKeeperUtils;
-
-
 public class ScoreKeeperData {
 
     public  int leftScore = 0;
@@ -18,17 +15,7 @@ public class ScoreKeeperData {
     public boolean disableTiltFeature = false;
     public boolean hasCelebratedWin = false;
     public String fontName;
-
-
-    public void enableFileSave(){
-        fileSaveFeatureDate = ScoreKeeperUtils.getTodayAsNoTimeString();
-        fileSaveForToday = true;
-    }
-
-    public void disableFileSave (){
-        fileSaveFeatureDate = null;
-        fileSaveForToday = false;
-    }
+    public long shutDownMinutes;
 
     public void setGamePoint(int winningPoint, int pointSpread){
         GamePoint gamePoint = new GamePoint();

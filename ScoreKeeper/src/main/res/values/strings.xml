@@ -54,9 +54,14 @@
     <string name="select_font_summary">%s</string>
     <string name="select_font_key">select_font_key</string>
 
+    <string name="shut_down_minutes">Inactivity Shut Down</string>
+    <string name="shut_down_minutes_summary">Number of minutes of inactivity before shutting down. Current Value : %s</string>
+    <string name="shut_down_minutes_key">shut_down_minutes</string>
+
     <string name="default_button">Reset</string>
     <string name="default_button_summary">Reset preferences to default.</string>
     <string name="default_button_key">default_button_key</string>
+
 
     <string name="exit_reset_preference">Reset preferences</string>
     <string name="exit_button">Return</string>

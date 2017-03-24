@@ -1,6 +1,5 @@
 package codepath.apps.demointroandroid.util;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -38,6 +37,7 @@ public class CommonPreferencesUtility {
         theActivity.getScoreKeeperData().disableTiltFeature = sharedPref.getBoolean(ScoreKeeperPrefKeys.DISABLE_TILT_FEATURE.name(), false);
         theActivity.getScoreKeeperData().hasCelebratedWin = sharedPref.getBoolean(ScoreKeeperPrefKeys.HAS_CELEBRATED_WIN.name(), false);
         theActivity.getScoreKeeperData().fontName = sharedPref.getString(ScoreKeeperPrefKeys.FONT_NAME.name(), "Default");
+        theActivity.getScoreKeeperData().shutDownMinutes = sharedPref.getInt(ScoreKeeperPrefKeys.SHUT_DOWN_MINUTES.name(), 30);
     }
 
 
@@ -53,6 +53,7 @@ public class CommonPreferencesUtility {
         boolean disableTiltFeature = defaultSharedPrefs.getBoolean(theActivity.getResources().getString(R.string.disable_tilt_feature_key), false);
         boolean fileSaveFeature = defaultSharedPrefs.getBoolean(theActivity.getResources().getString(R.string.save_todays_games_key), false);
         String selectedFont = defaultSharedPrefs.getString(theActivity.getResources().getString(R.string.select_font_key), "Default");
+        int shutDownMinutes = Integer.valueOf(defaultSharedPrefs.getString(theActivity.getResources().getString(R.string.shut_down_minutes_key), "30"));
 
 //        editor.putInt(ScoreKeeperPrefKeys.POINT_PER_GOAL.name(), theActivity.getScoreKeeperData().pointsForGoal);
 //        editor.putInt(ScoreKeeperPrefKeys.RESET_SCORE_TO.name(), theActivity.getScoreKeeperData().resetScoreTo);
@@ -78,6 +79,7 @@ public class CommonPreferencesUtility {
         editor.putBoolean(ScoreKeeperPrefKeys.HAS_CELEBRATED_WIN.name(), theActivity.getScoreKeeperData().hasCelebratedWin);
         //editor.putString(ScoreKeeperPrefKeys.FONT_NAME.name(), theActivity.getScoreKeeperData().fontName);
         editor.putString(ScoreKeeperPrefKeys.FONT_NAME.name(), selectedFont);
+        editor.putInt(ScoreKeeperPrefKeys.SHUT_DOWN_MINUTES.name(), shutDownMinutes );
         editor.commit();
     }
 }

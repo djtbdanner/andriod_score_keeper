@@ -89,6 +89,17 @@
             android:key="@string/select_font_key"
             android:summary="@string/select_font_summary"
             android:title="@string/select_font" />
+
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="30"
+            android:entries="@array/list_1_110"
+            android:entryValues="@array/list_1_110"
+            android:key="@string/shut_down_minutes_key"
+            android:summary="@string/shut_down_minutes_summary"
+            android:title="@string/shut_down_minutes" />
+
     </PreferenceCategory>
 
 
