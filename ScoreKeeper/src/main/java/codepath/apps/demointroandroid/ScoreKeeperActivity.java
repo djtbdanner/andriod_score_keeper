@@ -118,6 +118,13 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         textNameLeft = (TextView) findViewById(R.id.textNameLeft);
         textNameRight = (TextView) findViewById(R.id.textNameRight);
 
+        if (Build.VERSION.SDK_INT <= 17) {
+            textScoreLeft.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            textScoreRight.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            textNameLeft.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            textNameRight.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         textNameLeft.setOnLongClickListener(leftNameListener);
         textNameRight.setOnLongClickListener(rightNameListener);
         timestampForEvent = System.currentTimeMillis();

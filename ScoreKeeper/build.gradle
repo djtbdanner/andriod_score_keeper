@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "codepath.apps.demointroandroid"
-        minSdkVersion 11
-        targetSdkVersion 17
-        versionCode 17
-        versionName "5.3.1"
+        minSdkVersion 15
+        targetSdkVersion 18
+        versionCode 18
+        versionName "5.3.2"
     }
 
     buildTypes {

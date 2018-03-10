@@ -214,7 +214,7 @@ public class ScoreKeeperUtils {
 
         }
         if (score > 999) {
-            scoreSize = 140;
+            scoreSize = 120;
             if (largeScreen) {
                 scoreSize = 260;
             }
