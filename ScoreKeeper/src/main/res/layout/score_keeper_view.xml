@@ -45,12 +45,14 @@
     <TextView
         android:id="@+id/textScoreLeft"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/strut"
         android:layout_below="@id/textNameLeft"
-        android:gravity="center" />
+        android:gravity="center_horizontal|center_vertical"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp" />
 
     <TextView
         android:id="@+id/textWinLeft"
@@ -72,7 +74,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/textNameRight"
-        android:gravity="center" />
+        android:gravity="center_horizontal|center_vertical"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        />
 
     <TextView
         android:id="@+id/textWinRight"

@@ -3,7 +3,6 @@ package codepath.apps.demointroandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -15,6 +14,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -46,7 +46,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     boolean isTiltedLeft = false;
     boolean isTiltedRight = false;
     boolean isReturnedCenter = false;
-    int height;
     int width;
     float initialY;
     float initialX;
@@ -69,17 +68,11 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
     final Runnable shutDownTheApp = new Runnable() {
         @Override
         public void run() {
-            if (Build.VERSION.SDK_INT >= 21)
-
-            {
+            if (Build.VERSION.SDK_INT >= 21) {
                 getMe().finishAndRemoveTask();
-            } else if (Build.VERSION.SDK_INT >= 16)
-
-            {
+            } else if (Build.VERSION.SDK_INT >= 16) {
                 getMe().finishAffinity();
-            } else
-
-            {
+            } else {
                 getMe().finish();
             }
             System.exit(0);
@@ -118,20 +111,12 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         textNameLeft = (TextView) findViewById(R.id.textNameLeft);
         textNameRight = (TextView) findViewById(R.id.textNameRight);
 
-        if (Build.VERSION.SDK_INT <= 17) {
-            textScoreLeft.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            textScoreRight.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            textNameLeft.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            textNameRight.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
-
         textNameLeft.setOnLongClickListener(leftNameListener);
         textNameRight.setOnLongClickListener(rightNameListener);
         timestampForEvent = System.currentTimeMillis();
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        height = metrics.heightPixels;
         width = metrics.widthPixels;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -197,7 +182,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         getScoreKeeperData().leftScore = getScoreKeeperData().resetScoreTo;
         getScoreKeeperData().rightScore = getScoreKeeperData().resetScoreTo;
         displayScore(false);
-
     }
 
     @Override
@@ -291,11 +275,10 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
             long[] pattern = ScoreKeeperUtils.getVibratePattern(getScoreKeeperData().pointsForGoal);
             v.vibrate(pattern, -1);
         }
+        textScoreLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, 1000000);
 
-        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        int density = getResources().getDisplayMetrics().densityDpi;
-        textScoreLeft.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().leftScore, screenSize, density));
-        textScoreRight.setTextSize(ScoreKeeperUtils.getTextSize(getScoreKeeperData().rightScore, screenSize, density));
+        textScoreRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScoreKeeperUtils.getTextSize(textScoreRight, getScoreKeeperData().rightScore));
+        textScoreLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScoreKeeperUtils.getTextSize(textScoreLeft, getScoreKeeperData().leftScore));
 
         checkScoresForZero();
 
@@ -303,7 +286,6 @@ public class ScoreKeeperActivity extends Activity implements SensorEventListener
         textScoreRight.setText(String.valueOf(getScoreKeeperData().rightScore));
         textNameLeft.setText(getScoreKeeperData().leftTeamName);
         textNameRight.setText(getScoreKeeperData().rightTeamName);
-
         if (isGameWon(getScoreKeeperData().leftScore, getScoreKeeperData().rightScore)) {
             boolean leftWins = getScoreKeeperData().leftScore > getScoreKeeperData().rightScore;
             long[] pattern = ScoreKeeperUtils.getWinningPattern();

@@ -1,5 +1,6 @@
 package codepath.apps.demointroandroid.util;
 
+import android.app.Activity;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -9,8 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -33,15 +36,12 @@ public class ScoreKeeperUtils {
     public static ScoreKeeperUtils getInstance() {
         if (instance == null) {
             instance = new ScoreKeeperUtils();
-
         }
         return instance;
     }
 
-
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd", Locale.US);
     static SimpleDateFormat stf = new SimpleDateFormat("hh:mm a", Locale.US);
-
 
     public static int getBackgroundColor(View view) {
         Drawable drawable = view.getBackground();
@@ -189,64 +189,32 @@ public class ScoreKeeperUtils {
 
     }
 
-    public static int getTextSize(int score, int screenSize, int density) {
-
-        boolean largeScreen = Configuration.SCREENLAYOUT_SIZE_XLARGE == screenSize || Configuration.SCREENLAYOUT_SIZE_LARGE == screenSize;
-        boolean lowDensity = density <= DisplayMetrics.DENSITY_HIGH;
-
-        int scoreSize = 240;
-        if (largeScreen) {
-            scoreSize = 500;
+    public static float getTextSize(TextView tv, int score) {
+        float viewSize =  tv.getMeasuredHeight();
+        boolean adjForOld = false;
+        if (viewSize < 1 ){
+            // if screen is not yet built, just assume 85% of height
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((Activity) tv.getContext()).getWindowManager()
+                    .getDefaultDisplay()
+                    .getMetrics(displayMetrics);
+            viewSize = (float) (displayMetrics.heightPixels * .85);
         }
-
-        if (lowDensity && !largeScreen) {
-            scoreSize = 200;
+        if (score < 10) {
+            return (float) (.95 * viewSize);
         }
-
-        if (score > 99) {
-            scoreSize = 160;
-            if (largeScreen) {
-                scoreSize = 360;
-            }
-            if (lowDensity && !largeScreen) {
-                scoreSize = 140;
-            }
-
+        if (score < 100) {
+            return (float) (.75 * viewSize);
         }
-        if (score > 999) {
-            scoreSize = 120;
-            if (largeScreen) {
-                scoreSize = 260;
-            }
-            if (lowDensity && !largeScreen) {
-                scoreSize = 100;
-            }
+        if (score < 1000) {
+            return (float) (.5 * viewSize);
         }
-
-        if (score > 9999) {
-            scoreSize = 100;
-            if (largeScreen) {
-                scoreSize = 200;
-            }
-            if (lowDensity && !largeScreen) {
-                scoreSize = 80;
-            }
+        if (score < 10000) {
+            return (float) (.35 * viewSize);
         }
-
-        if (score > 99999) {
-            scoreSize = 80;
-            if (largeScreen) {
-                scoreSize = 150;
-            }
-            if (lowDensity && !largeScreen) {
-                scoreSize = 70;
-            }
-        }
-
-        return scoreSize;
+         return (float) (.3 * viewSize);
     }
-
-
+   
     public static String getTodayAsNoTimeString() {
         return sdf.format(new Date());
     }
@@ -279,19 +247,6 @@ public class ScoreKeeperUtils {
 
     }
 
-
-    public static int getSpinnerIndexOfValue(Spinner spinner, String value) {
-        int index = 0;
-
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(value)) {
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-
     public static Typeface getTypeface(String fontName, AssetManager assets){
         Typeface typeface = Typeface.create("sans-serif", Typeface.NORMAL);
         if (fontName != null) {
@@ -310,7 +265,6 @@ public class ScoreKeeperUtils {
                     // don't do anything here.. just default
                     System.out.println("Font not found " + e.getMessage());
                 }
-
             }
         }
         return typeface;

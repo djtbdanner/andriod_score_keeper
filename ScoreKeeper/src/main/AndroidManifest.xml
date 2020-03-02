@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Chapter 1, Exercise 1: Change version data to 2 and 2.0 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="codepath.apps.demointroandroid"
     android:keepScreenOn="true"
     android:persistent="true"
     android:versionCode="2"
     android:versionName="2.0">
-
-    <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -23,7 +20,8 @@
             android:name=".ScoreKeeperActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +35,8 @@
         <!--</activity>-->
         <activity
             android:name=".ColorActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".ScoreKeeperPreferencesActivity"
